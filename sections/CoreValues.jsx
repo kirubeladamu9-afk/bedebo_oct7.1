@@ -371,12 +371,14 @@ export default function CoreValues() {
     const [activeTab, setActiveTab] = useState(0);
     const [slidePosition, setSlidePosition] = useState(1);
     const [carouselTransition, setCarouselTransition] = useState(true);
+    const [cardHeight, setCardHeight] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
     const [isCarouselFocused, setIsCarouselFocused] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(true);
     const [brandPhrase, setBrandPhrase] = useState(0);
     const [tabPill, setTabPill] = useState({ left: 5, width: 0 });
     const touchStart = useRef(null);
+    const activeCardRef = useRef(null);
     const tabRefs = useRef([]);
     const tabColors = ["#27965a", "#2f6fed", "#0e93a8", "#6b4fd8"];
     const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
@@ -408,6 +410,16 @@ export default function CoreValues() {
         return () => window.clearInterval(timer);
     }, [reducedMotion, phraseParts.length]);
 
+    useEffect(() => {
+        const card = activeCardRef.current;
+        if (!card) return undefined;
+        const updateHeight = () => setCardHeight(card.getBoundingClientRect().height);
+        updateHeight();
+        const observer = new ResizeObserver(updateHeight);
+        observer.observe(card);
+        return () => observer.disconnect();
+    }, [slidePosition]);
+
     const moveValue = (direction) => setSlidePosition((current) => {
         const next = current + direction;
         if (reducedMotion) {
@@ -422,12 +434,12 @@ export default function CoreValues() {
         if (slidePosition === 0) {
             setCarouselTransition(false);
             setSlidePosition(values.length);
-            requestAnimationFrame(() => setCarouselTransition(true));
+            requestAnimationFrame(() => requestAnimationFrame(() => setCarouselTransition(true)));
         }
         if (slidePosition === values.length + 1) {
             setCarouselTransition(false);
             setSlidePosition(1);
-            requestAnimationFrame(() => setCarouselTransition(true));
+            requestAnimationFrame(() => requestAnimationFrame(() => setCarouselTransition(true)));
         }
     };
 
@@ -485,24 +497,21 @@ export default function CoreValues() {
                         <p className="mt-2 text-[13px] leading-5 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
                     </article>
                 </div>
-                <div className="mt-4 flex flex-wrap gap-2" aria-label="Crops">
-                    {["Tomato", "Onion", "Cabbage", "Papaya", "Pepper", "Green Bean"].map((crop) => <span key={crop} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">{crop}</span>)}
-                </div>
             </div>
 
-            <div className="mx-auto mt-10 max-w-[1040px]">
+            <div className="mx-auto mt-6 max-w-[1040px]">
                 <div className="mb-4 text-center">
                     <h3 className="text-2xl font-semibold">Six values that guide us</h3>
                     <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
                 </div>
                 <div className="core-values-carousel" role="region" aria-roledescription="carousel" aria-label="BEDEBO core values" tabIndex={0} onAnimationEnd={handleValueProgressEnd} onKeyDown={handleCarouselKeyDown} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onFocus={() => setIsCarouselFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsCarouselFocused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
-                    <div className="overflow-hidden rounded-[26px]">
-                        <div className="core-values-track flex items-stretch" onTransitionEnd={handleTrackTransitionEnd} style={{ transform: `translateX(-${slidePosition * 100}%)`, transitionDuration: reducedMotion || !carouselTransition ? "0ms" : "700ms" }}>
+                    <div className="core-values-viewport overflow-hidden rounded-[26px] transition-[height] duration-500 motion-reduce:transition-none" style={{ height: cardHeight ? `${cardHeight}px` : undefined }}>
+                        <div className="core-values-track flex items-start" onTransitionEnd={handleTrackTransitionEnd} style={{ transform: `translateX(-${slidePosition * 100}%)`, transitionDuration: reducedMotion || !carouselTransition ? "0ms" : "700ms" }}>
                             {[{ item: values[values.length - 1], index: values.length - 1, clone: "last" }, ...values.map((item, index) => ({ item, index, clone: null })), { item: values[0], index: 0, clone: "first" }].map(({ item, index, clone }, position) => {
                                 const selected = position === slidePosition;
-                                return <div key={clone ?? item.title} className="w-full shrink-0 px-1" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${values.length}`} aria-hidden={!selected}>
-                                    <article className="relative h-full min-h-[270px] overflow-hidden rounded-[22px] border border-slate-200 bg-white p-6 shadow-sm after:pointer-events-none after:absolute after:-bottom-16 after:-right-16 after:size-52 after:rounded-full after:bg-[var(--value-soft)] dark:border-slate-800 dark:bg-slate-900 sm:p-8" style={{ borderTop: `5px solid ${item.color}`, "--value-color": item.color, "--value-soft": `${item.color}1a` }}>
-                                        <div className="relative z-10 flex min-h-[210px] flex-col justify-between gap-6">
+                                return <div key={clone ?? item.title} className="basis-full shrink-0 px-1" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${values.length}`} aria-hidden={!selected}>
+                                    <article ref={selected ? activeCardRef : null} className="relative overflow-hidden rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm after:pointer-events-none after:absolute after:-bottom-16 after:-right-16 after:size-52 after:rounded-full after:bg-[var(--value-soft)] dark:border-slate-800 dark:bg-slate-900 sm:p-6" style={{ borderTop: `5px solid ${item.color}`, "--value-color": item.color, "--value-soft": `${item.color}1a` }}>
+                                        <div className="relative z-10">
                                             <div>
                                                 <div className="mb-3 flex items-center gap-3">
                                                     <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: item.color }}>{index + 1}</span>
@@ -520,9 +529,7 @@ export default function CoreValues() {
                         </div>
                     </div>
                     <div className="mt-4 flex items-center justify-center gap-2" role="group" aria-label="Choose a core value">
-                        <button type="button" onClick={() => moveValue(-1)} aria-label="Previous value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowLeft size={17} /></button>
                         {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show core value ${index + 1}: ${item.title}`} aria-current={activeValue === index ? "true" : undefined} onClick={() => setSlidePosition(index + 1)} className={`core-value-dot relative size-2.5 overflow-hidden rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-11" : "bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: `${item.color}33` } : undefined}><span className="sr-only">{item.title}</span>{activeValue === index && <span className="core-value-progress absolute inset-0 origin-left" style={{ backgroundColor: item.color }} />}</button>)}
-                        <button type="button" onClick={() => moveValue(1)} aria-label="Next value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowRight size={17} /></button>
                     </div>
                 </div>
             </div>

@@ -37,7 +37,7 @@ const platforms = [
     { title: "Union: check-in and QR crates", steps: ["Product is checked in and received by the ALAs.", "Sacks are converted to QR-labeled crates, one set per farmer with no mixing.", "Data is stored at central Bedebo.", "When the warehouse requests stock, crates are checked out and loaded onto the cold truck."] },
     { title: "Warehouse: request and cold storage", steps: ["The warehouse requests stock.", "The request goes through central Bedebo to the Union.", "The cold truck carries the crates from the Union to the warehouse.", "Crates are unloaded and checked in to cold storage.", "Data is sent to central Bedebo."] },
     { title: "Vendor: order and delivery", steps: ["The vendor places an order in the Bedebo platform.", "Crates are checked out and loaded onto the cold truck.", "The truck carries the order from the warehouse to the vendor.", "Crates are received and delivery is confirmed to central Bedebo."] },
-    { title: "Central Bedebo platform", steps: ["Every registration, check-in, check-out, request, and order is recorded here.", "The whole journey stays visible and traceable, from the farmer to the vendor."] },
+    { title: "Bedebo central", steps: ["Every registration, check-in, check-out, request, and order is recorded here.", "The whole journey stays visible and traceable, from the farmer to the vendor."] },
 ];
 
 const qualitySteps = [
@@ -78,13 +78,13 @@ function isoSceneSVG() {
         WH = ['#fff', '#e1eaf6', '#c8d6eb'], CR = ['#f2cc8b', '#d29c4c', '#b5843b'], SK = ['#efe0b8', '#d9c28a', '#c2a96f'], GR = ['#63c48c', '#3da56b', '#2f8a58'], TL = ['#aadde8', '#7cc2d1', '#5ca8b8'], BL = ['#7399ec', '#4a76d6', '#3a60b8'], DK = ['#51639e', '#33427a', '#27346a'], RD = ['#f3917f', '#da6550', '#bf5340'], GN = ['#8fe6b2', '#27965a', '#1f7a49'];
     var N = [
         { n: 'Farm', x: -2, y: 4, o: function (x, y) { var r = ''; [.4, 1.3, 2.1].forEach(function (a) { r += B(x + .4, y + a, .5, .5, 8, 0, GR) + B(x + 1, y + a, .5, .5, 8, 0, GR); }); return r + B(x + 1.9, y + .6, .8, .8, 15, 0, SK) + B(x + 1.9, y + 1.7, .8, .8, 15, 0, SK); } },
-        { n: 'Union and ALAs', x: 4, y: -2, o: function (x, y) { return [[.4, .3], [1.3, .3], [.4, 1.1], [1.3, 1.1]].map(function (a) { return B(x + a[0], y + a[1], .8, .8, 14, 0, CR); }).join('') + B(x + .4, y + .3, .8, .8, 14, 14, CR) + B(x + .3, y + 2, 1.7, .8, 18, 0, WH) + B(x + 2, y + 2.05, .7, .7, 13, 0, BL); } },
+        { n: 'Union', x: 4, y: -2, o: function (x, y) { return [[.4, .3], [1.3, .3], [.4, 1.1], [1.3, 1.1]].map(function (a) { return B(x + a[0], y + a[1], .8, .8, 14, 0, CR); }).join('') + B(x + .4, y + .3, .8, .8, 14, 14, CR) + B(x + .3, y + 2, 1.7, .8, 18, 0, WH) + B(x + 2, y + 2.05, .7, .7, 13, 0, BL); } },
         { n: 'Warehouse (cold storage)', x: 10, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 40), s = ''; for (var a = 0; a < 3; a++) { var t = a * Math.PI / 3, dx = 8 * Math.cos(t), dy = 8 * Math.sin(t); s += '<line x1="' + (c[0] - dx) + '" y1="' + (c[1] - dy) + '" x2="' + (c[0] + dx) + '" y2="' + (c[1] + dy) + '" stroke="#fff" stroke-width="2.4"/>'; } return B(x + .5, y + .5, 2, 2, 40, 0, TL) + B(x + .9, y + 2.5, .6, .04, 24, 0, WH) + s; } },
-        { n: 'Vendor', x: 4, y: 10, o: function (x, y) { return B(x + .6, y + .8, 1.8, 1.3, 14, 0, WH) + B(x + .5, y + .7, .95, 1.5, 6, 26, RD) + B(x + 1.45, y + .7, .95, 1.5, 6, 26, WH) + B(x + .7, y + 2.2, .5, .5, 8, 0, CR) + B(x + 1.4, y + 2.2, .5, .5, 8, 0, GR); } },
-        { n: 'Central Bedebo platform', x: 4, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 78); return B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK) + [10, 22].map(function (z) { return B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); }).join('') + '<g stroke="#3b6fd8" stroke-width="2" fill="#fff"><circle cx="' + (c[0] - 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + (c[0] + 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + c[0] + '" cy="' + (c[1] - 6) + '" r="18"/></g><rect x="' + (c[0] - 27) + '" y="' + (c[1] - 2) + '" width="54" height="17" fill="#fff"/>'; } },
-    ], s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="group" aria-label="Isometric diagram of the central Bedebo platform connected to farm, Union, warehouse and vendor"><rect width="720" height="540" fill="#cfe3ff"/>',
+        { n: 'Vendor/Market', x: 4, y: 10, o: function (x, y) { return B(x + .6, y + .8, 1.8, 1.3, 14, 0, WH) + B(x + .5, y + .7, .95, 1.5, 6, 26, RD) + B(x + 1.45, y + .7, .95, 1.5, 6, 26, WH) + B(x + .7, y + 2.2, .5, .5, 8, 0, CR) + B(x + 1.4, y + 2.2, .5, .5, 8, 0, GR); } },
+        { n: 'Bedebo central', x: 4, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 78); return B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK) + [10, 22].map(function (z) { return B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); }).join('') + '<g stroke="#3b6fd8" stroke-width="2" fill="#fff"><circle cx="' + (c[0] - 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + (c[0] + 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + c[0] + '" cy="' + (c[1] - 6) + '" r="18"/></g><rect x="' + (c[0] - 27) + '" y="' + (c[1] - 2) + '" width="54" height="17" fill="#fff"/>'; } },
+    ], s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="group" aria-label="Isometric diagram of the Bedebo central platform connected to farm, Union, warehouse and Vendor/Market">',
         F = function (x, y, w, d, z, f) { return Q([[x, y, z], [x + w, y, z], [x + w, y + d, z], [x, y + d, z]], f); };
-    [[40, 200, 330, 45], [40, 330, 300, 150], [690, 230, 430, 50], [690, 380, 300, 150]].forEach(function (l) { s += '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#fff" stroke-opacity=".55" stroke-dasharray="4 7"/>'; });
+    [[40, 200, 330, 45], [40, 330, 300, 150], [690, 230, 430, 50], [690, 380, 300, 150]].forEach(function (l) { s += '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#94a3b8" stroke-opacity=".55" stroke-dasharray="4 7"/>'; });
     var W = [[5, 1, 1, 3], [5, 7, 1, 3], [1, 5, 3, 1], [7, 5, 3, 1]];
     N.forEach(function (p) { s += F(p.x + .4, p.y + .9, 3, 3, -46, 'rgba(50,90,170,.2)'); });
     W.forEach(function (w) { s += F(w[0] + .4, w[1] + .9, w[2], w[3], -46, 'rgba(50,90,170,.15)') + B(w[0], w[1], w[2], w[3], 14, -14, WH); });
@@ -160,11 +160,10 @@ function DigitalIntegration() {
         const value = Number(node?.dataset.i);
         if (Number.isInteger(value) && value >= 0 && value < platforms.length) setSelected(value);
     };
-    const move = (direction) => setSelected((current) => (current + direction + platforms.length) % platforms.length);
 
     return (
         <div className="mx-auto max-w-6xl">
-            <div ref={sceneRef} className="iso-scene w-full overflow-visible rounded-2xl bg-[#cfe3ff]" onClick={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onMouseOver={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onFocus={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onKeyDown={(event) => {
+            <div ref={sceneRef} className="iso-scene w-full overflow-visible rounded-2xl" onClick={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onMouseOver={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onFocus={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onKeyDown={(event) => {
                 const node = event.target.closest(".iso-n[data-i]");
                 if (node && (event.key === "Enter" || event.key === " ")) {
                     event.preventDefault();
@@ -179,10 +178,6 @@ function DigitalIntegration() {
                 <ol className="mt-5 grid gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
                     {platforms[selected].steps.map((step, index) => <li key={step} className="flex gap-3"><span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">{index + 1}</span><span>{step}</span></li>)}
                 </ol>
-                <div className="mt-6 flex justify-between gap-3">
-                    <button type="button" onClick={() => move(-1)} className="rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800">Back</button>
-                    <button type="button" onClick={() => move(1)} className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500">Next</button>
-                </div>
             </div>
         </div>
     );

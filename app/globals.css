@@ -564,7 +564,7 @@ button {
 }
 
 .qr-scan-line {
-    animation: qr-scan 1s ease-in-out both;
+    animation: qr-scan 1s ease-in-out 2;
 }
 
 @keyframes qr-scan {
@@ -572,10 +572,35 @@ button {
     to { transform: translateY(12rem); }
 }
 
+.core-values-track {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+.core-value-progress {
+    transform: scaleX(0);
+    animation: core-value-progress 3s linear forwards;
+}
+
+@keyframes core-value-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+.core-values-carousel:hover .core-value-progress,
+.core-values-carousel:focus-within .core-value-progress {
+    animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .iso-hl,
     .iso-ob {
         transition: none;
+    }
+
+    .core-value-progress {
+        animation: none;
+        transform: scaleX(1);
     }
 
     #core-values *,

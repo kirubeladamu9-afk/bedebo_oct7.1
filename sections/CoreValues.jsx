@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, Package, ShieldCheck, Truck, Warehouse, CalendarClock, Snowflake, Thermometer, Target, FileText, Share2, Smartphone } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, Package, ShieldCheck, Truck, Warehouse, CalendarClock, Snowflake, Target, FileText, Share2, Smartphone } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import Traceability from "@/sections/Traceability";
 
@@ -10,17 +10,17 @@ const tabIcons = [Share2, Smartphone, Snowflake, ShieldCheck];
 const tabItems = [
     { label: "Value chain integration", role: "The partnership layer", points: ["Eight connected stages", "Clear roles across the chain", "Quality protected from farm to market"], tone: "green" },
     { label: "Digital integration", role: "The information layer", points: ["One connected platform", "Recorded movement and transactions", "Journey visibility from farm to vendor"], tone: "blue" },
-    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Post-Harvest Loss Reduction", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "teal" },
+    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Reduce Postharvest Loss", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "teal" },
     { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "violet" },
 ];
 
 const values = [
-    { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "BEDEBO builds quality into the entire horticultural journey rather than inspecting it only when products reach the market.", color: "#27965a" },
-    { title: "Farm-to-Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "Make the horticultural value chain visible and accountable from production through final market delivery.", color: "#6b4fd8" },
-    { title: "Freshness & Post-Harvest Loss Reduction", quote: "Protect more of what farmers produce.", detail: "An illustrative project target is reducing farm-to-consumer losses from 46% to 23%, with 77 kg rather than 54 kg reaching consumers per 100 kg.", color: "#0e93a8", metrics: true },
-    { title: "Digital Market Connection", quote: "Connecting the right product to the right buyer at the right time.", detail: "Integrate physical horticultural supply with digital market coordination.", color: "#2f6fed" },
-    { title: "Fair & Transparent Value", quote: "Quality determines value, and value should be visible across the chain.", detail: "Support premium value for premium quality and appropriate, affordable channels for other commercially acceptable grades.", color: "#d9822b" },
-    { title: "Reliable & Shared Growth", quote: "A stronger value chain must create value for every critical actor.", detail: "BEDEBO combines physical service infrastructure and standards with digital coordination and market linkage to support shared growth across critical actors.", color: "#c2477a" },
+    { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "BEDEBO's first core value is to build quality into the entire horticultural journey rather than inspect quality only when products reach the market.", color: "#27965a" },
+    { title: "Farm to Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "BEDEBO seeks to make the horticultural value chain visible and accountable from production through final market delivery.", color: "#6b4fd8" },
+    { title: "Freshness & Postharvest Loss", quote: "Protect more of what farmers produce.", detail: "The project model targets a reduction in overall farm-to-consumer losses from approximately 46% to approximately 23%, with its illustrative case showing 77 kg rather than 54 kg reaching consumers from the same 100 kg.", color: "#0e93a8", metrics: true },
+    { title: "Digital Market Connection", quote: "Connecting the right product to the right buyer at the right time.", detail: "BEDEBO's defining capability is the integration of physical horticultural supply with digital market coordination.", color: "#2f6fed" },
+    { title: "Fair & Transparent Value", quote: "Quality determines value—and value should be visible across the chain.", detail: "This allows BEDEBO to pursue two objectives simultaneously: premium value for premium quality and appropriate, affordable market channels for other commercially acceptable grades.", color: "#d9822b" },
+    { title: "Reliable & Shared Growth", quote: "A stronger value chain must create value for every critical actor.", detail: "The existing model explicitly combines CAMS-led physical service infrastructure and standards with BEDEBO-led digital coordination and market linkage. When farmers produce better, service providers operate efficiently, logistics protect quality, BEDEBO coordinates transparently and buyers receive reliable products, the entire horticulture ecosystem grows together.", color: "#c2477a" },
 ];
 
 const crops = [
@@ -100,32 +100,34 @@ function IntroCard({ item }) {
     const tones = {
         green: "border-[#3DB268]/20 bg-[#3DB268]/[0.06] text-[#267A47] dark:bg-[#3DB268]/[0.1] dark:text-[#75D59A]",
         blue: "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300",
-        teal: "border-teal-200 bg-teal-50 text-teal-700 dark:border-teal-900 dark:bg-teal-950/40 dark:text-teal-300",
-        violet: "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-900 dark:bg-violet-950/40 dark:text-violet-300",
+        teal: "border-teal-200 border-l-teal-500 bg-white dark:border-teal-900 dark:border-l-teal-400 dark:bg-slate-900",
+        violet: "border-violet-200 border-l-violet-500 bg-white dark:border-violet-900 dark:border-l-violet-400 dark:bg-slate-900",
     };
     const Chip = item.tone === "teal" ? "bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200" : "bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200";
     const Icon = item.icon;
     return (
-        <div className={`mx-auto mb-8 min-h-[176px] max-w-6xl rounded-2xl border p-5 sm:p-7 ${tones[item.tone]}`}>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em]">{item.role}</p>
+        <div className={`mx-auto mb-6 max-w-6xl rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tones[item.tone]}`}>
             {item.description ? (
-                <div className="mt-4 flex gap-4">
-                    <Icon size={24} aria-hidden="true" className="mt-1 shrink-0" />
+                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+                    <span className={`grid size-12 shrink-0 place-items-center rounded-[14px] ${item.tone === "teal" ? "bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-200" : "bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-200"}`}><Icon size={25} aria-hidden="true" /></span>
                     <div className="min-w-0">
-                        <h3 className="text-xl font-semibold text-slate-800 dark:text-white">{item.title}</h3>
-                        <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-600 dark:text-slate-300">{item.description}</p>
-                        <ul className="mt-4 flex flex-wrap gap-2">
-                            {item.points.map((point) => <li key={point} className={`rounded-full px-3 py-1.5 text-xs font-medium ${Chip}`}>{point}</li>)}
+                        <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{item.title}</h3>
+                        <p className="mt-1 max-w-4xl text-[13px] leading-5 text-slate-600 dark:text-slate-300 sm:text-sm sm:leading-6">{item.description}</p>
+                        <ul className="mt-3 flex flex-wrap gap-1.5">
+                            {item.points.map((point) => <li key={point} className={`rounded-full px-3 py-1 text-xs font-medium ${Chip}`}>{point}</li>)}
                         </ul>
                     </div>
                 </div>
             ) : (
-                <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-center">
-                    <h3 className="text-xl font-semibold text-slate-800 dark:text-white">{item.label}</h3>
-                    <ul className="grid gap-2 text-sm leading-5 text-slate-600 dark:text-slate-300 sm:grid-cols-3 md:gap-3">
-                        {item.points.map((point) => <li key={point} className="flex gap-2"><Check size={15} className="mt-0.5 shrink-0" /><span>{point}</span></li>)}
-                    </ul>
-                </div>
+                <>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em]">{item.role}</p>
+                    <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:items-center">
+                        <h3 className="text-xl font-semibold text-slate-800 dark:text-white">{item.label}</h3>
+                        <ul className="grid gap-2 text-sm leading-5 text-slate-600 dark:text-slate-300 sm:grid-cols-3 md:gap-3">
+                            {item.points.map((point) => <li key={point} className="flex gap-2"><Check size={15} className="mt-0.5 shrink-0" /><span>{point}</span></li>)}
+                        </ul>
+                    </div>
+                </>
             )}
         </div>
     );
@@ -187,10 +189,10 @@ function FreshnessTab() {
     const crop = crops[selectedCrop];
     const stageNames = ["Farm", "Aggregation", "Cold transit", "Warehouse", "Delivery"];
     const temperatures = crop.stages;
-    const yPositions = temperatures.map((temperature) => 186 - temperature * 4);
-    const bandHeight = Math.max((crop.max - crop.min) * 4, 22);
-    const bandY = 186 - ((crop.min + crop.max) / 2) * 4 - bandHeight / 2;
-    const xPositions = [68, 212, 356, 500, 644];
+    const yPositions = temperatures.map((temperature) => 200 - temperature * (170 / 30));
+    const bandHeight = Math.max((crop.max - crop.min) * (170 / 30) + 12, 12);
+    const bandY = 200 - crop.max * (170 / 30) - 6;
+    const xPositions = [70, 200, 330, 460, 590];
     const loss = Math.round(46 - (23 * stage) / 4);
     const reaching = 100 - loss;
     const idealFahrenheit = crop.fahrenheit ?? `${Math.round((crop.min * 9) / 5 + 32)}°F to ${Math.round((crop.max * 9) / 5 + 32)}°F`;
@@ -218,53 +220,51 @@ function FreshnessTab() {
     };
 
     return (
-        <article className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-teal-500 bg-white shadow-sm dark:border-slate-800 dark:border-t-teal-400 dark:bg-slate-900">
-            <div className="grid gap-6 p-5 sm:p-7 xl:grid-cols-[minmax(190px,0.9fr)_minmax(330px,1.6fr)_auto] xl:items-start">
+        <article className="mx-auto max-w-6xl overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-teal-500 bg-white shadow-sm dark:border-slate-800 dark:border-t-teal-400 dark:bg-slate-900">
+            <div className="grid gap-5 p-5 sm:p-7 xl:grid-cols-[minmax(220px,0.9fr)_minmax(370px,1.6fr)_auto] xl:items-center">
                 <div>
                     <div className="flex items-end gap-3">
-                        <p className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-white">{temperatures[stage]}°C</p>
+                        <p className="text-5xl font-semibold leading-none tracking-tight text-teal-700 dark:text-teal-300">{temperatures[stage]}°C</p>
                         <p className="pb-1 text-sm font-semibold text-teal-700 dark:text-teal-300">{stageNames[stage]}</p>
                     </div>
                     <div className="mt-4 flex items-center gap-2">
                         <label className="sr-only" htmlFor="cold-chain-crop">Crop</label>
-                        <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-xs text-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                        <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-200">
                             {crops.map((item, index) => <option key={item.name} value={index}>{item.name}</option>)}
                         </select>
-                        <button type="button" aria-pressed={auto} onClick={() => setAuto((current) => current || !window.matchMedia("(prefers-reduced-motion: reduce)").matches)} className={`rounded-lg border px-3 py-2.5 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ${auto ? "border-teal-600 bg-teal-600 text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto {auto ? "On" : "Off"}</button>
+                        <button type="button" aria-pressed={auto} aria-label={`Automatic stage playback ${auto ? "on" : "off"}`} onClick={() => setAuto((current) => current || !window.matchMedia("(prefers-reduced-motion: reduce)").matches)} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ${auto ? "border-teal-600 bg-teal-600 text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto {auto ? "On" : "Off"}</button>
                     </div>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl bg-red-50 p-3 dark:bg-red-950/30 sm:p-4">
-                        <div className="flex items-center gap-2 text-xs font-medium leading-4 text-slate-600 dark:text-slate-300"><span className="flex size-7 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-900/60 dark:text-red-300"><span className="relative"><Thermometer size={16} aria-hidden="true" /><ArrowDown className="absolute -bottom-1 -right-2" size={9} aria-hidden="true" /></span></span>Farm-to-consumer losses</div>
-                        <p className="mt-3 text-3xl font-semibold text-red-600 dark:text-red-400">{loss}%</p>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">46% to 23%</p>
+                <div className="flex flex-wrap items-center justify-center gap-5 sm:flex-nowrap sm:gap-7">
+                    <div className="flex items-center gap-3" role="img" aria-label={`Farm-to-consumer losses: ${loss} percent, target 23 percent`}>
+                        <span aria-hidden="true" className="text-red-500"><ArrowDown size={20} /></span>
+                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-red-500 transition-[height] duration-500" style={{ height: `${loss}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[23%] border-t-2 border-dashed border-slate-500/70" /></div>
+                        <div className="w-[132px] rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/30"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Farm-to-consumer losses</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-red-600 dark:text-red-400">{loss}%</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">46% → 23%</span></div>
                     </div>
-                    <div className="rounded-xl bg-teal-50 p-3 dark:bg-teal-950/30 sm:p-4">
-                        <div className="flex items-center gap-2 text-xs font-medium leading-4 text-slate-600 dark:text-slate-300"><span className="flex size-7 items-center justify-center rounded-full bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-300"><span className="relative"><Thermometer size={16} aria-hidden="true" /><ArrowUp className="absolute -right-2 -top-1" size={9} aria-hidden="true" /></span></span>Reaching consumers per 100 kg</div>
-                        <p className="mt-3 text-3xl font-semibold text-teal-700 dark:text-teal-300">{reaching} kg</p>
-                        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">54 kg to 77 kg</p>
+                    <div className="flex items-center gap-3" role="img" aria-label={`Reaching consumers: ${reaching} kilograms per 100 kilograms, target 77 kilograms`}>
+                        <div className="w-[132px] rounded-xl bg-teal-50 px-3 py-2 text-right dark:bg-teal-950/30"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Reaching consumers per 100 kg</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-teal-700 dark:text-teal-300">{reaching} kg</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">54 kg → 77 kg</span></div>
+                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-teal-500 transition-[height] duration-500" style={{ height: `${reaching}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[77%] border-t-2 border-dashed border-slate-500/70" /></div>
+                        <span aria-hidden="true" className="text-teal-600 dark:text-teal-300"><ArrowUp size={20} /></span>
                     </div>
                 </div>
                 <div className="xl:justify-self-end">
-                    <span className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold ${stage === 0 ? "bg-red-100 text-red-700 dark:bg-red-950/50 dark:text-red-300" : "bg-teal-100 text-teal-800 dark:bg-teal-950/50 dark:text-teal-200"}`}>{stage === 0 ? "Above safe range" : "In safe range"}</span>
+                    <span className={`inline-flex rounded-full px-4 py-1.5 text-xs font-semibold text-white ${temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "bg-teal-600" : "bg-red-600"}`}>{temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "In safe range" : "Above safe range"}</span>
                 </div>
             </div>
             <div className="px-4 sm:px-7">
-                <svg viewBox="0 0 700 230" role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
-                    <text x="350" y="23" textAnchor="middle" fill="#dc2626" fontSize="13" fontWeight="600">Without a cold chain, produce spoils in the heat</text>
-                    <line x1="48" y1="42" x2="665" y2="42" stroke="#ef4444" strokeWidth="2" strokeDasharray="7 6" />
-                    <rect x="48" y={bandY} width="618" height={bandHeight} rx="8" fill="#ccfbf1" />
-                    <line x1="48" y1={bandY} x2="666" y2={bandY} stroke="#5eead4" strokeWidth="1" />
-                    <line x1="48" y1={bandY + bandHeight} x2="666" y2={bandY + bandHeight} stroke="#5eead4" strokeWidth="1" />
-                    <text x="658" y={bandY + bandHeight / 2 + 4} textAnchor="end" fill="#0f766e" fontSize="12" fontWeight="600">{rangeLabel}</text>
-                    {stage > 0 && <polyline points={solidPoints} fill="none" stroke="#0f9f8c" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />}
-                    {stage === 0 && <circle cx={xPositions[0]} cy={yPositions[0]} r="3.5" fill="#0f9f8c" />}
-                    {stage < stageNames.length - 1 && <polyline points={dottedPoints} fill="none" stroke="#0f9f8c" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="2 10" />}
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="17" fill="#14b8a6" fillOpacity=".18" />
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="8" fill="#0f9f8c" />
+                <svg viewBox="0 0 700 250" role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
+                    <text x="355" y="30" textAnchor="middle" fill="#dc2626" fontSize="12">Without a cold chain, produce spoils in the heat</text>
+                    <line x1="120" y1="40" x2="590" y2="40" stroke="#d64545" strokeWidth="2" strokeDasharray="6 6" />
+                    <rect x="40" y={bandY} width="580" height={bandHeight} rx="11" fill="#0e93a8" fillOpacity=".16" />
+                    <text x="626" y={bandY + bandHeight / 2 + 4} fontSize="11.5" fill="#0e93a8">{rangeLabel}</text>
+                    {stage < stageNames.length - 1 && <polyline points={dottedPoints} fill="none" stroke="#0e93a8" strokeWidth="4" strokeDasharray="2 8" strokeLinecap="round" opacity=".5" />}
+                    {stage > 0 && <polyline points={solidPoints} fill="none" stroke="#0e93a8" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />}
+                    {stage === 0 && <circle cx={xPositions[0]} cy={yPositions[0]} r="4" fill="#0e93a8" />}
+                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="15" fill="#0e93a8" fillOpacity=".25" />
+                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="8" fill="#0e93a8" stroke="#fff" strokeWidth="3" />
                 </svg>
                 <div className="grid grid-cols-5 gap-1 pb-4">
-                    {stageNames.map((name, index) => <button key={name} type="button" aria-pressed={stage === index} onClick={() => chooseStage(index)} className={`min-w-0 rounded-md px-1 py-2 text-[10px] leading-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:text-xs ${stage === index ? "font-bold text-teal-700 dark:text-teal-300" : "text-slate-500 dark:text-slate-400"}`}>{name}</button>)}
+                    {stageNames.map((name, index) => <button key={name} type="button" aria-pressed={stage === index} onClick={() => chooseStage(index)} className={`min-w-0 rounded-md px-1 py-2 text-[10px] leading-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:text-xs ${stage === index ? "font-semibold text-teal-700 dark:text-teal-300" : "text-slate-500 dark:text-slate-400"}`}>{name}</button>)}
                 </div>
             </div>
             <div className="mx-5 mb-4 rounded-xl bg-teal-50 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-teal-950/40 dark:text-slate-200 sm:mx-7 sm:px-5">
@@ -286,7 +286,7 @@ function CrateQr() {
         }
         return (row * 7 + column * 11 + row * column) % 5 < 2;
     }));
-    return <svg viewBox="0 0 64 64" role="img" aria-label="QR code crate label" className="size-48 max-w-full bg-white p-2"><rect width="64" height="64" fill="white" />{cells.flatMap((row, y) => row.map((dark, x) => dark && <rect key={`${x}-${y}`} x={3 + x * 2} y={3 + y * 2} width="2" height="2" fill="#111827" />))}</svg>;
+    return <svg viewBox="0 0 64 64" role="img" aria-label="QR code crate label" className="size-32 max-w-full bg-white p-1.5"><rect width="64" height="64" fill="white" />{cells.flatMap((row, y) => row.map((dark, x) => dark && <rect key={`${x}-${y}`} x={3 + x * 2} y={3 + y * 2} width="2" height="2" fill="#111827" />))}</svg>;
 }
 
 function QualityTrace() {
@@ -318,9 +318,9 @@ function QualityTrace() {
 
     return (
         <article className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-violet-500 bg-white p-5 shadow-sm dark:border-slate-800 dark:border-t-violet-400 dark:bg-slate-900 sm:p-7">
-            <div className="grid gap-8 lg:grid-cols-2">
+            <div className="grid gap-7 lg:grid-cols-[270px_minmax(0,1fr)]">
                 <div>
-                    <div className="relative flex flex-col items-center rounded-2xl border-2 border-dashed border-violet-300 bg-violet-50/40 p-5 dark:border-violet-800 dark:bg-violet-950/20">
+                    <div className="relative flex flex-col items-center rounded-2xl border-[1.5px] border-dashed border-violet-300 bg-violet-50/40 p-4 dark:border-violet-800 dark:bg-violet-950/20">
                         <div className="relative overflow-hidden rounded-lg p-2">
                             <CrateQr />
                             <span key={scanId} aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-0 h-0.5 bg-violet-500 shadow-[0_0_12px_3px_rgba(139,92,246,0.45)] ${traceRunning ? "qr-scan-line" : "opacity-0"}`} />
@@ -369,14 +369,28 @@ function QualityTrace() {
 
 export default function CoreValues() {
     const [activeTab, setActiveTab] = useState(0);
-    const [activeValue, setActiveValue] = useState(0);
+    const [slidePosition, setSlidePosition] = useState(1);
+    const [carouselTransition, setCarouselTransition] = useState(true);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isCarouselFocused, setIsCarouselFocused] = useState(false);
+    const [reducedMotion, setReducedMotion] = useState(true);
     const [brandPhrase, setBrandPhrase] = useState(0);
     const [tabPill, setTabPill] = useState({ left: 5, width: 0 });
     const touchStart = useRef(null);
     const tabRefs = useRef([]);
     const tabColors = ["#27965a", "#2f6fed", "#0e93a8", "#6b4fd8"];
     const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
+    const phraseColors = ["#27965a", "#6b4fd8", "#2f6fed", "#c27a14"];
+    const activeValue = (slidePosition - 1 + values.length) % values.length;
     const selectTab = (index) => setActiveTab((index + tabItems.length) % tabItems.length);
+
+    useEffect(() => {
+        const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const updateMotionPreference = () => setReducedMotion(media.matches);
+        updateMotionPreference();
+        media.addEventListener("change", updateMotionPreference);
+        return () => media.removeEventListener("change", updateMotionPreference);
+    }, []);
 
     useEffect(() => {
         const updatePill = () => {
@@ -387,6 +401,49 @@ export default function CoreValues() {
         window.addEventListener("resize", updatePill);
         return () => window.removeEventListener("resize", updatePill);
     }, [activeTab]);
+
+    useEffect(() => {
+        if (reducedMotion) return undefined;
+        const timer = window.setInterval(() => setBrandPhrase((current) => (current + 1) % phraseParts.length), 5000);
+        return () => window.clearInterval(timer);
+    }, [reducedMotion, phraseParts.length]);
+
+    const moveValue = (direction) => setSlidePosition((current) => {
+        const next = current + direction;
+        if (reducedMotion) {
+            if (next <= 0) return values.length;
+            if (next >= values.length + 1) return 1;
+        }
+        return Math.max(0, Math.min(next, values.length + 1));
+    });
+
+    const handleTrackTransitionEnd = (event) => {
+        if (event.target !== event.currentTarget || event.propertyName !== "transform") return;
+        if (slidePosition === 0) {
+            setCarouselTransition(false);
+            setSlidePosition(values.length);
+            requestAnimationFrame(() => setCarouselTransition(true));
+        }
+        if (slidePosition === values.length + 1) {
+            setCarouselTransition(false);
+            setSlidePosition(1);
+            requestAnimationFrame(() => setCarouselTransition(true));
+        }
+    };
+
+    const handleValueProgressEnd = (event) => {
+        if (event.target.classList.contains("core-value-progress") && !reducedMotion && !isHovered && !isCarouselFocused) moveValue(1);
+    };
+
+    const handleCarouselKeyDown = (event) => {
+        if (event.key === "ArrowRight") {
+            event.preventDefault();
+            moveValue(1);
+        } else if (event.key === "ArrowLeft") {
+            event.preventDefault();
+            moveValue(-1);
+        }
+    };
 
     const handleTabKeyDown = (event) => {
         let nextTab = activeTab;
@@ -400,34 +457,32 @@ export default function CoreValues() {
             tabRefs.current[nextTab]?.focus();
         }
     };
-    const moveValue = (direction) => setActiveValue((current) => (current + direction + values.length) % values.length);
     const handleValueTouchEnd = (event) => {
         if (touchStart.current === null) return;
         const delta = event.changedTouches[0].clientX - touchStart.current;
         if (Math.abs(delta) > 45) moveValue(delta < 0 ? 1 : -1);
         touchStart.current = null;
     };
-    const value = values[activeValue];
 
     return (
         <section id="core-values" aria-labelledby="core-values-title" className="scroll-mt-24 px-6 pb-20 md:px-10 lg:px-16">
             <SectionTitle label="CORE VALUES" title="Our Core" highlight="Values" headingId="core-values-title" />
-            <div className="mx-auto mt-10 max-w-[1040px]">
+            <div className="mx-auto mt-7 max-w-[1040px]">
                 <div className="grid items-stretch gap-4 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-                    <article className="relative flex min-h-[250px] flex-col justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-[#23a062] to-[#17613f] p-6 text-white sm:p-8">
+                    <article className="relative flex min-h-[220px] flex-col justify-center overflow-hidden rounded-[20px] bg-gradient-to-br from-[#23a062] to-[#17613f] p-5 text-white sm:p-6">
                         <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 size-52 rounded-full border border-white/20" />
                         <span aria-hidden="true" className="pointer-events-none absolute -right-7 -top-7 size-32 rounded-full border border-white/20" />
-                        <span className="relative mb-4 flex size-11 items-center justify-center rounded-xl bg-white/15"><Target size={23} aria-hidden="true" /></span>
-                        <h3 className="relative text-xl font-semibold">Objective</h3>
-                        <p className="relative mt-2 text-sm leading-6 text-white/95">To build a <strong className="border-b-2 border-white/40">digitally integrated</strong>, <strong className="border-b-2 border-white/40">quality-driven</strong> and <strong className="border-b-2 border-white/40">market-connected</strong> horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
+                        <span className="relative mb-3 flex size-10 items-center justify-center rounded-xl bg-white/15"><Target size={21} aria-hidden="true" /></span>
+                        <h3 className="relative text-lg font-semibold">Objective</h3>
+                        <p className="relative mt-2 text-[13px] leading-5 text-white/95">To build a <strong className="border-b-2 border-white/40">digitally integrated</strong>, <strong className="border-b-2 border-white/40">quality-driven</strong> and <strong className="border-b-2 border-white/40">market-connected</strong> horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
                     </article>
-                    <article className="flex min-h-[250px] flex-col rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-8">
-                        <span className="mb-4 flex size-11 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400"><FileText size={23} aria-hidden="true" /></span>
-                        <h3 className="text-xl font-semibold">Executive Summary</h3>
-                        <div className="mt-3 rounded-r-xl border-l-4 border-[#27965a] bg-[#27965a]/[0.08] px-4 py-2.5" role="group" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared.">
-                            {phraseParts.map((phrase, index) => <button key={phrase} type="button" aria-pressed={brandPhrase === index} onClick={() => setBrandPhrase(index)} className={`block text-left text-sm font-semibold leading-6 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${brandPhrase === index ? "opacity-100" : "opacity-45"}`} style={{ color: ["#1f8a52", "#6b4fd8", "#2f6fed", "#c27a14"][index] }}>{phrase}</button>)}
+                    <article className="flex min-h-[220px] flex-col rounded-[20px] border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+                        <span className="mb-3 flex size-10 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400"><FileText size={21} aria-hidden="true" /></span>
+                        <h3 className="text-lg font-semibold">Executive Summary</h3>
+                        <div className="mt-2 rounded-r-xl border-l-4 px-4 py-1.5 transition-colors duration-500" role="group" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared." style={{ borderLeftColor: phraseColors[brandPhrase], backgroundColor: `${phraseColors[brandPhrase]}14` }}>
+                            {phraseParts.map((phrase, index) => <button key={phrase} type="button" aria-pressed={brandPhrase === index} onClick={() => setBrandPhrase(index)} className={`block text-left text-[13px] font-semibold leading-5 transition-opacity duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${brandPhrase === index ? "opacity-100" : "opacity-45"}`} style={{ color: phraseColors[index] }}>{phrase}</button>)}
                         </div>
-                        <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
+                        <p className="mt-2 text-[13px] leading-5 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
                     </article>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2" aria-label="Crops">
@@ -435,31 +490,40 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-12 max-w-[1040px]">
+            <div className="mx-auto mt-10 max-w-[1040px]">
                 <div className="mb-4 text-center">
                     <h3 className="text-2xl font-semibold">Six values that guide us</h3>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Use the dots to move back and forth.</p>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
                 </div>
-                <article className="relative min-h-[300px] overflow-hidden rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm after:pointer-events-none after:absolute after:-bottom-16 after:-right-16 after:size-52 after:rounded-full after:bg-[var(--value-soft)] dark:border-slate-800 dark:bg-slate-900 sm:min-h-[270px] sm:p-8" style={{ borderTop: `5px solid ${value.color}`, "--value-color": value.color, "--value-soft": `${value.color}1a` }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
-                    <div className="relative z-10 flex min-h-[210px] flex-col justify-between gap-6 sm:min-h-[205px]">
-                        <div>
-                            <div className="mb-4 flex items-center gap-3">
-                                <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: value.color }}>{activeValue + 1}</span>
-                                <span className="text-xs text-slate-500 dark:text-slate-400">Core value {activeValue + 1} of 6</span>
-                            </div>
-                            <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-2xl">{value.title}</h4>
-                            <blockquote className="mt-2 text-base font-medium italic leading-6" style={{ color: value.color }}>“{value.quote}”</blockquote>
-                            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">{value.detail}</p>
-                            {value.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-700 dark:text-slate-200"><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${value.color}1a` }}><strong className="block text-lg" style={{ color: value.color }}>46% → 23%</strong><span className="text-slate-500 dark:text-slate-400">farm-to-consumer losses</span></span><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${value.color}1a` }}><strong className="block text-lg" style={{ color: value.color }}>54 kg → 77 kg</strong><span className="text-slate-500 dark:text-slate-400">reaching consumers per 100 kg</span></span><span className="basis-full text-[11px] text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
-                        </div>
-                        <div className="flex items-center justify-end gap-2">
-                            <button type="button" onClick={() => moveValue(-1)} aria-label="Previous value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowLeft size={17} /></button>
-                            <button type="button" onClick={() => moveValue(1)} aria-label="Next value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowRight size={17} /></button>
+                <div className="core-values-carousel" role="region" aria-roledescription="carousel" aria-label="BEDEBO core values" tabIndex={0} onAnimationEnd={handleValueProgressEnd} onKeyDown={handleCarouselKeyDown} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onFocus={() => setIsCarouselFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsCarouselFocused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
+                    <div className="overflow-hidden rounded-[26px]">
+                        <div className="core-values-track flex items-stretch" onTransitionEnd={handleTrackTransitionEnd} style={{ transform: `translateX(-${slidePosition * 100}%)`, transitionDuration: reducedMotion || !carouselTransition ? "0ms" : "700ms" }}>
+                            {[{ item: values[values.length - 1], index: values.length - 1, clone: "last" }, ...values.map((item, index) => ({ item, index, clone: null })), { item: values[0], index: 0, clone: "first" }].map(({ item, index, clone }, position) => {
+                                const selected = position === slidePosition;
+                                return <div key={clone ?? item.title} className="w-full shrink-0 px-1" role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${values.length}`} aria-hidden={!selected}>
+                                    <article className="relative h-full min-h-[270px] overflow-hidden rounded-[22px] border border-slate-200 bg-white p-6 shadow-sm after:pointer-events-none after:absolute after:-bottom-16 after:-right-16 after:size-52 after:rounded-full after:bg-[var(--value-soft)] dark:border-slate-800 dark:bg-slate-900 sm:p-8" style={{ borderTop: `5px solid ${item.color}`, "--value-color": item.color, "--value-soft": `${item.color}1a` }}>
+                                        <div className="relative z-10 flex min-h-[210px] flex-col justify-between gap-6">
+                                            <div>
+                                                <div className="mb-3 flex items-center gap-3">
+                                                    <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: item.color }}>{index + 1}</span>
+                                                    <span className="text-xs text-slate-500 dark:text-slate-400">Core value {index + 1} of 6</span>
+                                                </div>
+                                                <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-2xl">{item.title}</h4>
+                                                <blockquote className="mt-2 text-base font-medium italic leading-6" style={{ color: item.color }}>“{item.quote}”</blockquote>
+                                                <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">{item.detail}</p>
+                                                {item.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-700 dark:text-slate-200"><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>46% → 23%</strong><span className="text-slate-500 dark:text-slate-400">farm-to-consumer losses</span></span><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>54 kg → 77 kg</strong><span className="text-slate-500 dark:text-slate-400">reaching consumers per 100 kg</span></span><span className="basis-full text-[11px] text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>;
+                            })}
                         </div>
                     </div>
-                </article>
-                <div className="mt-4 flex justify-center gap-2" role="group" aria-label="Choose a core value">
-                    {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show core value ${index + 1}: ${item.title}`} aria-pressed={activeValue === index} onClick={() => setActiveValue(index)} className={`size-2.5 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-11" : "w-2.5 bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: item.color } : undefined}><span className="sr-only">{item.title}</span></button>)}
+                    <div className="mt-4 flex items-center justify-center gap-2" role="group" aria-label="Choose a core value">
+                        <button type="button" onClick={() => moveValue(-1)} aria-label="Previous value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowLeft size={17} /></button>
+                        {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show core value ${index + 1}: ${item.title}`} aria-current={activeValue === index ? "true" : undefined} onClick={() => setSlidePosition(index + 1)} className={`core-value-dot relative size-2.5 overflow-hidden rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-11" : "bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: `${item.color}33` } : undefined}><span className="sr-only">{item.title}</span>{activeValue === index && <span className="core-value-progress absolute inset-0 origin-left" style={{ backgroundColor: item.color }} />}</button>)}
+                        <button type="button" onClick={() => moveValue(1)} aria-label="Next value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowRight size={17} /></button>
+                    </div>
                 </div>
             </div>
 
@@ -468,7 +532,7 @@ export default function CoreValues() {
                     <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColors[activeTab] }} />
                     {tabItems.map((item, index) => {
                         const Icon = tabIcons[index];
-                        return <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`relative z-10 flex min-w-max flex-1 items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "text-white" : "text-slate-600 dark:text-slate-300"}`}><Icon size={18} aria-hidden="true" />{item.label}</button>;
+                        return <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-label={item.label} aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`relative z-10 flex min-w-max flex-1 items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "text-white" : "text-slate-600 dark:text-slate-300"}`}><Icon size={18} aria-hidden="true" /><span className="hidden sm:inline">{item.label}</span></button>;
                     })}
                 </div>
                 <div id={`core-panel-${activeTab}`} role="tabpanel" aria-labelledby={`core-tab-${activeTab}`} tabIndex={0} className="min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#27965a]">

@@ -191,6 +191,7 @@ function FreshnessTab() {
     const stageNames = ["Farm", "Aggregation", "Cold transit", "Warehouse", "Delivery"];
     const temperatures = crop.stages;
     const yPositions = temperatures.map((temperature) => 200 - temperature * (170 / 30));
+    const chartHeight = Math.ceil(Math.max(...yPositions) + 20);
     const bandHeight = Math.max((crop.max - crop.min) * (170 / 30) + 12, 12);
     const bandY = 200 - crop.max * (170 / 30) - 6;
     const xPositions = [70, 200, 330, 460, 590];
@@ -203,12 +204,15 @@ function FreshnessTab() {
 
     useEffect(() => {
         if (!auto) return undefined;
-        if (stage >= stageNames.length - 1) {
-            setAuto(false);
-            return undefined;
-        }
-        const timer = window.setInterval(() => setStage((current) => Math.min(current + 1, stageNames.length - 1)), 2400);
-        return () => window.clearInterval(timer);
+        const timer = window.setTimeout(() => {
+            if (stage >= stageNames.length - 1) {
+                setSelectedCrop((current) => (current + 1) % crops.length);
+                setStage(0);
+            } else {
+                setStage((current) => current + 1);
+            }
+        }, 2400);
+        return () => window.clearTimeout(timer);
     }, [auto, stage, stageNames.length]);
 
     const chooseStage = (index) => {
@@ -233,7 +237,14 @@ function FreshnessTab() {
                         <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-200">
                             {crops.map((item, index) => <option key={item.name} value={index}>{item.name}</option>)}
                         </select>
-                        <button type="button" aria-pressed={auto} aria-label={`Automatic stage playback ${auto ? "on" : "off"}`} onClick={() => setAuto((current) => current || !window.matchMedia("(prefers-reduced-motion: reduce)").matches)} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ${auto ? "border-teal-600 bg-teal-600 text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto {auto ? "On" : "Off"}</button>
+                        <button type="button" aria-pressed={auto} aria-label={`Automatic crop playback ${auto ? "on" : "off"}`} onClick={() => {
+                            if (auto) {
+                                setAuto(false);
+                            } else if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                                setStage(0);
+                                setAuto(true);
+                            }
+                        }} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ${auto ? "border-teal-600 bg-teal-600 text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto</button>
                     </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-5 sm:flex-nowrap sm:gap-7">
@@ -253,7 +264,7 @@ function FreshnessTab() {
                 </div>
             </div>
             <div className="px-4 sm:px-7">
-                <svg viewBox="0 0 700 250" role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
+                <svg viewBox={`0 0 700 ${chartHeight}`} role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
                     <text x="355" y="30" textAnchor="middle" fill="#dc2626" fontSize="12">Without a cold chain, produce spoils in the heat</text>
                     <line x1="120" y1="40" x2="590" y2="40" stroke="#d64545" strokeWidth="2" strokeDasharray="6 6" />
                     <rect x="40" y={bandY} width="580" height={bandHeight} rx="11" fill="#0e93a8" fillOpacity=".16" />

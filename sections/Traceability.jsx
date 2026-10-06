@@ -52,19 +52,20 @@ const traceabilitySteps = [
     },
 ];
 
-function TraceabilityStep({ step, index, active, currentStep, registerBadge }) {
+function TraceabilityStep({ step, index, active, currentStep, registerBadge, reducedMotion }) {
     const isLeft = index % 2 === 1;
+    const isHighlighted = reducedMotion || index === currentStep;
     const badgeRef = useCallback((node) => registerBadge(index, node), [index, registerBadge]);
 
     return (
         <div className="relative grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-3 md:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)] md:gap-4">
-            <article className={`relative z-10 col-start-2 row-start-1 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 md:row-start-1 md:px-4 md:py-3 ${isLeft ? "md:col-start-1" : "md:col-start-3"}`}>
-                <h3 className="text-xs font-semibold leading-4 text-slate-800 dark:text-slate-100 sm:text-sm">{step.title}</h3>
-                <div className="mt-1 space-y-1 text-[10px] leading-[1.4] text-slate-600 dark:text-slate-300 sm:text-[11px]">
+            <article aria-current={currentStep === index ? "step" : undefined} className={`relative z-10 col-start-2 row-start-1 rounded-xl border bg-white px-4 py-4 shadow-[0_4px_16px_rgba(15,23,42,0.04)] transition-[opacity,transform,box-shadow,border-color] duration-500 hover:-translate-y-0.5 hover:border-[#3DB268]/50 hover:opacity-100 hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0 dark:bg-slate-900 md:row-start-1 md:px-5 ${isHighlighted ? "border-[#3DB268]/40 opacity-100 shadow-[0_6px_24px_rgba(39,150,90,0.12)] dark:border-[#3DB268]/50" : "border-slate-200 opacity-60 dark:border-slate-800"} ${isLeft ? "md:col-start-1" : "md:col-start-3"}`}>
+                <h3 className="text-sm font-semibold leading-5 text-slate-800 dark:text-slate-100 sm:text-[15px]">{step.title}</h3>
+                <div className="mt-2 space-y-1.5 text-[11px] leading-[1.6] text-slate-600 dark:text-slate-300 sm:text-xs">
                     {step.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
                 </div>
-                <div className="mt-2 flex flex-wrap gap-1">
-                    {step.tags.map((tag) => <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#27965a]/[0.08] px-2 py-0.5 text-[9px] font-medium leading-3 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><span aria-hidden="true" className="size-1 rounded-full bg-[#27965a]" />{tag}</span>)}
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                    {step.tags.map((tag) => <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#27965a]/[0.08] px-2.5 py-1 text-[10px] font-medium leading-4 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><span aria-hidden="true" className="size-1 rounded-full bg-[#27965a]" />{tag}</span>)}
                 </div>
             </article>
             <div ref={badgeRef} aria-label={`Stage ${index + 1}: ${step.title}`} className={`relative z-20 col-start-1 row-start-1 flex size-8 items-center justify-center justify-self-center rounded-full border-2 text-xs font-semibold transition-colors duration-500 md:col-start-2 md:size-9 ${active ? "border-[#27965a] bg-[#27965a] text-white shadow-[0_0_0_4px_rgba(39,150,90,0.12)]" : "border-slate-200 bg-white text-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400"}`}>
@@ -133,7 +134,14 @@ export default function Traceability() {
                 ? 1
                 : Math.max(0, Math.min(1, (viewportHeight * 0.7 - bounds.top) / (bounds.height + viewportHeight * 0.4)));
 
-            const nextActiveStep = progress === 0 ? -1 : Math.min(traceabilitySteps.length - 1, Math.floor(progress * traceabilitySteps.length + 0.5) - 1);
+            const markerPoint = path && pathLength ? path.getPointAtLength(pathLength * progress) : null;
+            const nearestStep = markerPoint && points.length
+                ? points.reduce((nearest, point, index) => {
+                    const distance = Math.hypot(markerPoint.x - point.x, markerPoint.y - point.y);
+                    return distance < nearest.distance ? { index, distance } : nearest;
+                }, { index: -1, distance: Infinity }).index
+                : Math.min(traceabilitySteps.length - 1, Math.floor(progress * traceabilitySteps.length + 0.5) - 1);
+            const nextActiveStep = progress === 0 ? -1 : nearestStep;
             if (activeStepRef.current !== nextActiveStep) {
                 activeStepRef.current = nextActiveStep;
                 setActiveStep(nextActiveStep);
@@ -234,9 +242,9 @@ export default function Traceability() {
                 <div ref={desktopPackageRef} aria-hidden="true" className="absolute z-10 hidden size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_0_5px_rgba(61,178,104,0.18),0_0_18px_rgba(61,178,104,0.75)] transition-opacity md:flex">
                     <Package size={22} strokeWidth={1.8} />
                 </div>
-                <div className="relative z-10 space-y-4">
+                <div className="relative z-10 space-y-5 md:space-y-6">
                     {traceabilitySteps.map((step, index) => (
-                        <TraceabilityStep key={step.title} step={step} index={index} active={index <= activeStep} currentStep={activeStep} registerBadge={registerBadge} />
+                        <TraceabilityStep key={step.title} step={step} index={index} active={index <= activeStep} currentStep={activeStep} registerBadge={registerBadge} reducedMotion={reducedMotion} />
                     ))}
                 </div>
             </div>

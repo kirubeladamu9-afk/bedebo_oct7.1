@@ -556,7 +556,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-14 flex max-w-6xl items-center justify-center rounded-2xl bg-[#27965a] px-6 py-8 text-center text-lg font-semibold leading-7 text-white sm:px-10 sm:py-10 sm:text-2xl">Coordinating the journey from production to market</div>
+            <div className="mx-auto mt-10 flex max-w-2xl items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-base font-semibold leading-6 text-white sm:px-8 sm:py-5 sm:text-xl">Coordinating the journey from production to market</div>
         </section>
     );
 }

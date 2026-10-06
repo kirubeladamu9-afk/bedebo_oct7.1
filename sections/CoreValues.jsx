@@ -163,7 +163,7 @@ function DigitalIntegration() {
 
     return (
         <div className="mx-auto max-w-6xl">
-            <div ref={sceneRef} className="iso-scene w-full overflow-visible rounded-2xl" onClick={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onMouseOver={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onFocus={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onKeyDown={(event) => {
+            <div ref={sceneRef} className="iso-scene mx-auto w-full overflow-visible rounded-2xl md:w-4/5 md:max-w-[900px]" onClick={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onMouseOver={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onFocus={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onKeyDown={(event) => {
                 const node = event.target.closest(".iso-n[data-i]");
                 if (node && (event.key === "Enter" || event.key === " ")) {
                     event.preventDefault();

@@ -1,151 +1,75 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { ArrowDown, Check, Image as ImageIcon, Package, PackageCheck, QrCode, Sprout, Truck, Warehouse, Boxes, ClipboardCheck, ShoppingBasket } from "lucide-react";
+import { ArrowDown, Package } from "lucide-react";
 
 const traceabilitySteps = [
     {
-        title: "Farm",
-        actors: "Farmers and producer organizations",
-        icon: Sprout,
-        preview: "https://images.pexels.com/photos/2049001/pexels-photo-2049001.jpeg",
-        previewAlt: "Farmers cultivating a green field",
-        previewCaption: "Known origin and planned production",
-        actions: [
-            "Quality production and organized farmers.",
-            "Produce according to planned demand and quality requirements.",
-            "A reliable production base with a known origin.",
+        title: "Farmer",
+        paragraphs: [
+            <>More than <strong>200+ international certified farmers</strong> produce according to planned demand and quality requirements.</>,
+            <>The source of every crate: farmers grow and harvest horticulture produce to standard and join one connected network with direct links to buyers.</>,
         ],
+        tags: ["Quality at the farm", "Harvest", "Digital registration"],
     },
     {
-        title: "Harvest",
-        actors: "Farmers, ASPs, and ALAs",
-        icon: ClipboardCheck,
-        preview: "https://images.pexels.com/photos/7843985/pexels-photo-7843985.jpeg",
-        previewAlt: "Fresh produce prepared for distribution",
-        previewCaption: "Standardized harvesting and handling",
-        actions: [
-            "Standardized harvesting and handling.",
-            "ASPs provide mechanization.",
-            "ALAs coordinate farmers and capture data in real time.",
+        title: "CAMS/ASPs",
+        paragraphs: [
+            <><strong>CAMS:</strong> standards, mechanization, ASP development and technical systems.</>,
+            <><strong>ASPs:</strong> mechanization, aggregation, first-mile logistics and cold-chain services.</>,
+            <><strong>CAMS-led</strong> physical service infrastructure and standards. Agricultural Service Providers support farmers with aggregation, grading, and packaging.</>,
         ],
+        tags: ["Aggregation", "Grading", "Packaging", "Standards"],
     },
     {
-        title: "Aggregate",
-        actors: "ASPs and ALAs",
-        icon: Boxes,
-        preview: "https://images.pexels.com/photos/7513430/pexels-photo-7513430.jpeg",
-        previewAlt: "Produce crates organized in a warehouse",
-        previewCaption: "Crate-based collection and quality control",
-        actions: [
-            "Crate-based collection.",
-            "Quality control at collection.",
-            "Supply and demand are aggregated together.",
+        title: "BEDEBO/ALAs",
+        paragraphs: [
+            <><strong>BEDEBO-led</strong> digital coordination and market linkage. Orders, data, and prices stay visible and traceable across the whole chain.</>,
+            <><strong>ALA:</strong> farmer coordination, demand aggregation, data capture and market support.</>,
         ],
+        tags: ["Digital coordination", "Market linkage", "Traceability"],
     },
     {
-        title: "Cool",
-        actors: "Logistics and cold-chain partners",
-        icon: Warehouse,
-        preview: "https://images.pexels.com/photos/11114142/pexels-photo-11114142.jpeg",
-        previewAlt: "Organized storage inside a warehouse",
-        previewCaption: "Pre-cooling and cold storage",
-        actions: [
-            "Pre-cooling after harvest.",
-            "Cold storage preserves freshness.",
-            "Less post-harvest loss.",
+        title: "Cold-Chain Partners/Transit",
+        paragraphs: [
+            <>Transport, pre-cooling, cold storage and delivery. Logistics and cold-chain operators protect freshness and quality while produce moves from aggregation to market.</>,
         ],
+        tags: ["Cold storage", "Cold transport", "Custody log"],
     },
     {
-        title: "Move",
-        actors: "Logistics partners and BEDEBO",
-        icon: Truck,
-        preview: "https://images.pexels.com/photos/12418935/pexels-photo-12418935.jpeg",
-        previewAlt: "A delivery truck outside a warehouse",
-        previewCaption: "Coordinated, traceable movement",
-        actions: [
-            "Coordinated transport.",
-            "Traceable movement from stage to stage.",
-            "Reliable delivery that protects quality.",
+        title: "Market Buyers",
+        paragraphs: [
+            <>Demand, specifications, purchasing and feedback.</>,
         ],
+        tags: ["Market pull and commercial sustainability"],
     },
     {
-        title: "Grade",
-        actors: "BEDEBO and ASPs",
-        icon: Check,
-        preview: "https://images.pexels.com/photos/7513430/pexels-photo-7513430.jpeg",
-        previewAlt: "Produce crates ready for quality checks",
-        previewCaption: "Quality classification for the right market",
-        actions: [
-            "Products classified by quality.",
-            "Matched to buyer specifications.",
-            "Premium value for premium quality, and affordable channels for other acceptable grades.",
+        title: "Consumers",
+        paragraphs: [
+            <>End customers get fresh, trusted produce at a fair and transparent price, with more of the farmer&apos;s harvest reaching the table.</>,
         ],
-    },
-    {
-        title: "Connect",
-        actors: "BEDEBO",
-        icon: QrCode,
-        preview: "https://images.pexels.com/photos/11114142/pexels-photo-11114142.jpeg",
-        previewAlt: "Produce inventory organized for distribution",
-        previewCaption: "Digital market linkage and payment tracking",
-        actions: [
-            "Digital market linkage.",
-            "Transactions and payment tracking.",
-            "One platform links the commercial value chain.",
-        ],
-    },
-    {
-        title: "Deliver",
-        actors: "Market buyers and final customers",
-        icon: ShoppingBasket,
-        preview: "https://images.pexels.com/photos/7843985/pexels-photo-7843985.jpeg",
-        previewAlt: "Fresh produce ready to reach customers",
-        previewCaption: "Freshness, quality, safety, and value",
-        actions: [
-            "Reliable supply to the right customer.",
-            "Buyers set demand and give feedback.",
-            "Customers receive freshness, quality, safety, and value.",
-        ],
+        tags: ["Fresh", "Quality", "Traceable", "Fair price"],
     },
 ];
 
 function TraceabilityStep({ step, index, active, currentStep, registerBadge }) {
-    const Icon = step.icon;
-    const isLeft = index % 2 === 0;
+    const isLeft = index % 2 === 1;
     const badgeRef = useCallback((node) => registerBadge(index, node), [index, registerBadge]);
 
     return (
-        <div className="relative grid min-h-[420px] grid-cols-[3rem_minmax(0,1fr)] items-center gap-3 md:h-[420px] md:min-h-0 md:grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)] md:gap-4">
-            <article className={`group relative z-10 col-start-2 row-start-1 flex h-[420px] flex-col rounded-2xl border p-5 shadow-[0_8px_28px_rgba(15,23,42,0.05)] transition-all duration-500 ease-out hover:shadow-[0_16px_42px_rgba(61,178,104,0.2)] dark:bg-slate-900/90 sm:p-6 md:row-start-1 ${isLeft ? "md:col-start-1" : "md:col-start-3"} ${active ? "translate-x-0 border-[#3DB268] bg-white opacity-100 shadow-[0_12px_36px_rgba(61,178,104,0.12)] dark:border-[#3DB268]/80" : `${isLeft ? "md:-translate-x-8" : "md:translate-x-8"} border-slate-200 bg-white/80 opacity-45 dark:border-slate-800 dark:bg-slate-900/70`} motion-reduce:translate-x-0 motion-reduce:transition-none motion-reduce:opacity-100`}>
-                <div className="flex items-start justify-between gap-3">
-                    <span className={`text-4xl font-semibold leading-none tracking-tight transition-colors ${active ? "text-[#3DB268]" : "text-[#3DB268]/60"}`}>{String(index + 1).padStart(2, "0")}</span>
-                    <span className="rounded-full bg-[#3DB268]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#267A47] dark:text-[#75D59A]">STAGE</span>
+        <div className="relative grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-3 md:grid-cols-[minmax(0,1fr)_3.5rem_minmax(0,1fr)] md:gap-4">
+            <article className={`relative z-10 col-start-2 row-start-1 rounded-xl border border-slate-200 bg-white px-3 py-3 shadow-[0_4px_16px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 md:row-start-1 md:px-4 md:py-3 ${isLeft ? "md:col-start-1" : "md:col-start-3"}`}>
+                <h3 className="text-xs font-semibold leading-4 text-slate-800 dark:text-slate-100 sm:text-sm">{step.title}</h3>
+                <div className="mt-1 space-y-1 text-[10px] leading-[1.4] text-slate-600 dark:text-slate-300 sm:text-[11px]">
+                    {step.paragraphs.map((paragraph, paragraphIndex) => <p key={paragraphIndex}>{paragraph}</p>)}
                 </div>
-                <h3 className="mt-4 min-h-12 text-base font-semibold leading-6 sm:text-lg">{step.title}</h3>
-                <p className="mt-2 min-h-10 text-[11px] leading-5 text-slate-500 dark:text-slate-400"><span className="font-semibold text-slate-700 dark:text-slate-300">Actors:</span> {step.actors}</p>
-                <ul className="mt-3 space-y-2.5">
-                    {step.actions.map((action) => (
-                        <li key={action} className="flex gap-2 text-xs leading-5 text-slate-600 dark:text-slate-300">
-                            <Check size={14} className="mt-0.5 shrink-0 text-[#3DB268]" strokeWidth={2.4} />
-                            <span>{action}</span>
-                        </li>
-                    ))}
-                </ul>
-                <span className="relative z-30 mt-auto hidden min-h-8 items-center gap-2 self-start pt-3 text-xs font-semibold text-[#267A47] md:inline-flex dark:text-[#75D59A]">
-                    <ImageIcon size={15} />
-                    View sample
-                </span>
-                <div className="pointer-events-none absolute inset-0 z-20 hidden overflow-hidden rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block motion-reduce:transition-none">
-                    <Image fill loading="lazy" sizes="(max-width: 1280px) 40vw, 32vw" className="object-cover" src={step.preview} alt={step.previewAlt} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#14532d]/90 via-[#3DB268]/15 to-[#3DB268]/5" />
-                    <p className="absolute bottom-5 left-5 right-5 rounded-xl border border-white/30 bg-white/15 px-4 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{step.previewCaption}</p>
+                <div className="mt-2 flex flex-wrap gap-1">
+                    {step.tags.map((tag) => <span key={tag} className="inline-flex items-center gap-1 rounded-full bg-[#27965a]/[0.08] px-2 py-0.5 text-[9px] font-medium leading-3 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><span aria-hidden="true" className="size-1 rounded-full bg-[#27965a]" />{tag}</span>)}
                 </div>
             </article>
-            <div ref={badgeRef} className={`relative z-20 col-start-1 row-start-1 flex size-12 items-center justify-center justify-self-center rounded-full border-2 transition-colors duration-500 md:col-start-2 md:size-16 ${active ? "border-[#3DB268] bg-[#3DB268] text-white shadow-[0_0_0_8px_rgba(61,178,104,0.18),0_0_24px_rgba(61,178,104,0.5)]" : "border-[#3DB268]/60 bg-white text-[#267A47] shadow-[0_0_0_6px_rgba(61,178,104,0.08)] dark:bg-slate-950 dark:text-[#75D59A]"}`}>
-                {currentStep === index && <span className="absolute inset-0 rounded-full bg-[#3DB268]/15" />}
-                <Icon className="relative z-10" size={26} strokeWidth={1.7} />
+            <div ref={badgeRef} aria-label={`Stage ${index + 1}: ${step.title}`} className={`relative z-20 col-start-1 row-start-1 flex size-8 items-center justify-center justify-self-center rounded-full border-2 text-xs font-semibold transition-colors duration-500 md:col-start-2 md:size-9 ${active ? "border-[#27965a] bg-[#27965a] text-white shadow-[0_0_0_4px_rgba(39,150,90,0.12)]" : "border-slate-200 bg-white text-slate-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-400"}`}>
+                {currentStep === index && <span aria-hidden="true" className="absolute inset-0 rounded-full ring-2 ring-[#27965a]/30" />}
+                <span className="relative">{index + 1}</span>
             </div>
         </div>
     );
@@ -154,6 +78,7 @@ function TraceabilityStep({ step, index, active, currentStep, registerBadge }) {
 export default function Traceability() {
     const timelineRef = useRef(null);
     const pathRef = useRef(null);
+    const trackPathRef = useRef(null);
     const desktopPackageRef = useRef(null);
     const mobilePathRef = useRef(null);
     const mobilePackageRef = useRef(null);
@@ -177,16 +102,34 @@ export default function Traceability() {
 
     useEffect(() => {
         const path = pathRef.current;
-        const pathLength = path?.getTotalLength() ?? 0;
-        if (path && pathLength) path.style.strokeDasharray = `${pathLength}`;
-
+        const trackPath = trackPathRef.current;
         let frame = 0;
         const updateProgress = () => {
             frame = 0;
             const timeline = timelineRef.current;
             const bounds = timeline?.getBoundingClientRect();
+            if (!bounds) return;
+            const points = badgeRefs.current.slice(0, traceabilitySteps.length).map((badge) => {
+                const rect = badge?.getBoundingClientRect();
+                return rect ? { x: rect.left + rect.width / 2 - bounds.left, y: rect.top + rect.height / 2 - bounds.top } : null;
+            }).filter(Boolean);
+            if (path && trackPath && points.length === traceabilitySteps.length) {
+                const pathData = points.reduce((data, point, index) => {
+                    if (index === 0) return `M${point.x},${point.y}`;
+                    const previous = points[index - 1];
+                    const side = index % 2 ? 1 : -1;
+                    const offset = Math.min(bounds.width * 0.06, 30) * side;
+                    const distance = point.y - previous.y;
+                    return `${data} C${previous.x + offset},${previous.y + distance / 3} ${point.x + offset},${previous.y + distance * 2 / 3} ${point.x},${point.y}`;
+                }, "");
+                path.setAttribute("d", pathData);
+                trackPath.setAttribute("d", pathData);
+                path.ownerSVGElement.setAttribute("viewBox", `0 0 ${bounds.width} ${bounds.height}`);
+            }
+            const pathLength = path?.getTotalLength() ?? 0;
+            if (path && pathLength) path.style.strokeDasharray = `${pathLength}`;
             const viewportHeight = window.innerHeight;
-            const progress = reducedMotion || !bounds
+            const progress = reducedMotion
                 ? 1
                 : Math.max(0, Math.min(1, (viewportHeight * 0.7 - bounds.top) / (bounds.height + viewportHeight * 0.4)));
 
@@ -267,13 +210,13 @@ export default function Traceability() {
 
     return (
         <div id="traceability" className="scroll-mt-24">
-            <div ref={timelineRef} className="relative mx-auto mt-10 max-w-6xl">
-                <div ref={mobilePathRef} aria-hidden="true" className="absolute left-[23px] z-0 w-[3px] rounded-full md:hidden" />
-                <div ref={mobilePackageRef} aria-hidden="true" className="absolute left-[1px] z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_18px_rgba(61,178,104,0.75)] md:hidden">
+            <div ref={timelineRef} className="relative mx-auto mt-3 max-w-[1040px]">
+                <div ref={mobilePathRef} aria-hidden="true" className="absolute left-[18px] z-0 w-[3px] rounded-full md:hidden" />
+                <div ref={mobilePackageRef} aria-hidden="true" className="absolute left-1 z-10 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_18px_rgba(61,178,104,0.75)] md:hidden">
                     <Package size={22} strokeWidth={1.8} />
                 </div>
                 {[0.25, 0.5, 0.75].map((position, index) => (
-                    <ArrowDown key={position} ref={(element) => { mobileArrowRefs.current[index] = element; }} aria-hidden="true" size={16} className="absolute left-[16px] z-10 -translate-y-1/2 text-[#3DB268] md:hidden" />
+                    <ArrowDown key={position} ref={(element) => { mobileArrowRefs.current[index] = element; }} aria-hidden="true" size={16} className="absolute left-3 z-10 -translate-y-1/2 text-[#3DB268] md:hidden" />
                 ))}
                 {[0.2, 0.4, 0.6, 0.8].map((position, index) => (
                     <ArrowDown key={position} ref={(element) => { desktopArrowRefs.current[index] = element; }} aria-hidden="true" size={17} className="absolute z-10 hidden -translate-x-1/2 -translate-y-1/2 text-[#3DB268] md:block" />
@@ -285,23 +228,17 @@ export default function Traceability() {
                             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
                         </filter>
                     </defs>
-                    <path d="M50 0 C44 38 32 65 50 95 C68 130 73 185 50 298 C27 368 27 438 50 500 C73 562 73 632 50 702 C27 772 32 845 50 906 C68 950 56 980 50 1000" stroke="#3DB268" strokeOpacity="0.16" strokeWidth="1.5" />
-                    <path ref={pathRef} d="M50 0 C44 38 32 65 50 95 C68 130 73 185 50 298 C27 368 27 438 50 500 C73 562 73 632 50 702 C27 772 32 845 50 906 C68 950 56 980 50 1000" stroke="#3DB268" strokeWidth="1.3" strokeLinecap="round" filter="url(#traceability-path-glow)" />
+                    <path ref={trackPathRef} stroke="#3DB268" strokeOpacity="0.16" strokeWidth="4" />
+                    <path ref={pathRef} stroke="#27965a" strokeWidth="3" strokeLinecap="round" filter="url(#traceability-path-glow)" />
                 </svg>
                 <div ref={desktopPackageRef} aria-hidden="true" className="absolute z-10 hidden size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_0_5px_rgba(61,178,104,0.18),0_0_18px_rgba(61,178,104,0.75)] transition-opacity md:flex">
                     <Package size={22} strokeWidth={1.8} />
                 </div>
-                <div className="relative z-10 space-y-6 md:space-y-7">
+                <div className="relative z-10 space-y-4">
                     {traceabilitySteps.map((step, index) => (
                         <TraceabilityStep key={step.title} step={step} index={index} active={index <= activeStep} currentStep={activeStep} registerBadge={registerBadge} />
                     ))}
                 </div>
-            </div>
-            <div className="mx-auto mt-12 flex max-w-5xl items-center gap-4 rounded-2xl border border-[#3DB268]/20 bg-[#3DB268]/[0.08] px-5 py-5 dark:bg-[#3DB268]/[0.1] sm:px-8">
-                <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#3DB268]/15 text-[#267A47] dark:text-[#75D59A]">
-                    <Check size={22} strokeWidth={2.5} />
-                </span>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-200 sm:text-base"><span className="font-semibold text-[#267A47] dark:text-[#75D59A]">End-to-End Visibility:</span> from production through delivery, every stage is connected.</p>
             </div>
         </div>
     );

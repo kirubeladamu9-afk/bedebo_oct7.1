@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import {
     ArrowLeft,
     ArrowRight,
+    BadgeCheck,
     Boxes,
+    CalendarDays,
     Check,
     ChevronLeft,
     ChevronRight,
@@ -13,10 +15,11 @@ import {
     Factory,
     Leaf,
     MapPinned,
-    PackageCheck,
+    Package,
     ShieldCheck,
     Snowflake,
     Sprout,
+    Sun,
     Store,
     Target,
     Truck,
@@ -170,8 +173,7 @@ const actors = [
 const digitalPlatforms = [
     {
         id: "farm",
-        name: "Farm",
-        icon: Sprout,
+        name: "Farm: registration and grading",
         steps: [
             "The farmer is registered in the Bedebo App.",
             "Product and type are selected and recorded.",
@@ -181,8 +183,7 @@ const digitalPlatforms = [
     },
     {
         id: "union",
-        name: "Union and ALAs",
-        icon: Boxes,
+        name: "Union: check-in and QR crates",
         steps: [
             "Product is checked in and received by the ALAs.",
             "Sacks are converted to QR-labeled crates, one set per farmer with no mixing.",
@@ -192,10 +193,9 @@ const digitalPlatforms = [
     },
     {
         id: "warehouse",
-        name: "Warehouse (cold storage)",
-        icon: Warehouse,
+        name: "Warehouse: request and cold storage",
         steps: [
-            "The warehouse requests stock through central Bedebo.",
+            "The warehouse requests stock. The request goes through central Bedebo to the Union.",
             "The cold truck carries the crates from the Union.",
             "Crates are checked in to cold storage.",
             "Data is sent to central Bedebo.",
@@ -203,16 +203,46 @@ const digitalPlatforms = [
     },
     {
         id: "vendor",
-        name: "Vendor",
-        icon: Store,
+        name: "Vendor: order and delivery",
         steps: [
             "The vendor places an order in the Bedebo platform.",
             "Crates are checked out and loaded onto the cold truck.",
-            "The truck carries the order to the vendor.",
+            "The truck carries the order from the warehouse to the vendor.",
             "Crates are received and delivery is confirmed to central Bedebo.",
         ],
     },
+    {
+        id: "central-bedebo",
+        name: "Central Bedebo platform",
+        steps: [
+            "Every registration, check-in, check-out, request, and order is recorded here.",
+            "The whole journey stays visible and traceable, from the farmer to the vendor.",
+        ],
+    },
 ];
+
+function isoSceneSVG(){
+var P=function(x,y,z){return[Math.round(360+(x-y)*30),Math.round(100+(x+y)*17.32-z)]},
+Q=function(a,f){return'<polygon points="'+a.map(function(q){return P(q[0],q[1],q[2])}).join(' ')+'" fill="'+f+'"/>'},
+B=function(x,y,a,b,h,z,c){var t=z+h;return Q([[x+a,y,z],[x+a,y+b,z],[x+a,y+b,t],[x+a,y,t]],c[2])+Q([[x,y+b,z],[x+a,y+b,z],[x+a,y+b,t],[x,y+b,t]],c[1])+Q([[x,y,t],[x+a,y,t],[x+a,y+b,t],[x,y+b,t]],c[0])},
+WH=['#fff','#e1eaf6','#c8d6eb'],CR=['#f2cc8b','#d29c4c','#b5843b'],SK=['#efe0b8','#d9c28a','#c2a96f'],GR=['#63c48c','#3da56b','#2f8a58'],TL=['#aadde8','#7cc2d1','#5ca8b8'],BL=['#7399ec','#4a76d6','#3a60b8'],DK=['#51639e','#33427a','#27346a'],RD=['#f3917f','#da6550','#bf5340'],GN=['#8fe6b2','#27965a','#1f7a49'];
+var N=[
+{n:'Farm',x:-2,y:4,o:function(x,y){var r='';[.4,1.3,2.1].forEach(function(a){r+=B(x+.4,y+a,.5,.5,8,0,GR)+B(x+1,y+a,.5,.5,8,0,GR)});return r+B(x+1.9,y+.6,.8,.8,15,0,SK)+B(x+1.9,y+1.7,.8,.8,15,0,SK)}},
+{n:'Union and ALAs',x:4,y:-2,o:function(x,y){return[[.4,.3],[1.3,.3],[.4,1.1],[1.3,1.1]].map(function(a){return B(x+a[0],y+a[1],.8,.8,14,0,CR)}).join('')+B(x+.4,y+.3,.8,.8,14,14,CR)+B(x+.3,y+2,1.7,.8,18,0,WH)+B(x+2,y+2.05,.7,.7,13,0,BL)}},
+{n:'Warehouse (cold storage)',x:10,y:4,o:function(x,y){var c=P(x+1.5,y+1.5,40),s='';for(var a=0;a<3;a++){var t=a*Math.PI/3,dx=8*Math.cos(t),dy=8*Math.sin(t);s+='<line x1="'+(c[0]-dx)+'" y1="'+(c[1]-dy)+'" x2="'+(c[0]+dx)+'" y2="'+(c[1]+dy)+'" stroke="#fff" stroke-width="2.4"/>'}return B(x+.5,y+.5,2,2,40,0,TL)+B(x+.9,y+2.5,.6,.04,24,0,WH)+s}},
+{n:'Vendor',x:4,y:10,o:function(x,y){return B(x+.6,y+.8,1.8,1.3,14,0,WH)+B(x+.5,y+.7,.95,1.5,6,26,RD)+B(x+1.45,y+.7,.95,1.5,6,26,WH)+B(x+.7,y+2.2,.5,.5,8,0,CR)+B(x+1.4,y+2.2,.5,.5,8,0,GR)}},
+{n:'Central Bedebo platform',x:4,y:4,o:function(x,y){var c=P(x+1.5,y+1.5,78);return B(x+.4,y+.6,.8,1.2,46,0,DK)+B(x+1.3,y+.6,.8,1.2,46,0,DK)+B(x+2.2,y+.6,.6,1.2,46,0,DK)+[10,22].map(function(z){return B(x+.5,y+1.8,.5,.05,3,z,GN)+B(x+1.4,y+1.8,.5,.05,3,z,GN)}).join('')+'<g stroke="#3b6fd8" stroke-width="2" fill="#fff"><circle cx="'+(c[0]-17)+'" cy="'+(c[1]+3)+'" r="13"/><circle cx="'+(c[0]+17)+'" cy="'+(c[1]+3)+'" r="13"/><circle cx="'+c[0]+'" cy="'+(c[1]-6)+'" r="18"/></g><rect x="'+(c[0]-27)+'" y="'+(c[1]-2)+'" width="54" height="17" fill="#fff"/>'}}],
+s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="group" aria-label="Isometric diagram of the central Bedebo platform connected to farm, Union, warehouse and vendor"><rect width="720" height="540" fill="#cfe3ff"/>',
+F=function(x,y,w,d,z,f){return Q([[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z]],f)};
+[[40,200,330,45],[40,330,300,150],[690,230,430,50],[690,380,300,150]].forEach(function(l){s+='<line x1="'+l[0]+'" y1="'+l[1]+'" x2="'+l[2]+'" y2="'+l[3]+'" stroke="#fff" stroke-opacity=".55" stroke-dasharray="4 7"/>'});
+var W=[[5,1,1,3],[5,7,1,3],[1,5,3,1],[7,5,3,1]];
+N.forEach(function(p){s+=F(p.x+.4,p.y+.9,3,3,-46,'rgba(50,90,170,.2)')});
+W.forEach(function(w){s+=F(w[0]+.4,w[1]+.9,w[2],w[3],-46,'rgba(50,90,170,.15)')+B(w[0],w[1],w[2],w[3],14,-14,WH)});
+N.forEach(function(p){s+=B(p.x,p.y,3,3,14,-14,WH)});
+N.map(function(p,i){return[p,i]}).sort(function(a,b){return a[0].x+a[0].y-b[0].x-b[0].y}).forEach(function(q){
+var p=q[0],f=P(p.x+3,p.y+3,-14),w=Math.round(p.n.length*6.6+24);
+s+='<g class="iso-n" data-i="'+q[1]+'" tabindex="0" role="button" aria-label="'+p.n+'">'+Q([[p.x,p.y,0],[p.x+3,p.y,0],[p.x+3,p.y+3,0],[p.x,p.y+3,0]],'none').replace('fill="none"','class="iso-hl"')+'<g class="iso-ob">'+p.o(p.x,p.y)+'</g><rect x="'+(f[0]-w/2)+'" y="'+(f[1]+8)+'" width="'+w+'" height="22" rx="11" fill="#fff"/><text x="'+f[0]+'" y="'+(f[1]+23)+'" text-anchor="middle" font-size="12" font-weight="500" fill="#14304f">'+p.n+'</text></g>'});
+return s+'</svg>'}
 
 const crops = [
     { id: "tomato", name: "Tomato", range: "13–15°C", humidity: "85–90% RH", note: "Chilling sensitive. Avoid temperatures below 10°C to help prevent flavor loss and pitting." },
@@ -224,23 +254,23 @@ const crops = [
 ];
 
 const traceSteps = [
-    { title: "Customer", detail: "The product reaches the customer.", gate: null },
-    { title: "Market delivery", detail: "Delivery is confirmed to the market partner.", gate: null },
-    { title: "Cold storage", detail: "Crates are held in cold storage before dispatch.", gate: "Pre-cooling and cold storage" },
-    { title: "Grading", detail: "Produce is graded against its specifications.", gate: "Grading" },
-    { title: "Transport", detail: "Movement and custody are tracked along the route.", gate: null },
-    { title: "Pre-cooling", detail: "Produce is cooled before storage and onward movement.", gate: null },
-    { title: "Aggregation", detail: "Produce is packed and moved in crates linked to its source.", gate: "Crate-based movement" },
-    { title: "Harvest", detail: "Produce is harvested and handled to a consistent standard.", gate: "Standardized harvesting and handling" },
-    { title: "Production", detail: "Production is planned for quality and market needs.", gate: "Planned production" },
+    { title: "Customer", detail: "The product reaches the right customer at the right quality.", icon: Users },
+    { title: "Market delivery", detail: "Delivered to the market.", icon: Store },
+    { title: "Cold storage", detail: "Held in cold storage.", icon: Warehouse },
+    { title: "Grading", detail: "Classified by quality.", icon: BadgeCheck, gate: "Grading" },
+    { title: "Transport", detail: "Moved by coordinated, traceable logistics.", icon: Truck },
+    { title: "Pre-cooling", detail: "Cooled to protect freshness.", icon: Snowflake, gate: "Pre-cooling and cold storage" },
+    { title: "Aggregation", detail: "Collected in crates with quality control.", icon: Boxes, gate: "Crate-based movement" },
+    { title: "Harvest", detail: "Harvested and handled to a standard.", icon: Sprout, gate: "Standardized harvesting and handling" },
+    { title: "Production", detail: "The farm and origin of the product are known.", icon: Leaf, gate: "Planned production" },
 ];
 
 const qualityGates = [
-    "Planned production",
-    "Standardized harvesting and handling",
-    "Crate-based movement",
-    "Pre-cooling and cold storage",
-    "Grading",
+    { label: "Planned production", step: "Production" },
+    { label: "Standardized harvesting and handling", step: "Harvest" },
+    { label: "Crate-based movement", step: "Aggregation" },
+    { label: "Pre-cooling and cold storage", step: "Pre-cooling" },
+    { label: "Grading", step: "Grading" },
 ];
 
 function ObjectiveAndSummary() {
@@ -451,49 +481,62 @@ function ValueChainJourney() {
 }
 
 function DigitalIntegration() {
-    const [selectedId, setSelectedId] = useState("farm");
-    const [stepIndex, setStepIndex] = useState(0);
-    const selected = digitalPlatforms.find((platform) => platform.id === selectedId);
+    const sceneRef = useRef(null);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const selected = digitalPlatforms[selectedIndex];
 
-    const choosePlatform = (id) => {
-        setSelectedId(id);
-        setStepIndex(0);
-    };
+    useEffect(() => {
+        const scene = sceneRef.current;
+        if (!scene) return;
+        scene.innerHTML = isoSceneSVG();
+        const groups = [...scene.querySelectorAll(".iso-n")];
+        const choose = (index) => setSelectedIndex(index);
+        const handlers = groups.map((group) => {
+            const index = Number(group.dataset.i);
+            const onClick = () => choose(index);
+            const onFocus = () => choose(index);
+            const onKeyDown = (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    choose(index);
+                }
+            };
+            group.addEventListener("click", onClick);
+            group.addEventListener("mouseenter", onFocus);
+            group.addEventListener("focus", onFocus);
+            group.addEventListener("keydown", onKeyDown);
+            return { group, onClick, onFocus, onKeyDown };
+        });
+        return () => handlers.forEach(({ group, onClick, onFocus, onKeyDown }) => {
+            group.removeEventListener("click", onClick);
+            group.removeEventListener("mouseenter", onFocus);
+            group.removeEventListener("focus", onFocus);
+            group.removeEventListener("keydown", onKeyDown);
+        });
+    }, []);
+
+    useEffect(() => {
+        sceneRef.current?.querySelectorAll(".iso-n").forEach((group) => {
+            group.classList.toggle("sel", Number(group.dataset.i) === selectedIndex);
+        });
+    }, [selectedIndex]);
+
+    const move = (direction) => setSelectedIndex((selectedIndex + direction + digitalPlatforms.length) % digitalPlatforms.length);
 
     return (
         <div className="core-digital-panel">
-            <div className="core-isometric-scene" aria-label="Digital platforms linked through central Bedebo">
-                <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                    <path d="M17 17 L50 50 L83 17 M50 50 L17 83 M50 50 L83 83" />
-                </svg>
-                <button type="button" className={`core-platform platform-farm${selectedId === "farm" ? " is-selected" : ""}`} onClick={() => choosePlatform("farm")} aria-pressed={selectedId === "farm"}>
-                    <Sprout size={20} aria-hidden="true" /><span>Farm</span>
-                </button>
-                <button type="button" className={`core-platform platform-union${selectedId === "union" ? " is-selected" : ""}`} onClick={() => choosePlatform("union")} aria-pressed={selectedId === "union"}>
-                    <Boxes size={20} aria-hidden="true" /><span>Union and ALAs</span>
-                </button>
-                <div className="core-central-platform"><span>Central Bedebo</span><small>Digital coordination</small></div>
-                <button type="button" className={`core-platform platform-warehouse${selectedId === "warehouse" ? " is-selected" : ""}`} onClick={() => choosePlatform("warehouse")} aria-pressed={selectedId === "warehouse"}>
-                    <Warehouse size={20} aria-hidden="true" /><span>Warehouse</span>
-                    <small>(cold storage)</small>
-                </button>
-                <button type="button" className={`core-platform platform-vendor${selectedId === "vendor" ? " is-selected" : ""}`} onClick={() => choosePlatform("vendor")} aria-pressed={selectedId === "vendor"}>
-                    <Store size={20} aria-hidden="true" /><span>Vendor</span>
-                </button>
-            </div>
-            <div className="core-platform-steps" aria-live="polite">
-                <div className="core-platform-step-heading">
+            <div ref={sceneRef} className="core-isometric-scene" aria-label="Digital platforms linked through central Bedebo" />
+            <div className="iso-caption" aria-live="polite">
+                <div className="iso-caption-heading">
                     <h4>{selected.name}</h4>
-                    <span>Step {stepIndex + 1} of {selected.steps.length}</span>
+                    <span>Step {selectedIndex + 1} of {digitalPlatforms.length}</span>
                 </div>
-                <p>{selected.steps[stepIndex]}</p>
-                <div className="core-step-controls">
-                    <button type="button" onClick={() => setStepIndex(Math.max(0, stepIndex - 1))} disabled={stepIndex === 0}>
-                        <ArrowLeft size={16} aria-hidden="true" /> Back
-                    </button>
-                    <button type="button" onClick={() => setStepIndex(Math.min(selected.steps.length - 1, stepIndex + 1))} disabled={stepIndex === selected.steps.length - 1}>
-                        Next <ArrowRight size={16} aria-hidden="true" />
-                    </button>
+                <ol>
+                    {selected.steps.map((step) => <li key={step}>{step}</li>)}
+                </ol>
+                <div className="iso-caption-controls">
+                    <button type="button" onClick={() => move(-1)}><ArrowLeft size={16} aria-hidden="true" /> Back</button>
+                    <button type="button" onClick={() => move(1)}>Next <ArrowRight size={16} aria-hidden="true" /></button>
                 </div>
             </div>
         </div>
@@ -503,7 +546,13 @@ function DigitalIntegration() {
 function ColdChainIntegration() {
     const [selectedCropId, setSelectedCropId] = useState(crops[0].id);
     const selectedCrop = crops.find((crop) => crop.id === selectedCropId);
-    const measures = ["Crate-based handling", "Solar pre-cooling", "Cold rooms", "Coordinated logistics", "Digital scheduling"];
+    const measures = [
+        { label: "Crate-based handling", icon: Package },
+        { label: "Solar pre-cooling", icon: Sun },
+        { label: "Cold rooms", icon: Snowflake },
+        { label: "Coordinated logistics", icon: Truck },
+        { label: "Digital scheduling", icon: CalendarDays },
+    ];
 
     return (
         <div className="core-cold-panel">
@@ -536,7 +585,7 @@ function ColdChainIntegration() {
                 <p>Project target based on an illustrative case</p>
             </div>
             <div className="core-measures">
-                {measures.map((measure) => <div className="core-measure" key={measure}><Check size={16} aria-hidden="true" />{measure}</div>)}
+                {measures.map(({ label, icon: Icon }) => <div className="core-measure" key={label}><Icon className="core-measure-icon" size={17} aria-hidden="true" />{label}</div>)}
             </div>
         </div>
     );
@@ -544,67 +593,101 @@ function ColdChainIntegration() {
 
 function QualityTraceability() {
     const [started, setStarted] = useState(false);
-    const [currentStep, setCurrentStep] = useState(0);
-    const step = traceSteps[currentStep];
-    const completedGates = qualityGates.filter((gate) => traceSteps.findIndex((entry) => entry.gate === gate) <= currentStep && traceSteps.some((entry) => entry.gate === gate));
+    const [litSteps, setLitSteps] = useState(0);
+    const [runId, setRunId] = useState(0);
+
+    useEffect(() => {
+        if (!started) return undefined;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let timer;
+        const showAll = () => {
+            window.clearInterval(timer);
+            setLitSteps(traceSteps.length);
+        };
+        if (reducedMotion.matches) {
+            showAll();
+        } else {
+            timer = window.setInterval(() => {
+                setLitSteps((count) => {
+                    const next = Math.min(traceSteps.length, count + 1);
+                    if (next === traceSteps.length) window.clearInterval(timer);
+                    return next;
+                });
+            }, 500);
+        }
+        const onMotionChange = () => {
+            if (reducedMotion.matches) showAll();
+        };
+        reducedMotion.addEventListener("change", onMotionChange);
+        return () => {
+            window.clearInterval(timer);
+            reducedMotion.removeEventListener("change", onMotionChange);
+        };
+    }, [started, runId]);
 
     const startTrace = () => {
+        setLitSteps(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? traceSteps.length : 0);
         setStarted(true);
-        setCurrentStep(0);
+        setRunId((current) => current + 1);
     };
+    const completedGates = qualityGates.filter((gate) => {
+        const relatedStep = traceSteps.findIndex((step) => step.title === gate.step);
+        return relatedStep >= 0 && litSteps > relatedStep;
+    });
+    const outcomes = [
+        { label: "better freshness", icon: Snowflake },
+        { label: "consistent specifications", icon: BadgeCheck },
+        { label: "less physical damage", icon: Package },
+        { label: "fewer buyer rejections", icon: ShieldCheck },
+    ];
 
     return (
         <div className="core-trace-panel">
-            <div className="core-trace-main">
-                <div className="core-trace-controls">
-                    <div className="core-trace-mark" aria-hidden="true"><PackageCheck size={42} strokeWidth={1.5} /></div>
-                    {!started ? (
-                        <button type="button" className="core-primary-button" onClick={startTrace}>Trace this product <ArrowRight size={17} aria-hidden="true" /></button>
-                    ) : (
-                        <>
-                            <button type="button" className="core-primary-button" onClick={startTrace}>Restart trace</button>
-                            <div className="core-step-controls">
-                                <button type="button" onClick={() => setCurrentStep(Math.max(0, currentStep - 1))} disabled={currentStep === 0}><ArrowLeft size={16} aria-hidden="true" /> Back</button>
-                                <button type="button" onClick={() => setCurrentStep(Math.min(traceSteps.length - 1, currentStep + 1))} disabled={currentStep === traceSteps.length - 1}>Next <ArrowRight size={16} aria-hidden="true" /></button>
-                            </div>
-                        </>
-                    )}
-                </div>
-                <div className="core-trace-journey" aria-live="polite">
-                    <div className="core-trace-current">
-                        <span>Trace step {started ? currentStep + 1 : 0} of {traceSteps.length}</span>
-                        <h4>{started ? step.title : "Start with a customer delivery"}</h4>
-                        <p>{started ? step.detail : "Follow one product backwards through the chain, from customer to production."}</p>
+            <div className="core-trace-layout">
+                <div className="core-trace-journey">
+                    <div className="core-trace-heading">
+                        <div>
+                            <h4>Product journey</h4>
+                            <p>Follow one product from customer back to production.</p>
+                        </div>
+                        <button type="button" className="core-primary-button" onClick={startTrace}>{started ? "Replay" : "Trace this product"}</button>
                     </div>
-                    <ol className="core-trace-timeline">
-                        {traceSteps.map((item, index) => (
-                            <li key={item.title} className={`${started && index < currentStep ? "is-traced" : ""} ${started && index === currentStep ? "is-current" : ""}`}>
-                                <span className="core-trace-node">{String(index + 1).padStart(2, "0")}</span>
-                                <span>{item.title}</span>
-                            </li>
-                        ))}
+                    <ol className="core-trace-timeline" aria-label="Product trace from customer to production" aria-live="polite" style={{ "--trace-progress": `${litSteps / traceSteps.length * 100}%` }}>
+                        {traceSteps.map((step, index) => {
+                            const Icon = step.icon;
+                            const isLit = index < litSteps;
+                            return (
+                                <li className={`core-trace-step${isLit ? " is-lit" : ""}`} key={step.title}>
+                                    <span className="core-trace-marker">
+                                        <span className="core-trace-number">{index + 1}</span>
+                                        <Check className="core-trace-check" size={14} aria-hidden="true" />
+                                    </span>
+                                    <Icon className="core-trace-step-icon" size={18} aria-hidden="true" />
+                                    <span className="core-trace-step-copy"><strong>{step.title}</strong><span>{step.detail}</span></span>
+                                </li>
+                            );
+                        })}
                     </ol>
                 </div>
-            </div>
-            <div className="core-quality-checks">
-                <div className="core-quality-checks-heading">
-                    <h4>Quality protection</h4>
-                    <span>{completedGates.length} of {qualityGates.length} checks</span>
-                </div>
-                {qualityGates.map((gate) => (
-                    <div className={`core-quality-gate${completedGates.includes(gate) ? " is-complete" : ""}`} key={gate}>
-                        <span><Check size={13} aria-hidden="true" /></span>{gate}
+                <aside className="core-quality-checks">
+                    <div className="core-quality-checks-heading">
+                        <h4>Quality protection</h4>
+                        <span>{completedGates.length} of {qualityGates.length} checks</span>
                     </div>
-                ))}
-                <div className="core-trace-outcomes">
-                    <h4>Outcomes</h4>
-                    <ul>
-                        <li>Better freshness</li>
-                        <li>Consistent specifications</li>
-                        <li>Less physical damage</li>
-                        <li>Fewer buyer rejections</li>
+                    <ul className="core-quality-gates">
+                        {qualityGates.map((gate) => (
+                            <li className={`core-quality-gate${completedGates.includes(gate) ? " is-complete" : ""}`} key={gate.label}>
+                                <span><Check size={13} aria-hidden="true" /></span>{gate.label}
+                            </li>
+                        ))}
                     </ul>
-                </div>
+                </aside>
+            </div>
+            <div className="core-trace-outcomes" aria-label="Traceability outcomes">
+                {outcomes.map((outcome) => {
+                    const Icon = outcome.icon;
+                    return <div className="core-trace-outcome" key={outcome.label}><Icon size={19} aria-hidden="true" /><span>{outcome.label}</span></div>;
+                })}
             </div>
         </div>
     );

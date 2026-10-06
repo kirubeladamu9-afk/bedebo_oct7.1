@@ -9,7 +9,7 @@ const tabIcons = [Share2, Smartphone, Snowflake, ShieldCheck];
 
 const tabItems = [
     { label: "Value chain integration", role: "The partnership layer", title: "The partnership layer", description: "All actors work as partners, not as disconnected middlemen.", points: ["Farm-to-market linkages", "Coordinated production", "Shared services", "Value addition", "Shared benefit"], icon: Share2, tone: "green" },
-    { label: "Digital integration", role: "The information layer", points: ["One connected platform", "Recorded movement and transactions", "Journey visibility from farm to vendor"], tone: "blue" },
+    { label: "Digital integration", role: "The information layer", title: "The information layer", description: "BEDEBO supports farmer coordination, aggregation, logistics, market linkage, payment tracking and end-to-end visibility.", points: ["Connected platforms", "Real-time visibility", "Data-driven decisions", "Digital transactions", "Inclusion for all farmers"], icon: Smartphone, tone: "blue" },
     { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Reduce Postharvest Loss", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "teal" },
     { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "violet" },
 ];
@@ -99,12 +99,13 @@ function isoSceneSVG() {
 function IntroCard({ item }) {
     const tones = {
         green: "border-slate-200 border-l-[#27965a] bg-white dark:border-slate-800 dark:border-l-[#3DB268] dark:bg-slate-900",
-        blue: "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300",
+        blue: "border-slate-200 border-l-blue-600 bg-white dark:border-slate-800 dark:border-l-blue-400 dark:bg-slate-900",
         teal: "border-teal-200 border-l-teal-500 bg-white dark:border-teal-900 dark:border-l-teal-400 dark:bg-slate-900",
         violet: "border-violet-200 border-l-violet-500 bg-white dark:border-violet-900 dark:border-l-violet-400 dark:bg-slate-900",
     };
     const chipTones = {
         green: "bg-[#27965a]/10 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]",
+        blue: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200",
         teal: "bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200",
         violet: "bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200",
     };
@@ -114,7 +115,7 @@ function IntroCard({ item }) {
         <div className={`mx-auto mb-6 max-w-6xl rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tones[item.tone]}`}>
             {item.description ? (
                 <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                    <span className={`grid size-12 shrink-0 place-items-center rounded-[14px] ${item.tone === "green" ? "bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]" : item.tone === "teal" ? "bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-200" : "bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-200"}`}><Icon size={25} aria-hidden="true" /></span>
+                    <span className={`grid size-12 shrink-0 place-items-center rounded-[14px] ${item.tone === "green" ? "bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]" : item.tone === "blue" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200" : item.tone === "teal" ? "bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-200" : "bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-200"}`}><Icon size={25} aria-hidden="true" /></span>
                     <div className="min-w-0">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{item.title}</h3>
                         <p className="mt-1 max-w-4xl text-[13px] leading-5 text-slate-600 dark:text-slate-300 sm:text-sm sm:leading-6">{item.description}</p>

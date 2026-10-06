@@ -3,6 +3,7 @@ export const navLinks = [
     { name: "About Us", href: "#about" },
     { name: "Solutions", href: "#solutions" },
     { name: "Impact", href: "#impact" },
+    { name: "Core Values", href: "#core-values" },
     { name: "Blog", href: "/#blog" },
 ];
 
@@ -11,7 +12,7 @@ export const footerLinks = [
     { name: "Solutions", href: "#solutions" },
     { name: "Impact", href: "#impact" },
     { name: "Get Involved", href: "#get-involved" },
-    { name: "Traceability", href: "#traceability" },
+    { name: "Core Values", href: "#core-values" },
     { name: "Blog", href: "/#blog" },
     { name: "Docs", href: "#docs" },
 ];

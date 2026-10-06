@@ -44,7 +44,8 @@ export default function Navbar() {
             let currentSection = "home";
             targets.forEach((target) => {
                 const section = document.getElementById(target);
-                if (section && section.getBoundingClientRect().top <= 104) {
+                const activationLine = Math.max(104, Math.min(180, window.innerHeight * 0.28));
+                if (section && section.getBoundingClientRect().top <= activationLine) {
                     currentSection = target;
                 }
             });
@@ -73,9 +74,9 @@ export default function Navbar() {
 
     return (
         <nav className={`bedebo-navbar bedebo-site-container fixed inset-x-0 top-0 z-50 flex items-center justify-between ${isScrolled ? "bedebo-navbar--scrolled" : ""} ${openMobileMenu ? "" : "backdrop-blur"} ${pathname === "/" ? "text-[#1E2841]" : ""}`}>
-            <a href="/">
+            <Link href="/" aria-label="Bedebo Ethiopia home">
                 <Image className="bedebo-navbar-logo h-16 w-auto shrink-0 md:h-17" src="/assets/bedebo-ethiopia.webp" alt="Bedebo Ethiopia" width={140} height={140} priority fetchPriority="high" />
-            </a>
+            </Link>
             <div className="hidden flex-1 items-center justify-center gap-5 xl:flex xl:gap-7">
                 {navLinks.map((link) => {
                     const active = isActiveLink(link);

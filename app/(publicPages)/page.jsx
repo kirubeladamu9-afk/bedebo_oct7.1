@@ -5,7 +5,7 @@ import { companiesLogo } from "@/data/companiesLogo";
 import { featuresData } from "@/data/featuresData";
 import OurImpact from "@/sections/OurImpact";
 import GetInvolved from "@/sections/GetInvolved";
-import Traceability from "@/sections/Traceability";
+import CoreValues from "@/sections/CoreValues";
 import OurStory from "@/sections/OurStory";
 import OurBlogs from "@/sections/OurBlogs";
 import Image from "next/image";
@@ -75,7 +75,7 @@ export default function Page() {
 
             <GetInvolved />
 
-            <Traceability />
+            <CoreValues />
 
             <OurBlogs />
 

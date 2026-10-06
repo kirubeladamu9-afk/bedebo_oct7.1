@@ -448,29 +448,30 @@ function ValueChainJourney() {
 
     return (
         <div className="core-actor-flow" ref={flowRef} style={{ "--flow-progress": `${progress * 100}%` }}>
-            <svg className="core-flow-path" viewBox="0 0 100 1200" preserveAspectRatio="none" aria-hidden="true">
-                <path className="core-flow-track" d="M50 100 C24 160 24 240 50 300 C76 360 76 440 50 500 C24 560 24 640 50 700 C76 760 76 840 50 900 C24 960 24 1040 50 1100" />
-                <path className="core-flow-progress" pathLength="1" strokeDasharray="1" strokeDashoffset={1 - progress} d="M50 100 C24 160 24 240 50 300 C76 360 76 440 50 500 C24 560 24 640 50 700 C76 760 76 840 50 900 C24 960 24 1040 50 1100" />
+            <svg className="core-flow-path" viewBox="0 0 100 1650" preserveAspectRatio="none" aria-hidden="true">
+                <path className="core-flow-track" d="M50 132 C22 185 22 300 50 407 C78 465 78 585 50 682 C22 740 22 860 50 957 C78 1015 78 1135 50 1232 C22 1290 22 1410 50 1507" />
+                <path className="core-flow-progress" pathLength="1" strokeDasharray="1" strokeDashoffset={1 - progress} d="M50 132 C22 185 22 300 50 407 C78 465 78 585 50 682 C22 740 22 860 50 957 C78 1015 78 1135 50 1232 C22 1290 22 1410 50 1507" />
             </svg>
             <div className="core-actor-list">
                 {actors.map((actor, index) => {
                     const Icon = actor.icon;
-                    const lit = progress >= index / (actors.length - 1);
+                    const lit = progress >= (index + 0.5) / actors.length;
                     return (
-                        <div className={`core-actor-row${index % 2 === 0 ? " actor-left" : " actor-right"}`} key={actor.title}>
+                        <div className={`core-actor-row${index % 2 === 0 ? " actor-left" : " actor-right"}${lit ? " is-active" : ""}`} key={actor.title}>
                             <article className="core-actor-card">
-                                <div className="core-actor-card-heading">
-                                    <span className="core-actor-icon"><Icon size={19} aria-hidden="true" /></span>
-                                    <h4>{actor.title}</h4>
+                                <div className="core-actor-card-meta">
+                                    <span className="core-actor-number">{String(index + 1).padStart(2, "0")}</span>
+                                    <span className="core-actor-label">STEP {index + 1}</span>
                                 </div>
-                                <p><strong>Role</strong>{actor.role}</p>
-                                <p><strong>Value created</strong>{actor.value}</p>
+                                <h4>{actor.title}</h4>
+                                <p className="core-actor-role"><strong>Role</strong>{actor.role}</p>
+                                <p className="core-actor-value"><strong>Value created</strong>{actor.value}</p>
                                 <div className="core-actor-tags">
                                     {actor.tags.map((tag) => <span key={tag}>{tag}</span>)}
                                 </div>
                             </article>
-                            <span className={`core-actor-step${lit ? " is-lit" : ""}`} aria-label={`Step ${index + 1}`}>
-                                {String(index + 1).padStart(2, "0")}
+                            <span className={`core-actor-step${lit ? " is-lit" : ""}`} aria-label={`Step ${index + 1}: ${actor.title}`}>
+                                <Icon size={19} aria-hidden="true" />
                             </span>
                         </div>
                     );

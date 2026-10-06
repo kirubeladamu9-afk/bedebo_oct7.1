@@ -522,7 +522,7 @@ export default function CoreValues() {
                                                     <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: item.color }}>{index + 1}</span>
                                                     <span className="text-xs text-slate-500 dark:text-slate-400">Core value {index + 1} of 6</span>
                                                 </div>
-                                                <h4 className="text-base font-medium leading-[1.3] text-slate-900 dark:text-white">{item.title}</h4>
+                                                <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-2xl">{item.title}</h4>
                                                 <blockquote className="mt-2 text-base font-medium italic leading-6" style={{ color: item.color }}>“{item.quote}”</blockquote>
                                                 <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">{item.detail}</p>
                                                 {item.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-700 dark:text-slate-200"><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>46% → 23%</strong><span className="text-slate-500 dark:text-slate-400">farm-to-consumer losses</span></span><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>54 kg → 77 kg</strong><span className="text-slate-500 dark:text-slate-400">reaching consumers per 100 kg</span></span><span className="basis-full text-[11px] text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
@@ -556,7 +556,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-10 flex max-w-2xl items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-base font-semibold leading-6 text-white sm:px-8 sm:py-5 sm:text-xl">Coordinating the journey from production to market</div>
+            <div className="mx-auto mt-10 flex max-w-2xl items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-sm font-semibold leading-4 text-white sm:px-8 sm:py-5 sm:text-[15px]">Coordinating the journey from production to market</div>
         </section>
     );
 }

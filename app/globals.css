@@ -525,3 +525,64 @@ button {
         transition: none;
     }
 }
+
+.iso-scene svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.iso-n {
+    cursor: pointer;
+    outline: none;
+}
+
+.iso-hl {
+    fill: none;
+    stroke: #27965a;
+    stroke-width: 3;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.iso-ob {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.3s;
+}
+
+.iso-n:hover .iso-hl,
+.iso-n.sel .iso-hl,
+.iso-n:focus-visible .iso-hl {
+    opacity: 1;
+}
+
+.iso-n:hover .iso-ob,
+.iso-n.sel .iso-ob,
+.iso-n:focus-visible .iso-ob {
+    transform: translateY(-5px);
+}
+
+.qr-scan-line {
+    animation: qr-scan 2.4s ease-in-out both;
+}
+
+@keyframes qr-scan {
+    from { transform: translateY(0); }
+    to { transform: translateY(12rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .iso-hl,
+    .iso-ob {
+        transition: none;
+    }
+
+    #core-values *,
+    #core-values *::before,
+    #core-values *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}

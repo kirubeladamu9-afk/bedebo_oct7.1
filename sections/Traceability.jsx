@@ -2,73 +2,111 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import SectionTitle from "@/components/SectionTitle";
-import { ArrowDown, Check, Image as ImageIcon, Package, PackageCheck, QrCode, Sprout, Truck, Warehouse } from "lucide-react";
+import { ArrowDown, Check, Image as ImageIcon, Package, PackageCheck, QrCode, Sprout, Truck, Warehouse, Boxes, ClipboardCheck, ShoppingBasket } from "lucide-react";
 
 const traceabilitySteps = [
     {
-        title: "Farm Level & Digital Onboarding",
-        actors: "200+ certified farmers",
+        title: "Farm",
+        actors: "Farmers and producer organizations",
         icon: Sprout,
         preview: "https://images.pexels.com/photos/2049001/pexels-photo-2049001.jpeg",
-        previewAlt: "Farmers cultivating a lush green field with a tractor nearby",
-        previewCaption: "Harvest and digital farm registration",
+        previewAlt: "Farmers cultivating a green field",
+        previewCaption: "Known origin and planned production",
         actions: [
-            "Internationally certified farmers follow Organic and GlobalG.A.P. cultivation practices.",
-            "Bedebo App records Farmer ID, location, produce type, gross and net weight.",
-            "Quality grade and timestamp complete each digital farm record.",
+            "Quality production and organized farmers.",
+            "Produce according to planned demand and quality requirements.",
+            "A reliable production base with a known origin.",
         ],
     },
     {
-        title: "Aggregation & Crate Standardization",
-        actors: "Field agents & Union management",
-        icon: QrCode,
+        title: "Harvest",
+        actors: "Farmers, ASPs, and ALAs",
+        icon: ClipboardCheck,
+        preview: "https://images.pexels.com/photos/7843985/pexels-photo-7843985.jpeg",
+        previewAlt: "Fresh produce prepared for distribution",
+        previewCaption: "Standardized harvesting and handling",
+        actions: [
+            "Standardized harvesting and handling.",
+            "ASPs provide mechanization.",
+            "ALAs coordinate farmers and capture data in real time.",
+        ],
+    },
+    {
+        title: "Aggregate",
+        actors: "ASPs and ALAs",
+        icon: Boxes,
         preview: "https://images.pexels.com/photos/7513430/pexels-photo-7513430.jpeg",
-        previewAlt: "Rows of reusable produce crates and pallets inside a warehouse",
-        previewCaption: "Crate consolidation and batch identification",
+        previewAlt: "Produce crates organized in a warehouse",
+        previewCaption: "Crate-based collection and quality control",
         actions: [
-            "Union check-in verifies incoming produce and farmer records.",
-            "Harvest is consolidated into standardized 20–25 kg crates.",
-            "A unique QR or batch ID links every crate to its farmer.",
+            "Crate-based collection.",
+            "Quality control at collection.",
+            "Supply and demand are aggregated together.",
         ],
     },
     {
-        title: "Cold Logistics & Transit",
-        actors: "Cold truck drivers & logistics operators",
-        icon: Truck,
-        preview: "https://images.pexels.com/photos/12418935/pexels-photo-12418935.jpeg",
-        previewAlt: "Delivery truck ready for a produce shipment outside a warehouse",
-        previewCaption: "Temperature-controlled transit",
-        actions: [
-            "Produce is dispatched in temperature-controlled cold trucks.",
-            "Digital transfer events are recorded in the Bedebo App.",
-            "Custody is tracked throughout the journey.",
-        ],
-    },
-    {
-        title: "Warehousing & Storage",
-        actors: "Central warehouse managers",
+        title: "Cool",
+        actors: "Logistics and cold-chain partners",
         icon: Warehouse,
         preview: "https://images.pexels.com/photos/11114142/pexels-photo-11114142.jpeg",
-        previewAlt: "Storage bins organized in neat rows for warehouse inventory",
-        previewCaption: "Cold-room storage and live inventory",
+        previewAlt: "Organized storage inside a warehouse",
+        previewCaption: "Pre-cooling and cold storage",
         actions: [
-            "Crate counts and produce quality are checked at check-in.",
-            "Verified crates are held in cold room storage.",
-            "A real-time inventory ledger tracks available stock.",
+            "Pre-cooling after harvest.",
+            "Cold storage preserves freshness.",
+            "Less post-harvest loss.",
         ],
     },
     {
-        title: "Order Fulfillment & Final Delivery",
-        actors: "Fulfillment team & commercial vendors",
-        icon: PackageCheck,
-        preview: "https://images.pexels.com/photos/7843985/pexels-photo-7843985.jpeg",
-        previewAlt: "Delivery van loaded with produce crates ready for distribution",
-        previewCaption: "Verified delivery to commercial vendors",
+        title: "Move",
+        actors: "Logistics partners and BEDEBO",
+        icon: Truck,
+        preview: "https://images.pexels.com/photos/12418935/pexels-photo-12418935.jpeg",
+        previewAlt: "A delivery truck outside a warehouse",
+        previewCaption: "Coordinated, traceable movement",
         actions: [
-            "Purchase orders are allocated against cold room inventory.",
-            "Crate IDs are scanned at warehouse check-out.",
-            "An audit trail connects vendor shipment to the farmer’s harvest.",
+            "Coordinated transport.",
+            "Traceable movement from stage to stage.",
+            "Reliable delivery that protects quality.",
+        ],
+    },
+    {
+        title: "Grade",
+        actors: "BEDEBO and ASPs",
+        icon: Check,
+        preview: "https://images.pexels.com/photos/7513430/pexels-photo-7513430.jpeg",
+        previewAlt: "Produce crates ready for quality checks",
+        previewCaption: "Quality classification for the right market",
+        actions: [
+            "Products classified by quality.",
+            "Matched to buyer specifications.",
+            "Premium value for premium quality, and affordable channels for other acceptable grades.",
+        ],
+    },
+    {
+        title: "Connect",
+        actors: "BEDEBO",
+        icon: QrCode,
+        preview: "https://images.pexels.com/photos/11114142/pexels-photo-11114142.jpeg",
+        previewAlt: "Produce inventory organized for distribution",
+        previewCaption: "Digital market linkage and payment tracking",
+        actions: [
+            "Digital market linkage.",
+            "Transactions and payment tracking.",
+            "One platform links the commercial value chain.",
+        ],
+    },
+    {
+        title: "Deliver",
+        actors: "Market buyers and final customers",
+        icon: ShoppingBasket,
+        preview: "https://images.pexels.com/photos/7843985/pexels-photo-7843985.jpeg",
+        previewAlt: "Fresh produce ready to reach customers",
+        previewCaption: "Freshness, quality, safety, and value",
+        actions: [
+            "Reliable supply to the right customer.",
+            "Buyers set demand and give feedback.",
+            "Customers receive freshness, quality, safety, and value.",
         ],
     },
 ];
@@ -80,18 +118,18 @@ function TraceabilityStep({ step, index, active, currentStep, registerBadge }) {
 
     return (
         <div className="relative grid min-h-[420px] grid-cols-[3rem_minmax(0,1fr)] items-center gap-3 md:h-[420px] md:min-h-0 md:grid-cols-[minmax(0,1fr)_5rem_minmax(0,1fr)] md:gap-4">
-            <article className={`group relative z-10 col-start-2 row-start-1 flex h-[420px] flex-col rounded-2xl border p-5 shadow-[0_8px_28px_rgba(15,23,42,0.05)] transition-all duration-500 ease-out dark:bg-slate-900/90 sm:p-6 md:row-start-1 ${isLeft ? "md:col-start-1" : "md:col-start-3"} ${active ? "translate-x-0 border-[#3DB268] bg-white opacity-100 shadow-[0_12px_36px_rgba(61,178,104,0.12)] dark:border-[#3DB268]/80" : `${isLeft ? "md:-translate-x-8" : "md:translate-x-8"} border-slate-200 bg-white/80 opacity-45 dark:border-slate-800 dark:bg-slate-900/70`} motion-reduce:translate-x-0 motion-reduce:transition-none motion-reduce:opacity-100`}>
+            <article className={`group relative z-10 col-start-2 row-start-1 flex h-[420px] flex-col rounded-2xl border p-5 shadow-[0_8px_28px_rgba(15,23,42,0.05)] transition-all duration-500 ease-out hover:shadow-[0_16px_42px_rgba(61,178,104,0.2)] dark:bg-slate-900/90 sm:p-6 md:row-start-1 ${isLeft ? "md:col-start-1" : "md:col-start-3"} ${active ? "translate-x-0 border-[#3DB268] bg-white opacity-100 shadow-[0_12px_36px_rgba(61,178,104,0.12)] dark:border-[#3DB268]/80" : `${isLeft ? "md:-translate-x-8" : "md:translate-x-8"} border-slate-200 bg-white/80 opacity-45 dark:border-slate-800 dark:bg-slate-900/70`} motion-reduce:translate-x-0 motion-reduce:transition-none motion-reduce:opacity-100`}>
                 <div className="flex items-start justify-between gap-3">
-                    <span className={`text-4xl font-semibold leading-none tracking-tight transition-colors ${active ? "text-[#3DB268]" : "text-[#3DB268]/60"}`}>0{index + 1}</span>
-                    <span className="rounded-full bg-[#3DB268]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#267A47] dark:text-[#75D59A]">Step {index + 1}</span>
+                    <span className={`text-4xl font-semibold leading-none tracking-tight transition-colors ${active ? "text-[#3DB268]" : "text-[#3DB268]/60"}`}>{String(index + 1).padStart(2, "0")}</span>
+                    <span className="rounded-full bg-[#3DB268]/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#267A47] dark:text-[#75D59A]">STAGE</span>
                 </div>
-                <h3 className="mt-4 line-clamp-2 min-h-12 text-base font-semibold leading-6 sm:text-lg">{step.title}</h3>
-                <p className="mt-2 h-5 truncate text-[11px] leading-5 text-slate-500 dark:text-slate-400"><span className="font-semibold text-slate-700 dark:text-slate-300">Actors:</span> {step.actors}</p>
-                <ul className="mt-4 space-y-2.5">
+                <h3 className="mt-4 min-h-12 text-base font-semibold leading-6 sm:text-lg">{step.title}</h3>
+                <p className="mt-2 min-h-10 text-[11px] leading-5 text-slate-500 dark:text-slate-400"><span className="font-semibold text-slate-700 dark:text-slate-300">Actors:</span> {step.actors}</p>
+                <ul className="mt-3 space-y-2.5">
                     {step.actions.map((action) => (
                         <li key={action} className="flex gap-2 text-xs leading-5 text-slate-600 dark:text-slate-300">
                             <Check size={14} className="mt-0.5 shrink-0 text-[#3DB268]" strokeWidth={2.4} />
-                            <span className="line-clamp-2">{action}</span>
+                            <span>{action}</span>
                         </li>
                     ))}
                 </ul>
@@ -99,14 +137,14 @@ function TraceabilityStep({ step, index, active, currentStep, registerBadge }) {
                     <ImageIcon size={15} />
                     View sample
                 </span>
-                <div className="pointer-events-none absolute inset-0 z-20 hidden overflow-hidden rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
+                <div className="pointer-events-none absolute inset-0 z-20 hidden overflow-hidden rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block motion-reduce:transition-none">
                     <Image fill loading="lazy" sizes="(max-width: 1280px) 40vw, 32vw" className="object-cover" src={step.preview} alt={step.previewAlt} />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#14532d]/90 via-[#3DB268]/15 to-[#3DB268]/5" />
                     <p className="absolute bottom-5 left-5 right-5 rounded-xl border border-white/30 bg-white/15 px-4 py-3 text-sm font-semibold text-white shadow-lg backdrop-blur-md">{step.previewCaption}</p>
                 </div>
             </article>
-            <div ref={badgeRef} className={`relative z-20 col-start-1 row-start-1 flex size-12 items-center justify-center justify-self-center rounded-full border-2 transition-all duration-500 md:col-start-2 md:size-16 ${active ? "border-[#3DB268] bg-[#3DB268] text-white shadow-[0_0_0_8px_rgba(61,178,104,0.18),0_0_24px_rgba(61,178,104,0.5)]" : "border-[#3DB268]/60 bg-white text-[#267A47] shadow-[0_0_0_6px_rgba(61,178,104,0.08)] dark:bg-slate-950 dark:text-[#75D59A]"}`}>
-                {currentStep === index && <span className="absolute inset-0 rounded-full bg-[#3DB268]/40 motion-safe:animate-ping motion-reduce:animate-none" />}
+            <div ref={badgeRef} className={`relative z-20 col-start-1 row-start-1 flex size-12 items-center justify-center justify-self-center rounded-full border-2 transition-colors duration-500 md:col-start-2 md:size-16 ${active ? "border-[#3DB268] bg-[#3DB268] text-white shadow-[0_0_0_8px_rgba(61,178,104,0.18),0_0_24px_rgba(61,178,104,0.5)]" : "border-[#3DB268]/60 bg-white text-[#267A47] shadow-[0_0_0_6px_rgba(61,178,104,0.08)] dark:bg-slate-950 dark:text-[#75D59A]"}`}>
+                {currentStep === index && <span className="absolute inset-0 rounded-full bg-[#3DB268]/15" />}
                 <Icon className="relative z-10" size={26} strokeWidth={1.7} />
             </div>
         </div>
@@ -228,9 +266,8 @@ export default function Traceability() {
     }, [reducedMotion]);
 
     return (
-        <section id="traceability" aria-labelledby="traceability-title" className="scroll-mt-24 px-6 pb-20 md:px-10 lg:px-16">
-            <SectionTitle label="TRACEABILITY" title="Traceability & Value" highlight="Chain" description="From farm to vendor, every crate is tracked, verified, and traceable." headingId="traceability-title" />
-            <div ref={timelineRef} className="relative mx-auto mt-14 max-w-6xl">
+        <div id="traceability" className="scroll-mt-24">
+            <div ref={timelineRef} className="relative mx-auto mt-10 max-w-6xl">
                 <div ref={mobilePathRef} aria-hidden="true" className="absolute left-[23px] z-0 w-[3px] rounded-full md:hidden" />
                 <div ref={mobilePackageRef} aria-hidden="true" className="absolute left-[1px] z-10 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_18px_rgba(61,178,104,0.75)] md:hidden">
                     <Package size={22} strokeWidth={1.8} />
@@ -264,8 +301,8 @@ export default function Traceability() {
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#3DB268]/15 text-[#267A47] dark:text-[#75D59A]">
                     <Check size={22} strokeWidth={2.5} />
                 </span>
-                <p className="text-sm leading-6 text-slate-700 dark:text-slate-200 sm:text-base"><span className="font-semibold text-[#267A47] dark:text-[#75D59A]">End-to-End Visibility:</span> from vendor shipment back to the individual farmer&apos;s harvest.</p>
+                <p className="text-sm leading-6 text-slate-700 dark:text-slate-200 sm:text-base"><span className="font-semibold text-[#267A47] dark:text-[#75D59A]">End-to-End Visibility:</span> from production through delivery, every stage is connected.</p>
             </div>
-        </section>
+        </div>
     );
 }

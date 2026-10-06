@@ -564,7 +564,7 @@ button {
 }
 
 .qr-scan-line {
-    animation: qr-scan 2.4s ease-in-out both;
+    animation: qr-scan 1s ease-in-out both;
 }
 
 @keyframes qr-scan {

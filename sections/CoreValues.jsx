@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, MapPin, Package, ShieldCheck, ShoppingBasket, Sprout, Store, Truck, Warehouse, Boxes, CalendarClock, Snowflake, Thermometer } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, Package, ShieldCheck, Truck, Warehouse, CalendarClock, Snowflake, Thermometer, Target, FileText, Share2, Smartphone } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import Traceability from "@/sections/Traceability";
+
+const tabIcons = [Share2, Smartphone, Snowflake, ShieldCheck];
 
 const tabItems = [
     { label: "Value chain integration", role: "The partnership layer", points: ["Eight connected stages", "Clear roles across the chain", "Quality protected from farm to market"], tone: "green" },
@@ -13,21 +15,21 @@ const tabItems = [
 ];
 
 const values = [
-    { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "Protect quality through production, handling, storage, and delivery.", color: "#3DB268" },
-    { title: "Farm-to-Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "Keep origin and movement visible from the farm through the market.", color: "#3986D2" },
-    { title: "Freshness & Post-Harvest Loss Reduction", quote: "Protect more of what farmers produce.", detail: "Project target based on an illustrative case.", color: "#13A7A1", metrics: true },
-    { title: "Digital Market Connection", quote: "Connecting the right product to the right buyer at the right time.", detail: "Bring product, demand, logistics, and market partners together digitally.", color: "#8463D9" },
-    { title: "Fair & Transparent Value", quote: "Quality determines value, and value should be visible across the chain.", detail: "Make quality and value visible to the actors who contribute at every stage.", color: "#D18A2E" },
-    { title: "Reliable & Shared Growth", quote: "A stronger value chain must create value for every critical actor.", detail: "BEDEBO combines coordination and market connection to support shared growth.", color: "#D26170" },
+    { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "BEDEBO builds quality into the entire horticultural journey rather than inspecting it only when products reach the market.", color: "#27965a" },
+    { title: "Farm-to-Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "Make the horticultural value chain visible and accountable from production through final market delivery.", color: "#6b4fd8" },
+    { title: "Freshness & Post-Harvest Loss Reduction", quote: "Protect more of what farmers produce.", detail: "An illustrative project target is reducing farm-to-consumer losses from 46% to 23%, with 77 kg rather than 54 kg reaching consumers per 100 kg.", color: "#0e93a8", metrics: true },
+    { title: "Digital Market Connection", quote: "Connecting the right product to the right buyer at the right time.", detail: "Integrate physical horticultural supply with digital market coordination.", color: "#2f6fed" },
+    { title: "Fair & Transparent Value", quote: "Quality determines value, and value should be visible across the chain.", detail: "Support premium value for premium quality and appropriate, affordable channels for other commercially acceptable grades.", color: "#d9822b" },
+    { title: "Reliable & Shared Growth", quote: "A stronger value chain must create value for every critical actor.", detail: "BEDEBO combines physical service infrastructure and standards with digital coordination and market linkage to support shared growth across critical actors.", color: "#c2477a" },
 ];
 
 const crops = [
-    { name: "Tomato (Mature Green)", min: 13, max: 15, humidity: "85% to 90%", note: "Chilling sensitive. Never drop below 10°C to avoid flavor loss and pitting. Highly ethylene-producing.", fahrenheit: "55°F to 60°F" },
-    { name: "Onion (Cured/Dry)", min: 0, max: 1, humidity: "65% to 70%", note: "Keep cured bulbs dry and provide good airflow." },
-    { name: "Cabbage", min: 0, max: 1, humidity: "95% to 100%", note: "Keep heads intact and minimize handling." },
-    { name: "Papaya", min: 10, max: 13, humidity: "90% to 95%", note: "Use the warmer end for green, mature fruit." },
-    { name: "Pepper", min: 7, max: 10, humidity: "95% to 98%", note: "Avoid prolonged exposure below the recommended range." },
-    { name: "Green Bean", min: 5, max: 7.5, humidity: "95% to 100%", note: "Cool quickly and minimize moisture loss." },
+    { name: "Tomato (Mature Green)", min: 13, max: 15, humidity: "85% to 90%", note: "Chilling sensitive. Never drop below 10°C to avoid flavor loss and pitting. Highly ethylene-producing.", fahrenheit: "55°F to 60°F", stages: [26, 15, 14, 14, 14] },
+    { name: "Onion (Cured/Dry)", min: 0, max: 2, humidity: "65% to 70%", note: "Low humidity exception. High humidity triggers root sprouting and rot. Keep separate due to strong odors.", fahrenheit: "32°F to 36°F", stages: [26, 2, 1, 1, 1] },
+    { name: "Cabbage", min: 0, max: 2, humidity: "95% to 100%", note: "Hardy crop but highly sensitive to ethylene gas, which causes yellowing and leaf drop.", fahrenheit: "32°F to 36°F", stages: [24, 2, 1, 1, 1] },
+    { name: "Papaya", min: 7, max: 10, humidity: "85% to 90%", note: "Tropical fruit. Susceptible to chilling injury if kept at standard vegetable temperatures below 7°C.", fahrenheit: "45°F to 50°F", stages: [27, 9, 8, 8, 8] },
+    { name: "Pepper (Bell/Chili)", min: 7, max: 10, humidity: "90% to 95%", note: "Shrivelling occurs quickly if humidity drops. Do not store with ethylene producers.", fahrenheit: "45°F to 50°F", stages: [26, 9, 8, 8, 8] },
+    { name: "Green Bean", min: 5, max: 7.5, humidity: "90% to 95%", note: "Sensitive to chilling injury below 4°C, which causes rusty brown spots. Highly perishable.", fahrenheit: "41°F to 45°F", stages: [25, 7, 6, 6, 6] },
 ];
 
 const platforms = [
@@ -184,7 +186,7 @@ function FreshnessTab() {
     const [auto, setAuto] = useState(false);
     const crop = crops[selectedCrop];
     const stageNames = ["Farm", "Aggregation", "Cold transit", "Warehouse", "Delivery"];
-    const temperatures = [27, (crop.min + crop.max) / 2, crop.min, (crop.min + crop.max) / 2, (crop.min + crop.max) / 2];
+    const temperatures = crop.stages;
     const yPositions = temperatures.map((temperature) => 186 - temperature * 4);
     const bandHeight = Math.max((crop.max - crop.min) * 4, 22);
     const bandY = 186 - ((crop.min + crop.max) / 2) * 4 - bandHeight / 2;
@@ -369,10 +371,22 @@ export default function CoreValues() {
     const [activeTab, setActiveTab] = useState(0);
     const [activeValue, setActiveValue] = useState(0);
     const [brandPhrase, setBrandPhrase] = useState(0);
+    const [tabPill, setTabPill] = useState({ left: 5, width: 0 });
     const touchStart = useRef(null);
     const tabRefs = useRef([]);
+    const tabColors = ["#27965a", "#2f6fed", "#0e93a8", "#6b4fd8"];
     const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
     const selectTab = (index) => setActiveTab((index + tabItems.length) % tabItems.length);
+
+    useEffect(() => {
+        const updatePill = () => {
+            const tab = tabRefs.current[activeTab];
+            if (tab) setTabPill({ left: tab.offsetLeft, width: tab.offsetWidth });
+        };
+        updatePill();
+        window.addEventListener("resize", updatePill);
+        return () => window.removeEventListener("resize", updatePill);
+    }, [activeTab]);
 
     const handleTabKeyDown = (event) => {
         let nextTab = activeTab;
@@ -398,54 +412,64 @@ export default function CoreValues() {
     return (
         <section id="core-values" aria-labelledby="core-values-title" className="scroll-mt-24 px-6 pb-20 md:px-10 lg:px-16">
             <SectionTitle label="CORE VALUES" title="Our Core" highlight="Values" headingId="core-values-title" />
-            <div className="mx-auto mt-10 max-w-6xl">
-                <div className="grid items-stretch gap-5 md:grid-cols-2">
-                    <article className="flex min-h-[236px] flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-7">
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#267A47] dark:text-[#75D59A]">Objective</p>
-                        <p className="mt-4 text-sm leading-7 text-slate-700 dark:text-slate-300">To build a digitally integrated, quality-driven and market-connected horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
+            <div className="mx-auto mt-10 max-w-[1040px]">
+                <div className="grid items-stretch gap-4 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+                    <article className="relative flex min-h-[250px] flex-col justify-center overflow-hidden rounded-3xl bg-gradient-to-br from-[#23a062] to-[#17613f] p-6 text-white sm:p-8">
+                        <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 size-52 rounded-full border border-white/20" />
+                        <span aria-hidden="true" className="pointer-events-none absolute -right-7 -top-7 size-32 rounded-full border border-white/20" />
+                        <span className="relative mb-4 flex size-11 items-center justify-center rounded-xl bg-white/15"><Target size={23} aria-hidden="true" /></span>
+                        <h3 className="relative text-xl font-semibold">Objective</h3>
+                        <p className="relative mt-2 text-sm leading-6 text-white/95">To build a <strong className="border-b-2 border-white/40">digitally integrated</strong>, <strong className="border-b-2 border-white/40">quality-driven</strong> and <strong className="border-b-2 border-white/40">market-connected</strong> horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
                     </article>
-                    <article className="flex min-h-[236px] flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-7">
-                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#267A47] dark:text-[#75D59A]">Executive Summary</p>
-                        <div className="mt-4 flex flex-wrap gap-x-1.5 gap-y-1 text-base font-semibold leading-7 text-slate-800 dark:text-slate-100" aria-live="polite" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared.">
-                            {phraseParts.map((phrase, index) => <span key={phrase} className={`rounded px-1 transition-colors duration-700 ${brandPhrase === index ? "bg-[#3DB268]/15 text-[#267A47] dark:text-[#75D59A]" : "text-slate-500 dark:text-slate-400"}`}>{phrase}</span>)}
+                    <article className="flex min-h-[250px] flex-col rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+                        <span className="mb-4 flex size-11 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400"><FileText size={23} aria-hidden="true" /></span>
+                        <h3 className="text-xl font-semibold">Executive Summary</h3>
+                        <div className="mt-3 rounded-r-xl border-l-4 border-[#27965a] bg-[#27965a]/[0.08] px-4 py-2.5" role="group" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared.">
+                            {phraseParts.map((phrase, index) => <button key={phrase} type="button" aria-pressed={brandPhrase === index} onClick={() => setBrandPhrase(index)} className={`block text-left text-sm font-semibold leading-6 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${brandPhrase === index ? "opacity-100" : "opacity-45"}`} style={{ color: ["#1f8a52", "#6b4fd8", "#2f6fed", "#c27a14"][index] }}>{phrase}</button>)}
                         </div>
-                        <button type="button" onClick={() => setBrandPhrase((current) => (current + 1) % phraseParts.length)} className="mt-2 self-start text-xs font-medium text-[#267A47] underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:text-[#75D59A]">Highlight next phrase</button>
                         <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
                     </article>
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2" aria-label="Crops">
-                    {["Tomato", "Onion", "Cabbage", "Papaya", "Pepper", "Green Bean"].map((crop) => <span key={crop} className="rounded-full border border-[#3DB268]/20 bg-[#3DB268]/[0.06] px-3 py-1.5 text-xs font-medium text-slate-600 dark:border-[#3DB268]/30 dark:bg-[#3DB268]/[0.1] dark:text-slate-300">{crop}</span>)}
+                    {["Tomato", "Onion", "Cabbage", "Papaya", "Pepper", "Green Bean"].map((crop) => <span key={crop} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">{crop}</span>)}
                 </div>
             </div>
 
-            <div className="mx-auto mt-12 max-w-6xl">
-                <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-                    <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#267A47] dark:text-[#75D59A]">What guides us</p><h3 className="mt-2 text-2xl font-semibold">Six values, one connected chain</h3></div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Select a dot or swipe to explore</p>
+            <div className="mx-auto mt-12 max-w-[1040px]">
+                <div className="mb-4 text-center">
+                    <h3 className="text-2xl font-semibold">Six values that guide us</h3>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Use the dots to move back and forth.</p>
                 </div>
-                <article className="relative min-h-[280px] overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:min-h-[240px] sm:p-8" style={{ borderTop: `4px solid ${value.color}` }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
-                    <div className="flex min-h-[190px] flex-col justify-between gap-6 sm:flex-row sm:items-center">
-                        <div className="max-w-3xl">
-                            <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: value.color }}>Value {String(activeValue + 1).padStart(2, "0")} / 06</p>
-                            <h4 className="mt-3 text-xl font-semibold text-slate-800 dark:text-white sm:text-2xl">{value.title}</h4>
-                            <blockquote className="mt-3 text-lg font-medium leading-7 text-slate-700 dark:text-slate-200">“{value.quote}”</blockquote>
-                            <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">{value.detail}</p>
-                            {value.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs font-semibold text-slate-700 dark:text-slate-200"><span className="rounded-lg bg-slate-100 px-3 py-2 dark:bg-slate-800">46% to 23% farm-to-consumer losses</span><span className="rounded-lg bg-slate-100 px-3 py-2 dark:bg-slate-800">54 kg to 77 kg reaching consumers per 100 kg</span><span className="basis-full text-[11px] font-normal text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
+                <article className="relative min-h-[300px] overflow-hidden rounded-[26px] border border-slate-200 bg-white p-6 shadow-sm after:pointer-events-none after:absolute after:-bottom-16 after:-right-16 after:size-52 after:rounded-full after:bg-[var(--value-soft)] dark:border-slate-800 dark:bg-slate-900 sm:min-h-[270px] sm:p-8" style={{ borderTop: `5px solid ${value.color}`, "--value-color": value.color, "--value-soft": `${value.color}1a` }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
+                    <div className="relative z-10 flex min-h-[210px] flex-col justify-between gap-6 sm:min-h-[205px]">
+                        <div>
+                            <div className="mb-4 flex items-center gap-3">
+                                <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: value.color }}>{activeValue + 1}</span>
+                                <span className="text-xs text-slate-500 dark:text-slate-400">Core value {activeValue + 1} of 6</span>
+                            </div>
+                            <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-2xl">{value.title}</h4>
+                            <blockquote className="mt-2 text-base font-medium italic leading-6" style={{ color: value.color }}>“{value.quote}”</blockquote>
+                            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">{value.detail}</p>
+                            {value.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-700 dark:text-slate-200"><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${value.color}1a` }}><strong className="block text-lg" style={{ color: value.color }}>46% → 23%</strong><span className="text-slate-500 dark:text-slate-400">farm-to-consumer losses</span></span><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${value.color}1a` }}><strong className="block text-lg" style={{ color: value.color }}>54 kg → 77 kg</strong><span className="text-slate-500 dark:text-slate-400">reaching consumers per 100 kg</span></span><span className="basis-full text-[11px] text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
                         </div>
-                        <div className="flex shrink-0 items-center gap-2 self-end sm:self-center">
-                            <button type="button" onClick={() => moveValue(-1)} aria-label="Previous value" className="flex size-10 items-center justify-center rounded-full border border-slate-200 text-slate-700 hover:border-[#3DB268] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-200"><ArrowLeft size={18} /></button>
-                            <button type="button" onClick={() => moveValue(1)} aria-label="Next value" className="flex size-10 items-center justify-center rounded-full border border-slate-200 text-slate-700 hover:border-[#3DB268] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-200"><ArrowRight size={18} /></button>
+                        <div className="flex items-center justify-end gap-2">
+                            <button type="button" onClick={() => moveValue(-1)} aria-label="Previous value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowLeft size={17} /></button>
+                            <button type="button" onClick={() => moveValue(1)} aria-label="Next value" className="flex size-9 items-center justify-center rounded-xl border border-slate-200 text-slate-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:text-slate-300"><ArrowRight size={17} /></button>
                         </div>
                     </div>
                 </article>
                 <div className="mt-4 flex justify-center gap-2" role="group" aria-label="Choose a core value">
-                    {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show value ${index + 1}: ${item.title}`} aria-pressed={activeValue === index} onClick={() => setActiveValue(index)} className={`h-2.5 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-8" : "w-2.5 bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: item.color } : undefined} />)}
+                    {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show core value ${index + 1}: ${item.title}`} aria-pressed={activeValue === index} onClick={() => setActiveValue(index)} className={`size-2.5 rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-11" : "w-2.5 bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: item.color } : undefined}><span className="sr-only">{item.title}</span></button>)}
                 </div>
             </div>
 
             <div className="mx-auto mt-16 max-w-6xl">
-                <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="-mx-2 mb-6 flex gap-2 overflow-x-auto px-2 pb-2" onKeyDown={handleTabKeyDown}>
-                    {tabItems.map((item, index) => <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`shrink-0 rounded-full border px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "border-[#3DB268] bg-[#3DB268] text-white" : "border-slate-200 bg-white text-slate-600 hover:border-[#3DB268]/60 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"}`}>{item.label}</button>)}
+                <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="relative mx-auto mb-6 flex w-full max-w-[880px] gap-1 overflow-x-auto rounded-[18px] border border-slate-200 bg-white p-[5px] dark:border-slate-800 dark:bg-slate-900" onKeyDown={handleTabKeyDown}>
+                    <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColors[activeTab] }} />
+                    {tabItems.map((item, index) => {
+                        const Icon = tabIcons[index];
+                        return <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`relative z-10 flex min-w-max flex-1 items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "text-white" : "text-slate-600 dark:text-slate-300"}`}><Icon size={18} aria-hidden="true" />{item.label}</button>;
+                    })}
                 </div>
                 <div id={`core-panel-${activeTab}`} role="tabpanel" aria-labelledby={`core-tab-${activeTab}`} tabIndex={0} className="min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#27965a]">
                     <IntroCard item={tabItems[activeTab]} />

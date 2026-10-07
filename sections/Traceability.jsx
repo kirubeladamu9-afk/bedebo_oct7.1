@@ -89,8 +89,15 @@ export default function Traceability() {
     const activeStepRef = useRef(-1);
     const [activeStep, setActiveStep] = useState(-1);
     const [reducedMotion, setReducedMotion] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const registerBadge = useCallback((index, node) => {
         badgeRefs.current[index] = node;
+    }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { rootMargin: "100px" });
+        if (timelineRef.current) observer.observe(timelineRef.current);
+        return () => observer.disconnect();
     }, []);
 
     useEffect(() => {
@@ -102,11 +109,57 @@ export default function Traceability() {
     }, []);
 
     useEffect(() => {
+        if (!isVisible) return undefined;
         const path = pathRef.current;
         const trackPath = trackPathRef.current;
         let frame = 0;
+        let layout = { points: [], pathLength: 0, mobileStart: 0, mobileLength: 0, desktop: false };
+
         const updateProgress = () => {
             frame = 0;
+            const bounds = timelineRef.current?.getBoundingClientRect();
+            if (!bounds) return;
+            const progress = reducedMotion
+                ? 1
+                : Math.max(0, Math.min(1, (window.innerHeight * 0.7 - bounds.top) / (bounds.height + window.innerHeight * 0.4)));
+            const markerPoint = path && layout.pathLength ? path.getPointAtLength(layout.pathLength * progress) : null;
+            const nearestStep = markerPoint && layout.points.length
+                ? layout.points.reduce((nearest, point, index) => {
+                    const distance = Math.hypot(markerPoint.x - point.x, markerPoint.y - point.y);
+                    return distance < nearest.distance ? { index, distance } : nearest;
+                }, { index: -1, distance: Infinity }).index
+                : Math.min(traceabilitySteps.length - 1, Math.floor(progress * traceabilitySteps.length + 0.5) - 1);
+            const nextActiveStep = progress === 0 ? -1 : nearestStep;
+            if (activeStepRef.current !== nextActiveStep) {
+                activeStepRef.current = nextActiveStep;
+                setActiveStep(nextActiveStep);
+            }
+
+            if (path && layout.pathLength) {
+                path.style.strokeDashoffset = `${layout.pathLength * (1 - progress)}`;
+                if (layout.desktop && markerPoint && desktopPackageRef.current) {
+                    desktopPackageRef.current.style.transform = `translate3d(${markerPoint.x}px, ${markerPoint.y}px, 0) translate(-50%, -50%)`;
+                    desktopPackageRef.current.style.opacity = reducedMotion || progress === 0 ? "0" : "1";
+                }
+            }
+            if (mobilePathRef.current) {
+                mobilePathRef.current.style.background = `linear-gradient(to bottom, #3DB268 0%, #3DB268 ${progress * 100}%, rgba(61,178,104,0.2) ${progress * 100}%, rgba(61,178,104,0.2) 100%)`;
+                if (mobilePackageRef.current) {
+                    mobilePackageRef.current.style.transform = `translate3d(0, ${layout.mobileStart + layout.mobileLength * progress}px, 0) translateY(-50%)`;
+                    mobilePackageRef.current.classList.toggle("hidden", reducedMotion || progress === 0);
+                }
+            }
+            [0.2, 0.4, 0.6, 0.8].forEach((position, index) => {
+                const arrow = desktopArrowRefs.current[index];
+                if (arrow) arrow.style.opacity = progress >= position ? "1" : "0.2";
+            });
+            [0.25, 0.5, 0.75].forEach((position, index) => {
+                const arrow = mobileArrowRefs.current[index];
+                if (arrow) arrow.style.opacity = progress >= position ? "0.9" : "0.2";
+            });
+        };
+
+        const updateGeometry = () => {
             const timeline = timelineRef.current;
             const bounds = timeline?.getBoundingClientRect();
             if (!bounds) return;
@@ -129,92 +182,69 @@ export default function Traceability() {
             }
             const pathLength = path?.getTotalLength() ?? 0;
             if (path && pathLength) path.style.strokeDasharray = `${pathLength}`;
-            const viewportHeight = window.innerHeight;
-            const progress = reducedMotion
-                ? 1
-                : Math.max(0, Math.min(1, (viewportHeight * 0.7 - bounds.top) / (bounds.height + viewportHeight * 0.4)));
+            const firstBadge = badgeRefs.current[0]?.getBoundingClientRect();
+            const lastBadge = badgeRefs.current[traceabilitySteps.length - 1]?.getBoundingClientRect();
+            const mobileStart = firstBadge ? firstBadge.top + firstBadge.height / 2 - bounds.top : 0;
+            const mobileEnd = lastBadge ? lastBadge.top + lastBadge.height / 2 - bounds.top : mobileStart;
+            const desktop = window.matchMedia("(min-width: 768px)").matches;
+            layout = { points, pathLength, mobileStart, mobileLength: Math.max(0, mobileEnd - mobileStart), desktop };
 
-            const markerPoint = path && pathLength ? path.getPointAtLength(pathLength * progress) : null;
-            const nearestStep = markerPoint && points.length
-                ? points.reduce((nearest, point, index) => {
-                    const distance = Math.hypot(markerPoint.x - point.x, markerPoint.y - point.y);
-                    return distance < nearest.distance ? { index, distance } : nearest;
-                }, { index: -1, distance: Infinity }).index
-                : Math.min(traceabilitySteps.length - 1, Math.floor(progress * traceabilitySteps.length + 0.5) - 1);
-            const nextActiveStep = progress === 0 ? -1 : nearestStep;
-            if (activeStepRef.current !== nextActiveStep) {
-                activeStepRef.current = nextActiveStep;
-                setActiveStep(nextActiveStep);
-            }
-
-            if (path && pathLength) {
-                path.style.strokeDashoffset = `${pathLength * (1 - progress)}`;
-                if (bounds && window.matchMedia("(min-width: 768px)").matches) {
-                    const matrix = path.getScreenCTM();
-                    if (matrix) {
-                        const point = path.getPointAtLength(pathLength * progress).matrixTransform(matrix);
-                        if (desktopPackageRef.current) {
-                            desktopPackageRef.current.style.left = `${point.x - bounds.left}px`;
-                            desktopPackageRef.current.style.top = `${point.y - bounds.top}px`;
-                            desktopPackageRef.current.style.opacity = reducedMotion || progress === 0 ? "0" : "1";
-                        }
-                        [0.2, 0.4, 0.6, 0.8].forEach((position, index) => {
-                            const arrow = desktopArrowRefs.current[index];
-                            if (!arrow) return;
-                            const arrowPoint = path.getPointAtLength(pathLength * position).matrixTransform(matrix);
-                            const nextPoint = path.getPointAtLength(Math.min(pathLength, pathLength * position + 1)).matrixTransform(matrix);
-                            const angle = Math.atan2(nextPoint.y - arrowPoint.y, nextPoint.x - arrowPoint.x) * 180 / Math.PI;
-                            arrow.style.left = `${arrowPoint.x - bounds.left}px`;
-                            arrow.style.top = `${arrowPoint.y - bounds.top}px`;
-                            arrow.style.transform = `translate(-50%, -50%) rotate(${angle - 90}deg)`;
-                            arrow.style.opacity = progress >= position ? "1" : "0.2";
-                        });
-                    }
+            if (desktop && path && pathLength) {
+                [0.2, 0.4, 0.6, 0.8].forEach((position, index) => {
+                    const arrow = desktopArrowRefs.current[index];
+                    if (!arrow) return;
+                    const arrowPoint = path.getPointAtLength(pathLength * position);
+                    const nextPoint = path.getPointAtLength(Math.min(pathLength, pathLength * position + 1));
+                    const angle = Math.atan2(nextPoint.y - arrowPoint.y, nextPoint.x - arrowPoint.x) * 180 / Math.PI;
+                    arrow.style.left = "0px";
+                    arrow.style.top = "0px";
+                    arrow.style.transform = `translate3d(${arrowPoint.x}px, ${arrowPoint.y}px, 0) translate(-50%, -50%) rotate(${angle - 90}deg)`;
+                });
+                if (desktopPackageRef.current) {
+                    desktopPackageRef.current.style.left = "0px";
+                    desktopPackageRef.current.style.top = "0px";
                 }
             }
-
-            if (bounds && mobilePathRef.current && badgeRefs.current.length) {
-                const firstBadge = badgeRefs.current[0]?.getBoundingClientRect();
-                const lastBadge = badgeRefs.current[traceabilitySteps.length - 1]?.getBoundingClientRect();
-                if (firstBadge && lastBadge) {
-                    const start = firstBadge.top + firstBadge.height / 2 - bounds.top;
-                    const end = lastBadge.top + lastBadge.height / 2 - bounds.top;
-                    const length = Math.max(0, end - start);
-                    mobilePathRef.current.style.top = `${start}px`;
-                    mobilePathRef.current.style.height = `${length}px`;
-                    mobilePathRef.current.style.background = `linear-gradient(to bottom, #3DB268 0%, #3DB268 ${progress * 100}%, rgba(61,178,104,0.2) ${progress * 100}%, rgba(61,178,104,0.2) 100%)`;
-                    if (mobilePackageRef.current) {
-                        mobilePackageRef.current.style.top = `${start + length * progress}px`;
-                        mobilePackageRef.current.classList.toggle("hidden", reducedMotion || progress === 0);
-                    }
-                    [0.25, 0.5, 0.75].forEach((position, index) => {
-                        const arrow = mobileArrowRefs.current[index];
-                        if (!arrow) return;
-                        arrow.style.top = `${start + length * position}px`;
-                        arrow.style.opacity = progress >= position ? "0.9" : "0.2";
-                    });
-                }
+            if (mobilePathRef.current) {
+                mobilePathRef.current.style.top = `${mobileStart}px`;
+                mobilePathRef.current.style.height = `${layout.mobileLength}px`;
             }
+            [0.25, 0.5, 0.75].forEach((position, index) => {
+                const arrow = mobileArrowRefs.current[index];
+                if (arrow) {
+                    arrow.style.top = "0px";
+                    arrow.style.transform = `translate3d(0, ${mobileStart + layout.mobileLength * position}px, 0) translateY(-50%)`;
+                }
+            });
+            if (mobilePackageRef.current) mobilePackageRef.current.style.top = "0px";
         };
+
         const scheduleProgress = () => {
             if (!frame) frame = window.requestAnimationFrame(updateProgress);
         };
+        const scheduleGeometry = () => {
+            if (!frame) frame = window.requestAnimationFrame(() => {
+                updateGeometry();
+                updateProgress();
+            });
+        };
 
+        updateGeometry();
         updateProgress();
-        if (reducedMotion) return () => window.cancelAnimationFrame(frame);
+        if (reducedMotion) return undefined;
 
         window.addEventListener("scroll", scheduleProgress, { passive: true });
-        window.addEventListener("resize", scheduleProgress);
-        const resizeObserver = new ResizeObserver(scheduleProgress);
+        window.addEventListener("resize", scheduleGeometry);
+        const resizeObserver = new ResizeObserver(scheduleGeometry);
         if (timelineRef.current) resizeObserver.observe(timelineRef.current);
 
         return () => {
             window.cancelAnimationFrame(frame);
             window.removeEventListener("scroll", scheduleProgress);
-            window.removeEventListener("resize", scheduleProgress);
+            window.removeEventListener("resize", scheduleGeometry);
             resizeObserver.disconnect();
         };
-    }, [reducedMotion]);
+    }, [isVisible, reducedMotion]);
 
     return (
         <div id="traceability" className="scroll-mt-24">

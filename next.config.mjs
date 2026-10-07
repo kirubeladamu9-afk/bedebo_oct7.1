@@ -7,7 +7,7 @@ const nextConfig = {
                 hostname: "**",
             },
         ],
-        unoptimized: true,
+        formats: ["image/avif", "image/webp"],
     },
 };
 

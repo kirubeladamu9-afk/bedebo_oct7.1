@@ -71,7 +71,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 7rem;
+    margin-top: clamp(4rem, 6vw, 5.5rem);
     text-align: left;
     opacity: 0;
     transform: translateY(16px);
@@ -108,10 +108,10 @@ html {
 .section-header-title {
     margin: 16px 0 0;
     color: #1e2841;
-    font-size: clamp(2rem, 3.4vw, 3rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
+    font-size: clamp(2rem, 3.3vw, 3rem);
+    font-weight: 600;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
 }
 
 .section-header-title span {
@@ -126,8 +126,8 @@ html {
     max-width: 42rem;
     margin-top: 12px;
     color: #5f6b7e;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: clamp(0.9375rem, 1vw, 1rem);
+    line-height: 1.65;
 }
 
 .about-description {
@@ -226,7 +226,7 @@ html {
 }
 
 body {
-    @apply bg-white text-slate-800 dark:bg-gray-950 dark:text-white text-sm font-poppins antialiased;
+    @apply bg-white text-slate-800 dark:bg-gray-950 dark:text-white text-base font-poppins antialiased;
     transition: background-color 300ms ease, color 300ms ease;
 }
 
@@ -294,10 +294,10 @@ button {
     margin: 0;
     color: var(--hero-heading-color);
     transition: color 300ms ease;
-    font-size: clamp(2rem, 3.3vw, 4rem);
+    font-size: clamp(2.125rem, 3.8vw, 3.75rem);
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: 0;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
 }
 
 .bedebo-hero-heading span {
@@ -307,12 +307,12 @@ button {
 
 .bedebo-hero-subheadline {
     max-width: none;
-    margin: 28px 0 0;
+    margin: 24px 0 0;
     color: var(--hero-subheadline-color);
     transition: color 300ms ease;
-    font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+    font-size: clamp(0.95rem, 1.1vw, 1.125rem);
     font-weight: 500;
-    line-height: 1.45;
+    line-height: 1.55;
     white-space: normal;
 }
 
@@ -324,30 +324,30 @@ button {
 }
 
 .bedebo-hero-copy {
-    max-width: 35vw;
-    margin: 20px 0 0;
+    max-width: min(38rem, 42vw);
+    margin: 18px 0 0;
     color: var(--hero-copy-color);
     transition: color 300ms ease;
     font-size: clamp(1rem, 1vw, 1.2rem);
     font-weight: 400;
-    line-height: 1.6;
-    letter-spacing: 0.01em;
+    line-height: 1.65;
+    letter-spacing: 0;
 }
 
 .bedebo-hero-button {
     display: inline-flex;
-    height: 57px;
+    height: 54px;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    margin-top: 30px;
-    padding: 0 30px;
+    margin-top: 26px;
+    padding: 0 28px;
     border: 0;
     border-radius: 10px;
     background: var(--hero-button-background);
     color: var(--hero-button-text);
-    font-size: 1.1rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     transition: background 300ms ease, color 300ms ease, transform 180ms ease;
 }
 
@@ -395,7 +395,7 @@ button {
     }
 
     .bedebo-hero-heading {
-        font-size: clamp(2rem, 5.2vw, 3.25rem);
+        font-size: clamp(2rem, 5vw, 3.125rem);
     }
 
     .bedebo-hero-subheadline,
@@ -419,7 +419,7 @@ button {
     }
 
     .bedebo-hero-heading {
-        font-size: clamp(2rem, 8vw, 2.5rem);
+        font-size: clamp(2rem, 8vw, 2.375rem);
     }
 
     .bedebo-hero-button {
@@ -558,7 +558,7 @@ button {
 }
 
 .qr-scan-line {
-    animation: qr-scan 560ms ease-in-out 5 forwards;
+    animation: qr-scan 1.2s ease-in-out 5 forwards;
 }
 
 @keyframes qr-scan {
@@ -582,7 +582,8 @@ button {
 }
 
 .core-values-carousel:hover .core-value-progress,
-.core-values-carousel:focus-within .core-value-progress {
+.core-values-carousel:focus-within .core-value-progress,
+.core-values-carousel:not(.is-in-view) .core-value-progress {
     animation-play-state: paused;
 }
 

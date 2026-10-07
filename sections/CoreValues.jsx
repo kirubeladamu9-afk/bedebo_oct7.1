@@ -15,6 +15,9 @@ const tabItems = [
     { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "green" },
 ];
 
+const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
+const phraseColors = ["#27965a", "#6b4fd8", "#2f6fed", "#c27a14"];
+
 const values = [
     { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "BEDEBO's first core value is to build quality into the entire horticultural journey rather than inspect quality only when products reach the market.", color: "#27965a" },
     { title: "Farm to Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "BEDEBO seeks to make the horticultural value chain visible and accountable from production through final market delivery.", color: "#27965a" },
@@ -113,7 +116,7 @@ function IntroCard({ item }) {
                     <span className="grid size-12 shrink-0 place-items-center rounded-[14px] bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><Icon size={25} aria-hidden="true" /></span>
                     <div className="min-w-0">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{item.title}</h3>
-                        <p className="mt-1 max-w-4xl text-[13px] leading-5 text-slate-600 dark:text-slate-300 sm:text-sm sm:leading-6">{item.description}</p>
+                        <p className="mt-1 max-w-4xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base">{item.description}</p>
                         <ul className="mt-3 flex flex-wrap gap-1.5">
                             {item.points.map((point) => <li key={point} className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${Chip}`}><span aria-hidden="true" className="size-1.5 rounded-full bg-current opacity-70" />{point}</li>)}
                         </ul>
@@ -249,7 +252,7 @@ function QualityTrace() {
             setTraceRunning(false);
             return undefined;
         }
-        const timer = window.setTimeout(() => setTraceStep((current) => current + 1), 560);
+        const timer = window.setTimeout(() => setTraceStep((current) => current + 1), 1200);
         return () => window.clearTimeout(timer);
     }, [traceRunning, traceStep]);
     const completedChecks = protectionChecks.filter(({ step }) => traceStep >= step).length;
@@ -304,6 +307,35 @@ function QualityTrace() {
     );
 }
 
+function ExecutiveSummary() {
+    const summaryRef = useRef(null);
+    const [brandPhrase, setBrandPhrase] = useState(0);
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { rootMargin: "100px" });
+        if (summaryRef.current) observer.observe(summaryRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!isVisible || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+        const timer = window.setInterval(() => setBrandPhrase((current) => (current + 1) % phraseParts.length), 5000);
+        return () => window.clearInterval(timer);
+    }, [isVisible]);
+
+    return (
+        <article ref={summaryRef} className="flex min-h-[220px] flex-col rounded-[20px] border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+            <span className="mb-3 flex size-10 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400"><FileText size={21} aria-hidden="true" /></span>
+            <h3 className="text-lg font-semibold">Executive Summary</h3>
+            <div className="mt-2 rounded-r-xl border-l-4 px-4 py-1.5 transition-colors duration-500" role="group" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared." style={{ borderLeftColor: phraseColors[brandPhrase], backgroundColor: `${phraseColors[brandPhrase]}14` }}>
+                {phraseParts.map((phrase, index) => <button key={phrase} type="button" aria-pressed={brandPhrase === index} onClick={() => setBrandPhrase(index)} className={`block text-left text-[13px] font-semibold leading-5 transition-opacity duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${brandPhrase === index ? "opacity-100" : "opacity-45"}`} style={{ color: phraseColors[index] }}>{phrase}</button>)}
+            </div>
+            <p className="mt-2 text-[13px] leading-5 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
+        </article>
+    );
+}
+
 export default function CoreValues() {
     const [activeTab, setActiveTab] = useState(0);
     const [slidePosition, setSlidePosition] = useState(1);
@@ -312,16 +344,43 @@ export default function CoreValues() {
     const [isHovered, setIsHovered] = useState(false);
     const [isCarouselFocused, setIsCarouselFocused] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(true);
-    const [brandPhrase, setBrandPhrase] = useState(0);
+    const [isCarouselVisible, setIsCarouselVisible] = useState(false);
+    const [isScrolling, setIsScrolling] = useState(false);
     const [tabPill, setTabPill] = useState({ left: 5, width: 0 });
+    const carouselRef = useRef(null);
+    const scrollTimer = useRef(null);
+    const scrollingRef = useRef(false);
     const touchStart = useRef(null);
     const activeCardRef = useRef(null);
     const tabRefs = useRef([]);
     const tabColor = "#267A47";
-    const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
-    const phraseColors = ["#27965a", "#6b4fd8", "#2f6fed", "#c27a14"];
     const activeValue = (slidePosition - 1 + values.length) % values.length;
     const selectTab = (index) => setActiveTab((index + tabItems.length) % tabItems.length);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => setIsCarouselVisible(entry.isIntersecting), { rootMargin: "100px" });
+        if (carouselRef.current) observer.observe(carouselRef.current);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!scrollingRef.current) {
+                scrollingRef.current = true;
+                setIsScrolling(true);
+            }
+            window.clearTimeout(scrollTimer.current);
+            scrollTimer.current = window.setTimeout(() => {
+                scrollingRef.current = false;
+                setIsScrolling(false);
+            }, 140);
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            window.clearTimeout(scrollTimer.current);
+        };
+    }, []);
 
     useEffect(() => {
         const media = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -340,12 +399,6 @@ export default function CoreValues() {
         window.addEventListener("resize", updatePill);
         return () => window.removeEventListener("resize", updatePill);
     }, [activeTab]);
-
-    useEffect(() => {
-        if (reducedMotion) return undefined;
-        const timer = window.setInterval(() => setBrandPhrase((current) => (current + 1) % phraseParts.length), 5000);
-        return () => window.clearInterval(timer);
-    }, [reducedMotion, phraseParts.length]);
 
     useEffect(() => {
         const card = activeCardRef.current;
@@ -381,7 +434,7 @@ export default function CoreValues() {
     };
 
     const handleValueProgressEnd = (event) => {
-        if (event.target.classList.contains("core-value-progress") && !reducedMotion && !isHovered && !isCarouselFocused) moveValue(1);
+        if (event.target.classList.contains("core-value-progress") && isCarouselVisible && !isScrolling && !reducedMotion && !isHovered && !isCarouselFocused) moveValue(1);
     };
 
     const handleCarouselKeyDown = (event) => {
@@ -423,25 +476,18 @@ export default function CoreValues() {
                         <span aria-hidden="true" className="pointer-events-none absolute -right-7 -top-7 size-32 rounded-full border border-white/20" />
                         <span className="relative mb-3 flex size-10 items-center justify-center rounded-xl bg-white/15"><Target size={21} aria-hidden="true" /></span>
                         <h3 className="relative text-lg font-semibold">Objective</h3>
-                        <p className="relative mt-2 text-[13px] leading-5 text-white/95">To build a <strong className="border-b-2 border-white/40">digitally integrated</strong>, <strong className="border-b-2 border-white/40">quality-driven</strong> and <strong className="border-b-2 border-white/40">market-connected</strong> horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
+                        <p className="relative mt-2 text-sm leading-6 text-white/95">To build a <strong className="border-b-2 border-white/40">digitally integrated</strong>, <strong className="border-b-2 border-white/40">quality-driven</strong> and <strong className="border-b-2 border-white/40">market-connected</strong> horticulture supply system that delivers the right product, at the right quality, to the right customer, at the right time and at a fair and transparent price.</p>
                     </article>
-                    <article className="flex min-h-[220px] flex-col rounded-[20px] border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 sm:p-6">
-                        <span className="mb-3 flex size-10 items-center justify-center rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400"><FileText size={21} aria-hidden="true" /></span>
-                        <h3 className="text-lg font-semibold">Executive Summary</h3>
-                        <div className="mt-2 rounded-r-xl border-l-4 px-4 py-1.5 transition-colors duration-500" role="group" aria-label="Freshness Protected. Quality Assured. Markets Connected. Value Shared." style={{ borderLeftColor: phraseColors[brandPhrase], backgroundColor: `${phraseColors[brandPhrase]}14` }}>
-                            {phraseParts.map((phrase, index) => <button key={phrase} type="button" aria-pressed={brandPhrase === index} onClick={() => setBrandPhrase(index)} className={`block text-left text-[13px] font-semibold leading-5 transition-opacity duration-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${brandPhrase === index ? "opacity-100" : "opacity-45"}`} style={{ color: phraseColors[index] }}>{phrase}</button>)}
-                        </div>
-                        <p className="mt-2 text-[13px] leading-5 text-slate-600 dark:text-slate-300">BEDEBO Ethiopia Share Company builds a digitally integrated, market-driven horticulture value chain connecting farmers, Agricultural Service Providers (ASPs), logistics and cold-chain operators, market partners, and end customers.</p>
-                    </article>
+                    <ExecutiveSummary />
                 </div>
             </div>
 
             <div className="mt-6 w-full">
                 <div className="mb-4 text-center">
-                    <h3 className="text-2xl font-semibold">Six values that guide us</h3>
-                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
+                    <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Six values that guide us</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
                 </div>
-                <div className="core-values-carousel" role="region" aria-roledescription="carousel" aria-label="BEDEBO core values" tabIndex={0} onAnimationEnd={handleValueProgressEnd} onKeyDown={handleCarouselKeyDown} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onFocus={() => setIsCarouselFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsCarouselFocused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
+                <div ref={carouselRef} className={`core-values-carousel ${isCarouselVisible && !isScrolling ? "is-in-view" : ""}`} role="region" aria-roledescription="carousel" aria-label="BEDEBO core values" tabIndex={0} onAnimationEnd={handleValueProgressEnd} onKeyDown={handleCarouselKeyDown} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onFocus={() => setIsCarouselFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsCarouselFocused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
                     <div className="core-values-viewport overflow-hidden rounded-[26px] transition-[height] duration-500 motion-reduce:transition-none" style={{ height: cardHeight ? `${cardHeight}px` : undefined }}>
                         <div className="core-values-track flex items-start" onTransitionEnd={handleTrackTransitionEnd} style={{ transform: `translateX(-${slidePosition * 100}%)`, transitionDuration: reducedMotion || !carouselTransition ? "0ms" : "700ms" }}>
                             {[{ item: values[values.length - 1], index: values.length - 1, clone: "last" }, ...values.map((item, index) => ({ item, index, clone: null })), { item: values[0], index: 0, clone: "first" }].map(({ item, index, clone }, position) => {
@@ -454,7 +500,7 @@ export default function CoreValues() {
                                                     <span className="flex size-11 items-center justify-center rounded-xl text-base font-semibold text-white" style={{ backgroundColor: item.color }}>{index + 1}</span>
                                                     <span className="text-xs text-slate-500 dark:text-slate-400">Core value {index + 1} of 6</span>
                                                 </div>
-                                                <h4 className="text-xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-2xl">{item.title}</h4>
+                                                <h4 className="text-xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-2xl">{item.title}</h4>
                                                 <blockquote className="mt-2 text-base font-medium italic leading-6" style={{ color: item.color }}>“{item.quote}”</blockquote>
                                                 <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-500 dark:text-slate-400">{item.detail}</p>
                                                 {item.metrics && <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-700 dark:text-slate-200"><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>46% → 23%</strong><span className="text-slate-500 dark:text-slate-400">farm-to-consumer losses</span></span><span className="min-w-36 rounded-xl px-4 py-2.5" style={{ backgroundColor: `${item.color}1a` }}><strong className="block text-lg" style={{ color: item.color }}>54 kg → 77 kg</strong><span className="text-slate-500 dark:text-slate-400">reaching consumers per 100 kg</span></span><span className="basis-full text-[11px] text-slate-500 dark:text-slate-400">Project target based on an illustrative case.</span></div>}
@@ -471,7 +517,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mt-16 w-full">
+            <div className="mt-14 w-full md:mt-16">
                 <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="relative mb-6 flex w-full gap-1 overflow-x-auto rounded-[18px] border border-slate-200 bg-white p-[5px] dark:border-slate-800 dark:bg-slate-900" onKeyDown={handleTabKeyDown}>
                     <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColor }} />
                     {tabItems.map((item, index) => {
@@ -488,7 +534,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mt-10 flex w-full items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-sm font-semibold leading-4 text-white sm:px-8 sm:py-5 sm:text-[15px]">Coordinating the journey from production to market</div>
+            <div className="mt-10 flex w-full items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-sm font-semibold leading-5 text-white sm:px-8 sm:py-5 sm:text-base">Coordinating the journey from production to market</div>
         </section>
     );
 }

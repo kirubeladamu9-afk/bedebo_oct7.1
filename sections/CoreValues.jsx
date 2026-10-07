@@ -376,7 +376,7 @@ export default function CoreValues() {
     const touchStart = useRef(null);
     const activeCardRef = useRef(null);
     const tabRefs = useRef([]);
-    const tabColors = ["#27965a", "#2f6fed", "#0e93a8", "#6b4fd8"];
+    const tabColor = "#267A47";
     const phraseParts = ["Freshness Protected.", "Quality Assured.", "Markets Connected.", "Value Shared."];
     const phraseColors = ["#27965a", "#6b4fd8", "#2f6fed", "#c27a14"];
     const activeValue = (slidePosition - 1 + values.length) % values.length;
@@ -532,7 +532,7 @@ export default function CoreValues() {
 
             <div className="mx-auto mt-16 max-w-6xl">
                 <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="relative mx-auto mb-6 flex w-full max-w-[880px] gap-1 overflow-x-auto rounded-[18px] border border-slate-200 bg-white p-[5px] dark:border-slate-800 dark:bg-slate-900" onKeyDown={handleTabKeyDown}>
-                    <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColors[activeTab] }} />
+                    <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColor }} />
                     {tabItems.map((item, index) => {
                         const Icon = tabIcons[index];
                         return <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-label={item.label} aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`relative z-10 flex min-w-max flex-1 items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "text-white" : "text-slate-600 dark:text-slate-300"}`}><Icon size={18} aria-hidden="true" /><span className="hidden sm:inline">{item.label}</span></button>;

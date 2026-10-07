@@ -82,7 +82,19 @@ function isoSceneSVG() {
         { n: 'Union', x: 4, y: -2, o: function (x, y) { return [[.4, .3], [1.3, .3], [.4, 1.1], [1.3, 1.1]].map(function (a) { return B(x + a[0], y + a[1], .8, .8, 14, 0, CR); }).join('') + B(x + .4, y + .3, .8, .8, 14, 14, CR) + B(x + .3, y + 2, 1.7, .8, 18, 0, WH) + B(x + 2, y + 2.05, .7, .7, 13, 0, BL); } },
         { n: 'Warehouse (cold storage)', x: 10, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 40), s = ''; for (var a = 0; a < 3; a++) { var t = a * Math.PI / 3, dx = 8 * Math.cos(t), dy = 8 * Math.sin(t); s += '<line x1="' + (c[0] - dx) + '" y1="' + (c[1] - dy) + '" x2="' + (c[0] + dx) + '" y2="' + (c[1] + dy) + '" stroke="#fff" stroke-width="2.4"/>'; } return B(x + .5, y + .5, 2, 2, 40, 0, TL) + B(x + .9, y + 2.5, .6, .04, 24, 0, WH) + s; } },
         { n: 'Vendor/Market', x: 4, y: 10, o: function (x, y) { return B(x + .6, y + .8, 1.8, 1.3, 14, 0, WH) + B(x + .5, y + .7, .95, 1.5, 6, 26, RD) + B(x + 1.45, y + .7, .95, 1.5, 6, 26, WH) + B(x + .7, y + 2.2, .5, .5, 8, 0, CR) + B(x + 1.4, y + 2.2, .5, .5, 8, 0, GR); } },
-        { n: 'Bedebo central', x: 4, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 78); return B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK) + [10, 22].map(function (z) { return B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); }).join('') + '<g stroke="#267A47" stroke-width="2" fill="#fff"><circle cx="' + (c[0] - 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + (c[0] + 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + c[0] + '" cy="' + (c[1] - 6) + '" r="18"/></g><rect x="' + (c[0] - 27) + '" y="' + (c[1] - 2) + '" width="54" height="17" fill="#fff"/>'; } },
+        { n: 'Bedebo central', x: 4, y: 4, o: function (x, y) {
+            var r = B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK), L = '';
+            [10, 22].forEach(function (z) { r += B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); });
+            [.8, 1.7, 2.5].forEach(function (a) {
+                var p = P(x + a, y + 1.2, 46), q = P(x + a, y + 1.2, 64);
+                L += '<line x1="' + p[0] + '" y1="' + p[1] + '" x2="' + q[0] + '" y2="' + q[1] + '" stroke="#27965a" stroke-width="2" stroke-dasharray="3 3"/>';
+            });
+            r += L + B(x + .7, y + 1.15, 1.9, .08, 32, 64, WH);
+            [[1, 8], [1.35, 16], [1.7, 24], [2.05, 13], [2.4, 20]].forEach(function (b) { r += B(x + b[0], y + 1.24, .18, .03, b[1], 70, GN); });
+            var c = P(x + 1.65, y + 1.2, 112);
+            [10, 18, 26].forEach(function (k, i) { r += '<path d="M' + (c[0] - k) + ' ' + c[1] + 'A' + k + ' ' + k + ' 0 0 1 ' + (+c[0] + k) + ' ' + c[1] + '" fill="none" stroke="#27965a" stroke-width="2.6" stroke-linecap="round" opacity="' + [1, .6, .3][i] + '"/>'; });
+            return r + '<circle cx="' + c[0] + '" cy="' + c[1] + '" r="3.5" fill="#27965a"/>';
+        } },
     ], s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="group" aria-label="Isometric diagram of the Bedebo central platform connected to farm, Union, warehouse and Vendor/Market">',
         F = function (x, y, w, d, z, f) { return Q([[x, y, z], [x + w, y, z], [x + w, y + d, z], [x, y + d, z]], f); };
     [[40, 200, 330, 45], [40, 330, 300, 150], [690, 230, 430, 50], [690, 380, 300, 150]].forEach(function (l) { s += '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#94a3b8" stroke-opacity=".55" stroke-dasharray="4 7"/>'; });

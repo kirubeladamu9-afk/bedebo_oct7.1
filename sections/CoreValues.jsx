@@ -252,7 +252,7 @@ function QualityTrace() {
             setTraceRunning(false);
             return undefined;
         }
-        const timer = window.setTimeout(() => setTraceStep((current) => current + 1), 1200);
+        const timer = window.setTimeout(() => setTraceStep((current) => current + 1), 2000);
         return () => window.clearTimeout(timer);
     }, [traceRunning, traceStep]);
     const completedChecks = protectionChecks.filter(({ step }) => traceStep >= step).length;

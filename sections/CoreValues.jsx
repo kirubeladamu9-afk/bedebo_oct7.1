@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, Package, ShieldCheck, Truck, Warehouse, CalendarClock, Snowflake, Target, FileText, Share2, Smartphone } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import Traceability from "@/sections/Traceability";
@@ -289,25 +290,20 @@ function FreshnessTab() {
 }
 
 function CrateQr() {
-    const cells = Array.from({ length: 29 }, (_, row) => Array.from({ length: 29 }, (_, column) => {
-        const finders = [[0, 0], [0, 22], [22, 0]];
-        for (const [top, left] of finders) {
-            const y = row - top;
-            const x = column - left;
-            if (x >= 0 && x < 7 && y >= 0 && y < 7) return x === 0 || x === 6 || y === 0 || y === 6 || (x >= 2 && x <= 4 && y >= 2 && y <= 4);
-        }
-        return (row * 7 + column * 11 + row * column) % 5 < 2;
-    }));
-    return <svg viewBox="0 0 64 64" role="img" aria-label="QR code crate label" className="size-32 max-w-full bg-white p-1.5"><rect width="64" height="64" fill="white" />{cells.flatMap((row, y) => row.map((dark, x) => dark && <rect key={`${x}-${y}`} x={3 + x * 2} y={3 + y * 2} width="2" height="2" fill="#111827" />))}</svg>;
+    return <QRCodeSVG value="BEDEBO-BATCH:BD-ETH-2026-004218|FARMER:BF-2048|CROP:TOMATO" size={144} marginSize={4} level="M" title="Crate trace QR code" className="size-36 max-w-full rounded-lg bg-white p-2" />;
 }
 
 function QualityTrace() {
-    const [traceStep, setTraceStep] = useState(qualitySteps.length - 1);
-    const [traceRunning, setTraceRunning] = useState(false);
-    const [scanId, setScanId] = useState(0);
+    const [traceStep, setTraceStep] = useState(-1);
+    const [traceRunning, setTraceRunning] = useState(true);
 
     useEffect(() => {
         if (!traceRunning) return undefined;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            setTraceStep(qualitySteps.length - 1);
+            setTraceRunning(false);
+            return undefined;
+        }
         if (traceStep >= qualitySteps.length - 1) {
             setTraceRunning(false);
             return undefined;
@@ -315,17 +311,6 @@ function QualityTrace() {
         const timer = window.setTimeout(() => setTraceStep((current) => current + 1), 560);
         return () => window.clearTimeout(timer);
     }, [traceRunning, traceStep]);
-
-    const startTrace = () => {
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            setTraceStep(qualitySteps.length - 1);
-            setTraceRunning(false);
-            return;
-        }
-        setScanId((current) => current + 1);
-        setTraceStep(-1);
-        setTraceRunning(true);
-    };
     const completedChecks = protectionChecks.filter(({ step }) => traceStep >= step).length;
 
     return (
@@ -335,10 +320,9 @@ function QualityTrace() {
                     <div className="relative flex flex-col items-center rounded-2xl border-[1.5px] border-dashed border-violet-300 bg-violet-50/40 p-4 dark:border-violet-800 dark:bg-violet-950/20">
                         <div className="relative overflow-hidden rounded-lg p-2">
                             <CrateQr />
-                            <span key={scanId} aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-0 h-0.5 bg-violet-500 shadow-[0_0_12px_3px_rgba(139,92,246,0.45)] ${traceRunning ? "qr-scan-line" : "opacity-0"}`} />
+                            <span aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-0 h-0.5 bg-violet-500 shadow-[0_0_12px_3px_rgba(139,92,246,0.45)] ${traceRunning ? "qr-scan-line" : "opacity-0"}`} />
                         </div>
-                        <p className="mt-3 text-center text-sm font-medium text-slate-600 dark:text-slate-300">Crate label with unique QR or batch ID</p>
-                        <button type="button" onClick={startTrace} disabled={traceRunning} className="mt-5 w-full rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-violet-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500 disabled:cursor-wait disabled:opacity-70">Scan crate and trace it</button>
+                        <p aria-live="polite" className="mt-3 text-center text-sm font-medium text-slate-600 dark:text-slate-300">{traceRunning ? "Auto-scanning crate ID BD-ETH-2026-004218" : "Crate ID BD-ETH-2026-004218 scanned"}</p>
                     </div>
                     <div className="mt-7">
                         <div className="flex flex-wrap items-center justify-between gap-3">

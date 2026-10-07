@@ -564,12 +564,12 @@ button {
 }
 
 .qr-scan-line {
-    animation: qr-scan 1s ease-in-out 2;
+    animation: qr-scan 560ms ease-in-out 5 forwards;
 }
 
 @keyframes qr-scan {
     from { transform: translateY(0); }
-    to { transform: translateY(12rem); }
+    to { transform: translateY(9rem); }
 }
 
 .core-values-track {

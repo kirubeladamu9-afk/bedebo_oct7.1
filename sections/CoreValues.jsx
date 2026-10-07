@@ -10,15 +10,15 @@ const tabIcons = [Share2, Smartphone, Snowflake, ShieldCheck];
 
 const tabItems = [
     { label: "Value chain integration", role: "The partnership layer", title: "The partnership layer", description: "All actors work as partners, not as disconnected middlemen.", points: ["Farm-to-market linkages", "Coordinated production", "Shared services", "Value addition", "Shared benefit"], icon: Share2, tone: "green" },
-    { label: "Digital integration", role: "The information layer", title: "The information layer", description: "BEDEBO supports farmer coordination, aggregation, logistics, market linkage, payment tracking and end-to-end visibility.", points: ["Connected platforms", "Real-time visibility", "Data-driven decisions", "Digital transactions", "Inclusion for all farmers"], icon: Smartphone, tone: "blue" },
-    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Reduce Postharvest Loss", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "teal" },
-    { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "violet" },
+    { label: "Digital integration", role: "The information layer", title: "The information layer", description: "BEDEBO supports farmer coordination, aggregation, logistics, market linkage, payment tracking and end-to-end visibility.", points: ["Connected platforms", "Real-time visibility", "Data-driven decisions", "Digital transactions", "Inclusion for all farmers"], icon: Smartphone, tone: "green" },
+    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Reduce Postharvest Loss", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "green" },
+    { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "green" },
 ];
 
 const values = [
     { title: "Quality at Every Stage", quote: "Quality starts at the farm and must be protected until delivery.", detail: "BEDEBO's first core value is to build quality into the entire horticultural journey rather than inspect quality only when products reach the market.", color: "#27965a" },
     { title: "Farm to Market Traceability", quote: "Know the product. Know the source. Know the journey.", detail: "BEDEBO seeks to make the horticultural value chain visible and accountable from production through final market delivery.", color: "#6b4fd8" },
-    { title: "Freshness & Postharvest Loss", quote: "Protect more of what farmers produce.", detail: "The project model targets a reduction in overall farm-to-consumer losses from approximately 46% to approximately 23%, with its illustrative case showing 77 kg rather than 54 kg reaching consumers from the same 100 kg.", color: "#0e93a8", metrics: true },
+    { title: "Freshness & Postharvest Loss", quote: "Protect more of what farmers produce.", detail: "The project model targets a reduction in overall farm-to-consumer losses from approximately 46% to approximately 23%, with its illustrative case showing 77 kg rather than 54 kg reaching consumers from the same 100 kg.", color: "#267A47", metrics: true },
     { title: "Digital Market Connection", quote: "Connecting the right product to the right buyer at the right time.", detail: "BEDEBO's defining capability is the integration of physical horticultural supply with digital market coordination.", color: "#2f6fed" },
     { title: "Fair & Transparent Value", quote: "Quality determines value—and value should be visible across the chain.", detail: "This allows BEDEBO to pursue two objectives simultaneously: premium value for premium quality and appropriate, affordable market channels for other commercially acceptable grades.", color: "#d9822b" },
     { title: "Reliable & Shared Growth", quote: "A stronger value chain must create value for every critical actor.", detail: "The existing model explicitly combines CAMS-led physical service infrastructure and standards with BEDEBO-led digital coordination and market linkage. When farmers produce better, service providers operate efficiently, logistics protect quality, BEDEBO coordinates transparently and buyers receive reliable products, the entire horticulture ecosystem grows together.", color: "#c2477a" },
@@ -76,19 +76,19 @@ function isoSceneSVG() {
     var P = function (x, y, z) { return [Math.round(360 + (x - y) * 30), Math.round(100 + (x + y) * 17.32 - z)]; },
         Q = function (a, f) { return '<polygon points="' + a.map(function (q) { return P(q[0], q[1], q[2]); }).join(' ') + '" fill="' + f + '"/>'; },
         B = function (x, y, w, d, h, z, c) { var t = z + h; return Q([[x + w, y, z], [x + w, y + d, z], [x + w, y + d, t], [x + w, y, t]], c[2]) + Q([[x, y + d, z], [x + w, y + d, z], [x + w, y + d, t], [x, y + d, t]], c[1]) + Q([[x, y, t], [x + w, y, t], [x + w, y + d, t], [x, y + d, t]], c[0]); },
-        WH = ['#fff', '#e1eaf6', '#c8d6eb'], CR = ['#f2cc8b', '#d29c4c', '#b5843b'], SK = ['#efe0b8', '#d9c28a', '#c2a96f'], GR = ['#63c48c', '#3da56b', '#2f8a58'], TL = ['#aadde8', '#7cc2d1', '#5ca8b8'], BL = ['#7399ec', '#4a76d6', '#3a60b8'], DK = ['#51639e', '#33427a', '#27346a'], RD = ['#f3917f', '#da6550', '#bf5340'], GN = ['#8fe6b2', '#27965a', '#1f7a49'];
+        WH = ['#fff', '#e2e8f0', '#cbd5e1'], CR = ['#f2cc8b', '#d29c4c', '#b5843b'], SK = ['#efe0b8', '#d9c28a', '#c2a96f'], GR = ['#63c48c', '#3da56b', '#2f8a58'], TL = ['#8fe6b2', '#3DB268', '#267A47'], BL = ['#8fe6b2', '#3DB268', '#267A47'], DK = ['#3f7652', '#267A47', '#1e5935'], RD = ['#f3917f', '#da6550', '#bf5340'], GN = ['#8fe6b2', '#27965a', '#1f7a49'];
     var N = [
         { n: 'Farm', x: -2, y: 4, o: function (x, y) { var r = ''; [.4, 1.3, 2.1].forEach(function (a) { r += B(x + .4, y + a, .5, .5, 8, 0, GR) + B(x + 1, y + a, .5, .5, 8, 0, GR); }); return r + B(x + 1.9, y + .6, .8, .8, 15, 0, SK) + B(x + 1.9, y + 1.7, .8, .8, 15, 0, SK); } },
         { n: 'Union', x: 4, y: -2, o: function (x, y) { return [[.4, .3], [1.3, .3], [.4, 1.1], [1.3, 1.1]].map(function (a) { return B(x + a[0], y + a[1], .8, .8, 14, 0, CR); }).join('') + B(x + .4, y + .3, .8, .8, 14, 14, CR) + B(x + .3, y + 2, 1.7, .8, 18, 0, WH) + B(x + 2, y + 2.05, .7, .7, 13, 0, BL); } },
         { n: 'Warehouse (cold storage)', x: 10, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 40), s = ''; for (var a = 0; a < 3; a++) { var t = a * Math.PI / 3, dx = 8 * Math.cos(t), dy = 8 * Math.sin(t); s += '<line x1="' + (c[0] - dx) + '" y1="' + (c[1] - dy) + '" x2="' + (c[0] + dx) + '" y2="' + (c[1] + dy) + '" stroke="#fff" stroke-width="2.4"/>'; } return B(x + .5, y + .5, 2, 2, 40, 0, TL) + B(x + .9, y + 2.5, .6, .04, 24, 0, WH) + s; } },
         { n: 'Vendor/Market', x: 4, y: 10, o: function (x, y) { return B(x + .6, y + .8, 1.8, 1.3, 14, 0, WH) + B(x + .5, y + .7, .95, 1.5, 6, 26, RD) + B(x + 1.45, y + .7, .95, 1.5, 6, 26, WH) + B(x + .7, y + 2.2, .5, .5, 8, 0, CR) + B(x + 1.4, y + 2.2, .5, .5, 8, 0, GR); } },
-        { n: 'Bedebo central', x: 4, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 78); return B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK) + [10, 22].map(function (z) { return B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); }).join('') + '<g stroke="#3b6fd8" stroke-width="2" fill="#fff"><circle cx="' + (c[0] - 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + (c[0] + 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + c[0] + '" cy="' + (c[1] - 6) + '" r="18"/></g><rect x="' + (c[0] - 27) + '" y="' + (c[1] - 2) + '" width="54" height="17" fill="#fff"/>'; } },
+        { n: 'Bedebo central', x: 4, y: 4, o: function (x, y) { var c = P(x + 1.5, y + 1.5, 78); return B(x + .4, y + .6, .8, 1.2, 46, 0, DK) + B(x + 1.3, y + .6, .8, 1.2, 46, 0, DK) + B(x + 2.2, y + .6, .6, 1.2, 46, 0, DK) + [10, 22].map(function (z) { return B(x + .5, y + 1.8, .5, .05, 3, z, GN) + B(x + 1.4, y + 1.8, .5, .05, 3, z, GN); }).join('') + '<g stroke="#267A47" stroke-width="2" fill="#fff"><circle cx="' + (c[0] - 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + (c[0] + 17) + '" cy="' + (c[1] + 3) + '" r="13"/><circle cx="' + c[0] + '" cy="' + (c[1] - 6) + '" r="18"/></g><rect x="' + (c[0] - 27) + '" y="' + (c[1] - 2) + '" width="54" height="17" fill="#fff"/>'; } },
     ], s = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 540" role="group" aria-label="Isometric diagram of the Bedebo central platform connected to farm, Union, warehouse and Vendor/Market">',
         F = function (x, y, w, d, z, f) { return Q([[x, y, z], [x + w, y, z], [x + w, y + d, z], [x, y + d, z]], f); };
     [[40, 200, 330, 45], [40, 330, 300, 150], [690, 230, 430, 50], [690, 380, 300, 150]].forEach(function (l) { s += '<line x1="' + l[0] + '" y1="' + l[1] + '" x2="' + l[2] + '" y2="' + l[3] + '" stroke="#94a3b8" stroke-opacity=".55" stroke-dasharray="4 7"/>'; });
     var W = [[5, 1, 1, 3], [5, 7, 1, 3], [1, 5, 3, 1], [7, 5, 3, 1]];
-    N.forEach(function (p) { s += F(p.x + .4, p.y + .9, 3, 3, -46, 'rgba(50,90,170,.2)'); });
-    W.forEach(function (w) { s += F(w[0] + .4, w[1] + .9, w[2], w[3], -46, 'rgba(50,90,170,.15)') + B(w[0], w[1], w[2], w[3], 14, -14, WH); });
+    N.forEach(function (p) { s += F(p.x + .4, p.y + .9, 3, 3, -46, 'rgba(15,23,42,.12)'); });
+    W.forEach(function (w) { s += F(w[0] + .4, w[1] + .9, w[2], w[3], -46, 'rgba(15,23,42,.1)') + B(w[0], w[1], w[2], w[3], 14, -14, WH); });
     N.forEach(function (p) { s += B(p.x, p.y, 3, 3, 14, -14, WH); });
     N.map(function (p, i) { return [p, i]; }).sort(function (a, b) { return a[0].x + a[0].y - b[0].x - b[0].y; }).forEach(function (q) {
         var p = q[0], f = P(p.x + 3, p.y + 3, -14), w = Math.round(p.n.length * 6.6 + 24);
@@ -98,25 +98,15 @@ function isoSceneSVG() {
 }
 
 function IntroCard({ item }) {
-    const tones = {
-        green: "border-slate-200 border-l-[#27965a] bg-white dark:border-slate-800 dark:border-l-[#3DB268] dark:bg-slate-900",
-        blue: "border-slate-200 border-l-blue-600 bg-white dark:border-slate-800 dark:border-l-blue-400 dark:bg-slate-900",
-        teal: "border-teal-200 border-l-teal-500 bg-white dark:border-teal-900 dark:border-l-teal-400 dark:bg-slate-900",
-        violet: "border-violet-200 border-l-violet-500 bg-white dark:border-violet-900 dark:border-l-violet-400 dark:bg-slate-900",
-    };
-    const chipTones = {
-        green: "bg-[#27965a]/10 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]",
-        blue: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200",
-        teal: "bg-teal-100 text-teal-800 dark:bg-teal-900/60 dark:text-teal-200",
-        violet: "bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-200",
-    };
-    const Chip = chipTones[item.tone];
+    const tone = "border-slate-200 border-l-[#27965a] bg-white dark:border-slate-800 dark:border-l-[#3DB268] dark:bg-slate-900";
+    const chipTone = "bg-[#27965a]/10 text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]";
+    const Chip = chipTone;
     const Icon = item.icon;
     return (
-        <div className={`mx-auto mb-6 max-w-6xl rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tones[item.tone]}`}>
+        <div className={`mx-auto mb-6 max-w-6xl rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tone}`}>
             {item.description ? (
                 <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-                    <span className={`grid size-12 shrink-0 place-items-center rounded-[14px] ${item.tone === "green" ? "bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]" : item.tone === "blue" ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-200" : item.tone === "teal" ? "bg-teal-100 text-teal-700 dark:bg-teal-900/60 dark:text-teal-200" : "bg-violet-100 text-violet-700 dark:bg-violet-900/60 dark:text-violet-200"}`}><Icon size={25} aria-hidden="true" /></span>
+                    <span className="grid size-12 shrink-0 place-items-center rounded-[14px] bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><Icon size={25} aria-hidden="true" /></span>
                     <div className="min-w-0">
                         <h3 className="text-lg font-semibold text-slate-800 dark:text-white">{item.title}</h3>
                         <p className="mt-1 max-w-4xl text-[13px] leading-5 text-slate-600 dark:text-slate-300 sm:text-sm sm:leading-6">{item.description}</p>
@@ -177,7 +167,7 @@ function DigitalIntegration() {
                     <span className="text-xs font-semibold tracking-wide text-slate-500 dark:text-slate-400">Step {selected + 1} of 5</span>
                 </div>
                 <ol className="mt-5 grid gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300">
-                    {platforms[selected].steps.map((step, index) => <li key={step} className="flex gap-3"><span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-semibold text-blue-700 dark:bg-blue-900/50 dark:text-blue-200">{index + 1}</span><span>{step}</span></li>)}
+                    {platforms[selected].steps.map((step, index) => <li key={step} className="flex gap-3"><span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#27965a]/10 text-xs font-semibold text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]">{index + 1}</span><span>{step}</span></li>)}
                 </ol>
             </div>
         </div>
@@ -226,16 +216,16 @@ function FreshnessTab() {
     };
 
     return (
-        <article className="mx-auto max-w-6xl overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-teal-500 bg-white shadow-sm dark:border-slate-800 dark:border-t-teal-400 dark:bg-slate-900">
+        <article className="mx-auto max-w-6xl overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-[#3DB268] bg-white shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900">
             <div className="grid gap-5 p-5 sm:p-7 xl:grid-cols-[minmax(220px,0.9fr)_minmax(370px,1.6fr)_auto] xl:items-center">
                 <div>
                     <div className="flex items-end gap-3">
-                        <p className="text-5xl font-semibold leading-none tracking-tight text-teal-700 dark:text-teal-300">{temperatures[stage]}°C</p>
-                        <p className="pb-1 text-sm font-semibold text-teal-700 dark:text-teal-300">{stageNames[stage]}</p>
+                        <p className="text-5xl font-semibold leading-none tracking-tight text-[#267A47] dark:text-[#75D59A]">{temperatures[stage]}°C</p>
+                        <p className="pb-1 text-sm font-semibold text-[#267A47] dark:text-[#75D59A]">{stageNames[stage]}</p>
                     </div>
                     <div className="mt-4 flex items-center gap-2">
                         <label className="sr-only" htmlFor="cold-chain-crop">Crop</label>
-                        <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-200">
+                        <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-[#267A47] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:bg-slate-800 dark:text-[#8de0ae]">
                             {crops.map((item, index) => <option key={item.name} value={index}>{item.name}</option>)}
                         </select>
                         <button type="button" aria-pressed={auto} aria-label={`Automatic crop playback ${auto ? "on" : "off"}`} onClick={() => {
@@ -245,7 +235,7 @@ function FreshnessTab() {
                                 setStage(0);
                                 setAuto(true);
                             }
-                        }} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 ${auto ? "border-teal-600 bg-teal-600 text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto</button>
+                        }} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${auto ? "border-[#27965a] bg-[#27965a] text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto</button>
                     </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-5 sm:flex-nowrap sm:gap-7">
@@ -255,32 +245,32 @@ function FreshnessTab() {
                         <div className="w-[132px] rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/30"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Farm-to-consumer losses</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-red-600 dark:text-red-400">{loss}%</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">46% → 23%</span></div>
                     </div>
                     <div className="flex items-center gap-3" role="img" aria-label={`Reaching consumers: ${reaching} kilograms per 100 kilograms, target 77 kilograms`}>
-                        <div className="w-[132px] rounded-xl bg-teal-50 px-3 py-2 text-right dark:bg-teal-950/30"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Reaching consumers per 100 kg</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-teal-700 dark:text-teal-300">{reaching} kg</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">54 kg → 77 kg</span></div>
-                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-teal-500 transition-[height] duration-500" style={{ height: `${reaching}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[77%] border-t-2 border-dashed border-slate-500/70" /></div>
-                        <span aria-hidden="true" className="text-teal-600 dark:text-teal-300"><ArrowUp size={20} /></span>
+                        <div className="w-[132px] rounded-xl bg-[#3DB268]/10 px-3 py-2 text-right dark:bg-[#27965a]/20"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Reaching consumers per 100 kg</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-[#267A47] dark:text-[#75D59A]">{reaching} kg</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">54 kg → 77 kg</span></div>
+                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-[#3DB268] transition-[height] duration-500" style={{ height: `${reaching}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[77%] border-t-2 border-dashed border-slate-500/70" /></div>
+                        <span aria-hidden="true" className="text-[#267A47] dark:text-[#75D59A]"><ArrowUp size={20} /></span>
                     </div>
                 </div>
                 <div className="xl:justify-self-end">
-                    <span className={`inline-flex rounded-full px-4 py-1.5 text-xs font-semibold text-white ${temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "bg-teal-600" : "bg-red-600"}`}>{temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "In safe range" : "Above safe range"}</span>
+                    <span className={`inline-flex rounded-full px-4 py-1.5 text-xs font-semibold text-white ${temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "bg-[#27965a]" : "bg-red-600"}`}>{temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "In safe range" : "Above safe range"}</span>
                 </div>
             </div>
             <div className="px-4 sm:px-7">
                 <svg viewBox={`0 0 700 ${chartHeight}`} role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
                     <text x="355" y="30" textAnchor="middle" fill="#dc2626" fontSize="12">Without a cold chain, produce spoils in the heat</text>
                     <line x1="120" y1="40" x2="590" y2="40" stroke="#d64545" strokeWidth="2" strokeDasharray="6 6" />
-                    <rect x="40" y={bandY} width="580" height={bandHeight} rx="11" fill="#0e93a8" fillOpacity=".16" />
-                    <text x="626" y={bandY + bandHeight / 2 + 4} fontSize="11.5" fill="#0e93a8">{rangeLabel}</text>
-                    {stage < stageNames.length - 1 && <polyline points={dottedPoints} fill="none" stroke="#0e93a8" strokeWidth="4" strokeDasharray="2 8" strokeLinecap="round" opacity=".5" />}
-                    {stage > 0 && <polyline points={solidPoints} fill="none" stroke="#0e93a8" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />}
-                    {stage === 0 && <circle cx={xPositions[0]} cy={yPositions[0]} r="4" fill="#0e93a8" />}
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="15" fill="#0e93a8" fillOpacity=".25" />
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="8" fill="#0e93a8" stroke="#fff" strokeWidth="3" />
+                    <rect x="40" y={bandY} width="580" height={bandHeight} rx="11" fill="#267A47" fillOpacity=".16" />
+                    <text x="626" y={bandY + bandHeight / 2 + 4} fontSize="11.5" fill="#267A47">{rangeLabel}</text>
+                    {stage < stageNames.length - 1 && <polyline points={dottedPoints} fill="none" stroke="#267A47" strokeWidth="4" strokeDasharray="2 8" strokeLinecap="round" opacity=".5" />}
+                    {stage > 0 && <polyline points={solidPoints} fill="none" stroke="#267A47" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />}
+                    {stage === 0 && <circle cx={xPositions[0]} cy={yPositions[0]} r="4" fill="#267A47" />}
+                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="15" fill="#267A47" fillOpacity=".25" />
+                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="8" fill="#267A47" stroke="#fff" strokeWidth="3" />
                 </svg>
                 <div className="grid grid-cols-5 gap-1 pb-4">
-                    {stageNames.map((name, index) => <button key={name} type="button" aria-pressed={stage === index} onClick={() => chooseStage(index)} className={`min-w-0 rounded-md px-1 py-2 text-[10px] leading-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 sm:text-xs ${stage === index ? "font-semibold text-teal-700 dark:text-teal-300" : "text-slate-500 dark:text-slate-400"}`}>{name}</button>)}
+                    {stageNames.map((name, index) => <button key={name} type="button" aria-pressed={stage === index} onClick={() => chooseStage(index)} className={`min-w-0 rounded-md px-1 py-2 text-[10px] leading-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] sm:text-xs ${stage === index ? "font-semibold text-[#267A47] dark:text-[#75D59A]" : "text-slate-500 dark:text-slate-400"}`}>{name}</button>)}
                 </div>
             </div>
-            <div className="mx-5 mb-4 rounded-xl bg-teal-50 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-teal-950/40 dark:text-slate-200 sm:mx-7 sm:px-5">
+            <div className="mx-5 mb-4 rounded-xl bg-[#3DB268]/10 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-[#27965a]/20 dark:text-slate-200 sm:mx-7 sm:px-5">
                 <p><strong>{crop.name}</strong> · Ideal {crop.min}°C to {crop.max}°C ({idealFahrenheit}) · RH {crop.humidity}.</p>
                 <p>{crop.note}</p>
             </div>
@@ -314,25 +304,25 @@ function QualityTrace() {
     const completedChecks = protectionChecks.filter(({ step }) => traceStep >= step).length;
 
     return (
-        <article className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-violet-500 bg-white p-5 shadow-sm dark:border-slate-800 dark:border-t-violet-400 dark:bg-slate-900 sm:p-7">
+        <article className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-[#3DB268] bg-white p-5 shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900 sm:p-7">
             <div className="grid gap-7 lg:grid-cols-[270px_minmax(0,1fr)]">
                 <div>
-                    <div className="relative flex flex-col items-center rounded-2xl border-[1.5px] border-dashed border-violet-300 bg-violet-50/40 p-4 dark:border-violet-800 dark:bg-violet-950/20">
+                    <div className="relative flex flex-col items-center rounded-2xl border-[1.5px] border-dashed border-[#3DB268]/50 bg-[#3DB268]/[0.04] p-4 dark:border-[#3DB268]/40 dark:bg-[#27965a]/10">
                         <div className="relative overflow-hidden rounded-lg p-2">
                             <CrateQr />
-                            <span aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-0 h-0.5 bg-violet-500 shadow-[0_0_12px_3px_rgba(139,92,246,0.45)] ${traceRunning ? "qr-scan-line" : "opacity-0"}`} />
+                            <span aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-0 h-0.5 bg-[#3DB268] shadow-[0_0_12px_3px_rgba(61,178,104,0.45)] ${traceRunning ? "qr-scan-line" : "opacity-0"}`} />
                         </div>
                         <p aria-live="polite" className="mt-3 text-center text-sm font-medium text-slate-600 dark:text-slate-300">{traceRunning ? "Auto-scanning crate ID BD-ETH-2026-004218" : "Crate ID BD-ETH-2026-004218 scanned"}</p>
                     </div>
                     <div className="mt-7">
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <h3 className="text-lg font-semibold">Quality checks</h3>
-                            <span className="rounded-full bg-violet-100 px-3 py-1.5 text-xs font-semibold text-violet-800 dark:bg-violet-900/50 dark:text-violet-200">{completedChecks} of 5 passed</span>
+                            <span className="rounded-full bg-[#27965a]/10 px-3 py-1.5 text-xs font-semibold text-[#267A47] dark:bg-[#27965a]/20 dark:text-[#8de0ae]">{completedChecks} of 5 passed</span>
                         </div>
                         <ul className="mt-4 space-y-3" aria-live="polite">
                             {protectionChecks.map(({ title, step }) => {
                                 const passed = traceStep >= step;
-                                return <li key={title} className="flex items-center gap-3"><span className={`flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${passed ? "bg-violet-600 text-white" : "bg-violet-100 text-transparent dark:bg-violet-950"}`}><Check size={14} /></span><span className={`text-sm leading-5 ${passed ? "text-slate-800 dark:text-slate-100" : "text-slate-500 dark:text-slate-400"}`}>{title}</span></li>;
+                                return <li key={title} className="flex items-center gap-3"><span className={`flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${passed ? "bg-[#27965a] text-white" : "bg-[#27965a]/10 text-transparent dark:bg-[#27965a]/20"}`}><Check size={14} /></span><span className={`text-sm leading-5 ${passed ? "text-slate-800 dark:text-slate-100" : "text-slate-500 dark:text-slate-400"}`}>{title}</span></li>;
                             })}
                         </ul>
                     </div>
@@ -344,17 +334,17 @@ function QualityTrace() {
                         {qualitySteps.map(({ title, text }, index) => {
                             const passed = index <= traceStep;
                             return <li key={title} className="relative flex min-h-[78px] gap-3 pb-4 last:pb-0">
-                                {index < qualitySteps.length - 1 && <span aria-hidden="true" className={`absolute left-3 top-7 h-[calc(100%-8px)] w-px ${index < traceStep ? "bg-violet-400" : "bg-slate-200 dark:bg-slate-700"}`} />}
-                                <span className={`relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${passed ? "bg-violet-600 text-white" : "bg-violet-100 text-transparent dark:bg-violet-950"}`}><Check size={14} /></span>
-                                <div className={`min-w-0 flex-1 rounded-xl px-3 py-2 transition-colors ${passed ? "bg-violet-50 dark:bg-violet-950/40" : "bg-slate-50 dark:bg-slate-800/50"}`}>
+                                {index < qualitySteps.length - 1 && <span aria-hidden="true" className={`absolute left-3 top-7 h-[calc(100%-8px)] w-px ${index < traceStep ? "bg-[#3DB268]" : "bg-slate-200 dark:bg-slate-700"}`} />}
+                                <span className={`relative z-10 flex size-6 shrink-0 items-center justify-center rounded-full transition-colors ${passed ? "bg-[#27965a] text-white" : "bg-[#27965a]/10 text-transparent dark:bg-[#27965a]/20"}`}><Check size={14} /></span>
+                                <div className={`min-w-0 flex-1 rounded-xl px-3 py-2 transition-colors ${passed ? "bg-[#3DB268]/10 dark:bg-[#27965a]/20" : "bg-slate-50 dark:bg-slate-800/50"}`}>
                                     <h4 className={`text-sm font-semibold ${passed ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-400"}`}>{title}</h4>
                                     <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{text}</p>
                                 </div>
                             </li>;
                         })}
-                        <li className={`flex gap-3 rounded-xl bg-violet-50 p-3 transition-opacity dark:bg-violet-950/40 ${traceStep >= qualitySteps.length - 1 ? "opacity-100" : "opacity-0"}`}>
-                            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-violet-600 text-white"><Check size={14} /></span>
-                            <p className="text-xs font-medium leading-5 text-violet-900 dark:text-violet-100">Traced end to end: from the vendor shipment back to the individual farmer&apos;s harvest.</p>
+                        <li className={`flex gap-3 rounded-xl bg-[#3DB268]/10 p-3 transition-opacity dark:bg-[#27965a]/20 ${traceStep >= qualitySteps.length - 1 ? "opacity-100" : "opacity-0"}`}>
+                            <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#27965a] text-white"><Check size={14} /></span>
+                            <p className="text-xs font-medium leading-5 text-[#267A47] dark:text-[#8de0ae]">Traced end to end: from the vendor shipment back to the individual farmer&apos;s harvest.</p>
                         </li>
                     </ol>
                 </div>

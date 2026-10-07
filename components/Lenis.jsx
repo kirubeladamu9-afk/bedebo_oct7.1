@@ -12,14 +12,16 @@ export default function LenisScroll() {
             anchors: true,
         });
 
+        let rafId;
         const raf = (time) => {
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            rafId = requestAnimationFrame(raf);
         };
 
-        requestAnimationFrame(raf);
+        rafId = requestAnimationFrame(raf);
 
         return () => {
+            cancelAnimationFrame(rafId);
             lenis.destroy();
         };
     }, []);

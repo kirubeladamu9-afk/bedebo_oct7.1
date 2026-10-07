@@ -28,6 +28,8 @@ export default function Navbar() {
         } else {
             document.body.classList.remove("max-md:overflow-hidden");
         }
+
+        return () => document.body.classList.remove("max-md:overflow-hidden");
     }, [openMobileMenu]);
 
     useEffect(() => {

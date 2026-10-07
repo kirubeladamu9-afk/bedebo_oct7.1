@@ -482,10 +482,10 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mt-6 w-full">
-                <div className="mb-4 text-center">
+            <div className="mt-8 w-full">
+                <div className="mb-5 text-center">
                     <h3 className="text-xl font-semibold tracking-tight sm:text-2xl">Six values that guide us</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">Our values guide every step from farm to market.</p>
                 </div>
                 <div ref={carouselRef} className={`core-values-carousel ${isCarouselVisible && !isScrolling ? "is-in-view" : ""}`} role="region" aria-roledescription="carousel" aria-label="BEDEBO core values" tabIndex={0} onAnimationEnd={handleValueProgressEnd} onKeyDown={handleCarouselKeyDown} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onFocus={() => setIsCarouselFocused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setIsCarouselFocused(false); }} onTouchStart={(event) => { touchStart.current = event.touches[0].clientX; }} onTouchEnd={handleValueTouchEnd}>
                     <div className="core-values-viewport overflow-hidden rounded-[26px] transition-[height] duration-500 motion-reduce:transition-none" style={{ height: cardHeight ? `${cardHeight}px` : undefined }}>
@@ -511,7 +511,7 @@ export default function CoreValues() {
                             })}
                         </div>
                     </div>
-                    <div className="mt-4 flex items-center justify-center gap-2" role="group" aria-label="Choose a core value">
+                    <div className="mt-5 flex items-center justify-center gap-2" role="group" aria-label="Choose a core value">
                         {values.map((item, index) => <button key={item.title} type="button" aria-label={`Show core value ${index + 1}: ${item.title}`} aria-current={activeValue === index ? "true" : undefined} onClick={() => setSlidePosition(index + 1)} className={`core-value-dot relative size-2.5 overflow-hidden rounded-full transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeValue === index ? "w-11" : "bg-slate-300 dark:bg-slate-700"}`} style={activeValue === index ? { backgroundColor: `${item.color}33` } : undefined}><span className="sr-only">{item.title}</span>{activeValue === index && <span className="core-value-progress absolute inset-0 origin-left" style={{ backgroundColor: item.color }} />}</button>)}
                     </div>
                 </div>

@@ -37,10 +37,10 @@ function ShareLinks({ post, onCopy, copied, compact = false }) {
 }
 
 function ArticleBlock({ block }) {
-    if (block.type === "paragraph") return <p className="text-base leading-8 text-slate-600 dark:text-slate-300">{block.text}</p>;
+    if (block.type === "paragraph") return <p className="text-base leading-7 text-slate-600 dark:text-slate-300">{block.text}</p>;
     if (block.type === "heading") {
         const Heading = block.level === 3 ? "h3" : "h2";
-        return <Heading id={block.id} className={block.level === 3 ? "scroll-mt-28 pt-2 text-xl font-semibold tracking-tight" : "scroll-mt-28 pt-4 text-2xl font-semibold tracking-tight sm:text-3xl"}>{block.text}</Heading>;
+        return <Heading id={block.id} className={block.level === 3 ? "scroll-mt-28 pt-2 text-xl font-semibold leading-tight tracking-tight" : "scroll-mt-28 pt-4 text-2xl font-semibold leading-tight tracking-tight sm:text-3xl"}>{block.text}</Heading>;
     }
     if (block.type === "list") {
         const List = block.ordered ? "ol" : "ul";
@@ -55,7 +55,7 @@ function ArticleBlock({ block }) {
             <figcaption className="text-center text-sm text-slate-500 dark:text-slate-400">{block.caption}</figcaption>
         </figure>
     );
-    if (block.type === "quote") return <blockquote className="rounded-r-xl border-l-4 border-[#3DB268] bg-[#3DB268]/[0.07] px-6 py-5 text-lg font-medium leading-8 text-slate-700 dark:text-slate-200">“{block.text}”</blockquote>;
+    if (block.type === "quote") return <blockquote className="rounded-r-xl border-l-4 border-[#3DB268] bg-[#3DB268]/[0.07] px-6 py-5 text-lg font-medium leading-7 text-slate-700 dark:text-slate-200">“{block.text}”</blockquote>;
     if (block.type === "dataCallout") return (
         <section aria-label={block.title} className="rounded-2xl border border-[#3DB268]/30 bg-[#3DB268]/[0.06] p-5 sm:p-6">
             <h3 className="font-semibold">{block.title}</h3>
@@ -76,9 +76,9 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
     const [copied, setCopied] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [subscribed, setSubscribed] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const pageRef = useRef(null);
+    const progressBarRef = useRef(null);
     const contents = useMemo(() => post.body.filter((block) => block.type === "heading").map(({ id, text, level }) => ({ id, text, level })), [post.body]);
     const categories = useMemo(() => [...new Set(allPosts.map((article) => article.category))], [allPosts]);
     const searchResults = useMemo(() => {
@@ -88,20 +88,28 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
 
     useEffect(() => {
         let frame = 0;
+        let maxScroll = 0;
         const updateProgress = () => {
             if (frame) return;
             frame = window.requestAnimationFrame(() => {
                 frame = 0;
-                const total = document.documentElement.scrollHeight - window.innerHeight;
-                setProgress(total > 0 ? Math.min(1, Math.max(0, window.scrollY / total)) : 0);
+                const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
+                if (progressBarRef.current) progressBarRef.current.style.transform = `scaleX(${progress})`;
             });
         };
-        updateProgress();
+        const measureScrollRange = () => {
+            maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+            updateProgress();
+        };
+        const resizeObserver = new ResizeObserver(measureScrollRange);
+        if (pageRef.current) resizeObserver.observe(pageRef.current);
+        measureScrollRange();
         window.addEventListener("scroll", updateProgress, { passive: true });
-        window.addEventListener("resize", updateProgress);
+        window.addEventListener("resize", measureScrollRange);
         return () => {
             window.removeEventListener("scroll", updateProgress);
-            window.removeEventListener("resize", updateProgress);
+            window.removeEventListener("resize", measureScrollRange);
+            resizeObserver.disconnect();
             if (frame) window.cancelAnimationFrame(frame);
         };
     }, []);
@@ -142,9 +150,9 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
 
     return (
         <main ref={pageRef} className="relative px-6 pb-16 pt-28 md:px-10 lg:px-16">
-            <div aria-hidden="true" className="fixed inset-x-0 top-0 z-[60] h-1 bg-slate-200/70 dark:bg-slate-800"><div className="h-full bg-[#3DB268] transition-[width] duration-100 motion-reduce:transition-none" style={{ width: `${progress * 100}%` }} /></div>
+            <div aria-hidden="true" className="fixed inset-x-0 top-0 z-[60] h-1 bg-slate-200/70 dark:bg-slate-800"><div ref={progressBarRef} className="h-full origin-left bg-[#3DB268]" style={{ transform: "scaleX(0)" }} /></div>
             <span aria-hidden="true" className="pointer-events-none absolute right-0 top-20 -z-10 size-[30rem] rounded-full bg-[#3DB268]/[0.07] blur-3xl" />
-            <div className={`mx-auto max-w-7xl transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
+            <div className={`mx-auto max-w-7xl transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
                 <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                     <Link href="/" className="rounded-sm hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:hover:text-[#75D59A]">Home</Link><span aria-hidden="true">/</span>
                     <Link href="/#blog" className="rounded-sm hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:hover:text-[#75D59A]">Blog</Link><span aria-hidden="true">/</span>
@@ -153,7 +161,7 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
                 <Link href="/#blog" className="mt-6 inline-flex items-center gap-2 rounded-sm text-sm font-medium text-[#267A47] hover:text-[#1E663A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:text-[#75D59A]"><ArrowLeft size={16} />Back to all articles</Link>
                 <header className="mx-auto mt-10 max-w-4xl text-center">
                     <span className="inline-flex rounded-full border border-[#3DB268]/20 bg-[#3DB268]/10 px-4 py-1.5 text-sm font-semibold text-[#267A47] dark:text-[#75D59A]">{post.category}</span>
-                    <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl sm:leading-[1.12] lg:text-6xl">{post.title}</h1>
+                    <h1 className="mt-5 text-3xl font-semibold leading-[1.12] tracking-tight sm:text-4xl lg:text-[3.5rem]">{post.title}</h1>
                     <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300 sm:text-lg">{post.excerpt}</p>
                     <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-sm text-slate-500 dark:text-slate-400">
                         <div className="flex items-center gap-2.5 text-left"><Image src={post.author.avatar} alt={`${post.author.name} portrait`} width={40} height={40} className="size-10 rounded-full object-cover" /><span><span className="block font-semibold text-slate-800 dark:text-white">{post.author.name}</span><span className="text-xs">{post.author.role}</span></span></div>
@@ -168,8 +176,8 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
                     <summary className="cursor-pointer list-none rounded-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268]">On this page <span aria-hidden="true" className="float-right text-[#267A47] dark:text-[#75D59A]">⌄</span></summary>
                     <nav aria-label="Article contents" className="mt-3 border-t border-slate-200 pt-2 dark:border-slate-800">{contents.map(jumpLink)}</nav>
                 </details>
-                <div className="mx-auto mt-12 grid max-w-7xl grid-cols-1 items-start gap-12 lg:grid-cols-[minmax(0,2.2fr)_minmax(230px,0.9fr)] lg:gap-10 xl:grid-cols-[minmax(0,720px)_minmax(250px,320px)] xl:justify-between xl:gap-16">
-                    <article id="article-body" className="mx-auto flex w-full max-w-[720px] flex-col gap-7 text-base leading-8">
+                <div className="mx-auto mt-10 grid max-w-7xl grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,2.2fr)_minmax(230px,0.9fr)] lg:gap-8 xl:grid-cols-[minmax(0,720px)_minmax(250px,320px)] xl:justify-between xl:gap-12">
+                    <article id="article-body" className="mx-auto flex w-full max-w-[720px] flex-col gap-6 text-base leading-7">
                         {post.body.map((block, index) => <ArticleBlock key={block.id ?? `${block.type}-${index}`} block={block} />)}
                         <div role="group" aria-label="Article tags" className="flex flex-wrap items-center gap-2 border-t border-slate-200 pt-6 dark:border-slate-800"><span className="mr-1 text-sm font-semibold">Tags</span>{post.tags.map((tag) => <Link key={tag} href="/#blog" className="rounded-full border border-slate-200 px-3 py-1 text-xs text-slate-600 transition hover:border-[#3DB268] hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:border-slate-700 dark:text-slate-300 dark:hover:text-[#75D59A]">{tag}</Link>)}</div>
                         <section aria-labelledby="author-heading" className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 dark:border-slate-800 dark:bg-slate-900">

@@ -218,7 +218,7 @@ export default function Traceability() {
 
     return (
         <div id="traceability" className="scroll-mt-24">
-            <div ref={timelineRef} className="relative mx-auto mt-3 max-w-[1040px]">
+            <div ref={timelineRef} className="relative mt-3 w-full">
                 <div ref={mobilePathRef} aria-hidden="true" className="absolute left-[18px] z-0 w-[3px] rounded-full md:hidden" />
                 <div ref={mobilePackageRef} aria-hidden="true" className="absolute left-1 z-10 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-[#3DB268] text-white shadow-[0_0_18px_rgba(61,178,104,0.75)] md:hidden">
                     <Package size={22} strokeWidth={1.8} />

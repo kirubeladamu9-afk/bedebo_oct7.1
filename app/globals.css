@@ -8,7 +8,7 @@
 
 :root {
     --navbar-height: 80px;
-    --site-max-width: 1920px;
+    --site-max-width: 1408px;
     --site-inline-padding: 24px;
     --hero-background: #fff;
     --hero-gradient-rgb: 255, 255, 255;
@@ -45,19 +45,13 @@
 
 @media (min-width: 768px) {
     :root {
-        --site-inline-padding: 64px;
+        --site-inline-padding: 40px;
     }
 }
 
 @media (min-width: 1024px) {
     :root {
-        --site-inline-padding: 96px;
-    }
-}
-
-@media (min-width: 1280px) {
-    :root {
-        --site-inline-padding: 128px;
+        --site-inline-padding: 64px;
     }
 }
 

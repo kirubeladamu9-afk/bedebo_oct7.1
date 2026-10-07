@@ -103,7 +103,7 @@ function IntroCard({ item }) {
     const Chip = chipTone;
     const Icon = item.icon;
     return (
-        <div className={`mx-auto mb-6 max-w-6xl rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tone}`}>
+        <div className={`mb-6 w-full rounded-[18px] border p-4 sm:p-5 ${item.description ? "border-l-[5px]" : ""} ${tone}`}>
             {item.description ? (
                 <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
                     <span className="grid size-12 shrink-0 place-items-center rounded-[14px] bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><Icon size={25} aria-hidden="true" /></span>
@@ -153,7 +153,7 @@ function DigitalIntegration() {
     };
 
     return (
-        <div className="mx-auto max-w-6xl">
+        <div className="w-full">
             <div ref={sceneRef} className="iso-scene mx-auto w-full overflow-visible rounded-2xl md:w-4/5 md:max-w-[900px]" onClick={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onMouseOver={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onFocus={(event) => selectNode(event.target.closest(".iso-n[data-i]"))} onKeyDown={(event) => {
                 const node = event.target.closest(".iso-n[data-i]");
                 if (node && (event.key === "Enter" || event.key === " ")) {
@@ -216,7 +216,7 @@ function FreshnessTab() {
     };
 
     return (
-        <article className="mx-auto max-w-6xl overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-[#3DB268] bg-white shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900">
+        <article className="w-full overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-[#3DB268] bg-white shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900">
             <div className="grid gap-5 p-5 sm:p-7 xl:grid-cols-[minmax(220px,0.9fr)_minmax(370px,1.6fr)_auto] xl:items-center">
                 <div>
                     <div className="flex items-end gap-3">
@@ -304,7 +304,7 @@ function QualityTrace() {
     const completedChecks = protectionChecks.filter(({ step }) => traceStep >= step).length;
 
     return (
-        <article className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-[#3DB268] bg-white p-5 shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900 sm:p-7">
+        <article className="w-full overflow-hidden rounded-2xl border border-slate-200 border-t-4 border-t-[#3DB268] bg-white p-5 shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900 sm:p-7">
             <div className="grid gap-7 lg:grid-cols-[270px_minmax(0,1fr)]">
                 <div>
                     <div className="relative flex flex-col items-center rounded-2xl border-[1.5px] border-dashed border-[#3DB268]/50 bg-[#3DB268]/[0.04] p-4 dark:border-[#3DB268]/40 dark:bg-[#27965a]/10">
@@ -463,9 +463,9 @@ export default function CoreValues() {
     };
 
     return (
-        <section id="core-values" aria-labelledby="core-values-title" className="scroll-mt-24 px-6 pb-20 md:px-10 lg:px-16">
+        <section id="core-values" aria-labelledby="core-values-title" className="bedebo-site-container scroll-mt-24 pb-20">
             <SectionTitle label="CORE VALUES" title="Our Core" highlight="Values" headingId="core-values-title" />
-            <div className="mx-auto mt-7 max-w-[1040px]">
+            <div className="mt-7 w-full">
                 <div className="grid items-stretch gap-4 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
                     <article className="relative flex min-h-[220px] flex-col justify-center overflow-hidden rounded-[20px] bg-gradient-to-br from-[#23a062] to-[#17613f] p-5 text-white sm:p-6">
                         <span aria-hidden="true" className="pointer-events-none absolute -right-20 -top-20 size-52 rounded-full border border-white/20" />
@@ -485,7 +485,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-6 max-w-[1040px]">
+            <div className="mt-6 w-full">
                 <div className="mb-4 text-center">
                     <h3 className="text-2xl font-semibold">Six values that guide us</h3>
                     <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Hover to pause. Use the dots to move back and forth.</p>
@@ -520,8 +520,8 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-16 max-w-6xl">
-                <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="relative mx-auto mb-6 flex w-full max-w-[880px] gap-1 overflow-x-auto rounded-[18px] border border-slate-200 bg-white p-[5px] dark:border-slate-800 dark:bg-slate-900" onKeyDown={handleTabKeyDown}>
+            <div className="mt-16 w-full">
+                <div role="tablist" aria-label="Core value chain layers" aria-orientation="horizontal" className="relative mb-6 flex w-full gap-1 overflow-x-auto rounded-[18px] border border-slate-200 bg-white p-[5px] dark:border-slate-800 dark:bg-slate-900" onKeyDown={handleTabKeyDown}>
                     <span aria-hidden="true" className="pointer-events-none absolute bottom-[5px] top-[5px] z-0 rounded-[14px] transition-[left,width,background-color] duration-300" style={{ left: tabPill.left, width: tabPill.width, backgroundColor: tabColor }} />
                     {tabItems.map((item, index) => {
                         const Icon = tabIcons[index];
@@ -537,7 +537,7 @@ export default function CoreValues() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-10 flex max-w-2xl items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-sm font-semibold leading-4 text-white sm:px-8 sm:py-5 sm:text-[15px]">Coordinating the journey from production to market</div>
+            <div className="mt-10 flex w-full items-center justify-center rounded-2xl bg-[#27965a] px-5 py-4 text-center text-sm font-semibold leading-4 text-white sm:px-8 sm:py-5 sm:text-[15px]">Coordinating the journey from production to market</div>
         </section>
     );
 }

@@ -23,8 +23,8 @@ export default function OurBlogs() {
     }, []);
 
     return (
-        <section id="blog" ref={sectionRef} className="scroll-mt-24 px-6 pb-24 md:px-10 md:pb-32 lg:px-16">
-            <div className={`mx-auto max-w-7xl transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
+        <section id="blog" ref={sectionRef} className="scroll-mt-24 pb-24 md:pb-32">
+            <div className={`bedebo-site-container transition-all duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0"}`}>
                 <SectionTitle label="OUR BLOGS" title="Our" highlight="Blogs" description="Insights, stories, and updates from the field to the market." headingId="blogs-title" />
 
                 <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

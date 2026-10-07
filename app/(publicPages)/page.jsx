@@ -40,34 +40,38 @@ export default function Page() {
                 </div>
             </section>
 
-            <section className="bedebo-logo-strip px-6 pt-8">
-                <h3 className="pb-7 text-center text-base font-medium text-slate-400">
-                    Trusting by leading brands, including —
-                </h3>
-                <div className="bedebo-logo-marquee">
-                    <Marquee className="mx-auto max-w-5xl pb-12" gradient={true} speed={25} gradientColor={theme === "dark" ? "#0A120E" : "#fff"}>
-                        <div className="flex items-center justify-center">
-                            {[...companiesLogo, ...companiesLogo].map((company, index) => (
-                                <Image key={index} className="bedebo-logo mx-11" src={company.logo} alt={company.name} width={100} height={100} />
-                            ))}
-                        </div>
-                    </Marquee>
+            <section className="bedebo-logo-strip pt-8">
+                <div className="bedebo-site-container">
+                    <h3 className="pb-7 text-center text-base font-medium text-slate-400">
+                        Trusting by leading brands, including —
+                    </h3>
+                    <div className="bedebo-logo-marquee">
+                        <Marquee className="mx-auto max-w-5xl pb-12" gradient={true} speed={25} gradientColor={theme === "dark" ? "#0A120E" : "#fff"}>
+                            <div className="flex items-center justify-center">
+                                {[...companiesLogo, ...companiesLogo].map((company, index) => (
+                                    <Image key={index} className="bedebo-logo mx-11" src={company.logo} alt={company.name} width={100} height={100} />
+                                ))}
+                            </div>
+                        </Marquee>
+                    </div>
                 </div>
             </section>
 
             <OurStory />
 
             <section id="solutions" className="scroll-mt-24">
-                <SectionTitle label="OUR SOLUTIONS" title="Our" highlight="Solutions" description="We have a wide range of solutions that we have provided" headingId="solutions-title" />
+                <div className="bedebo-site-container">
+                    <SectionTitle label="OUR SOLUTIONS" title="Our" highlight="Solutions" description="We have a wide range of solutions that we have provided" headingId="solutions-title" />
 
-                <div className="mt-10 grid grid-cols-1 items-stretch gap-6 px-6 md:grid-cols-2 md:gap-4 md:px-16 lg:grid-cols-4 lg:px-24 xl:px-32">
-                    {featuresData.map((feature) => (
-                        <div key={feature.title} className="flex h-full min-h-[320px] flex-col items-center space-y-3 rounded-xl border border-slate-200 bg-white p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#3DB268]/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/20">
-                            <feature.icon className="mt-4 size-10 text-[#3DB268]" strokeWidth={1.3} />
-                            <h3 className="min-h-[2.6em] text-base font-medium leading-[1.3]">{feature.title}</h3>
-                            <p className="text-[0.9rem] leading-[1.6] text-slate-400">{feature.description}</p>
-                        </div>
-                    ))}
+                    <div className="mt-10 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+                        {featuresData.map((feature) => (
+                            <div key={feature.title} className="flex h-full min-h-[320px] flex-col items-center space-y-3 rounded-xl border border-slate-200 bg-white p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#3DB268]/50 hover:shadow-lg dark:border-slate-800 dark:bg-slate-800/20">
+                                <feature.icon className="mt-4 size-10 text-[#3DB268]" strokeWidth={1.3} />
+                                <h3 className="min-h-[2.6em] text-base font-medium leading-[1.3]">{feature.title}</h3>
+                                <p className="text-[0.9rem] leading-[1.6] text-slate-400">{feature.description}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 

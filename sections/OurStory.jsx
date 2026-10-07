@@ -3,8 +3,8 @@ import SectionTitle from "@/components/SectionTitle";
 
 export default function OurStory() {
     return (
-        <section id="about" aria-labelledby="our-story-title" className="scroll-mt-20 px-6 pt-24 pb-12 md:px-10 md:pt-32 md:pb-8 lg:px-16">
-            <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 md:grid-cols-2 lg:gap-20">
+        <section id="about" aria-labelledby="our-story-title" className="scroll-mt-20 pt-24 pb-12 md:pt-32 md:pb-8">
+            <div className="bedebo-site-container grid grid-cols-1 items-center gap-14 md:grid-cols-2 lg:gap-20">
                 <div className="relative mx-auto aspect-square w-full max-w-[420px]">
                     <div className="absolute bottom-0 left-0 z-0 h-[36%] w-[44%] opacity-60" style={{ backgroundImage: "radial-gradient(#3DB268 1.5px, transparent 1.5px)", backgroundSize: "16px 16px" }} />
                     <div className="absolute inset-0 z-10 overflow-hidden rounded-full border-[3px] border-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] dark:border-slate-950">

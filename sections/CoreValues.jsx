@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, Check, ClipboardCheck, Clock3, HandCoins, Leaf, Package, ShieldCheck, Truck, Warehouse, CalendarClock, Snowflake, Target, FileText, Share2, Smartphone } from "lucide-react";
+import { Check, ClipboardCheck, House, ShieldCheck, Sun, Truck, Snowflake, Target, FileText, Share2, Smartphone } from "lucide-react";
 import SectionTitle from "@/components/SectionTitle";
 import Traceability from "@/sections/Traceability";
 
@@ -11,7 +11,7 @@ const tabIcons = [Share2, Smartphone, Snowflake, ShieldCheck];
 const tabItems = [
     { label: "Value chain integration", role: "The partnership layer", title: "The partnership layer", description: "All actors work as partners, not as disconnected middlemen.", points: ["Farm-to-market linkages", "Coordinated production", "Shared services", "Value addition", "Shared benefit"], icon: Share2, tone: "green" },
     { label: "Digital integration", role: "The information layer", title: "The information layer", description: "BEDEBO supports farmer coordination, aggregation, logistics, market linkage, payment tracking and end-to-end visibility.", points: ["Connected platforms", "Real-time visibility", "Data-driven decisions", "Digital transactions", "Inclusion for all farmers"], icon: Smartphone, tone: "green" },
-    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Reduce Postharvest Loss", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO therefore treats loss reduction as value creation, not merely as an operational issue.", points: ["Continuous temperature control", "Less post-harvest loss", "Longer shelf life and reach", "Sensor monitoring", "Food safety"], icon: Snowflake, tone: "green" },
+    { label: "Cold chain integration", role: "The freshness layer", title: "Freshness & Post-Harvest Loss Reduction", description: "Fresh horticultural products lose value quickly when harvesting, handling, transport, storage and market access are poorly coordinated. BEDEBO treats loss reduction as value creation, not merely as an operational issue.", points: ["Crate-based handling", "Solar pre-cooling", "Cold rooms", "Coordinated logistics", "Digital scheduling"], icon: Snowflake, tone: "green" },
     { label: "Quality and traceability", role: "The trust layer", title: "The trust layer, farm to table", description: "Customers can trust what they eat and verify where it came from.", points: ["Quality standards", "Batch traceability", "Rapid response", "Consumer confidence", "Export readiness"], icon: ShieldCheck, tone: "green" },
 ];
 
@@ -25,12 +25,12 @@ const values = [
 ];
 
 const crops = [
-    { name: "Tomato (Mature Green)", min: 13, max: 15, humidity: "85% to 90%", note: "Chilling sensitive. Never drop below 10°C to avoid flavor loss and pitting. Highly ethylene-producing.", fahrenheit: "55°F to 60°F", stages: [26, 15, 14, 14, 14] },
-    { name: "Onion (Cured/Dry)", min: 0, max: 2, humidity: "65% to 70%", note: "Low humidity exception. High humidity triggers root sprouting and rot. Keep separate due to strong odors.", fahrenheit: "32°F to 36°F", stages: [26, 2, 1, 1, 1] },
-    { name: "Cabbage", min: 0, max: 2, humidity: "95% to 100%", note: "Hardy crop but highly sensitive to ethylene gas, which causes yellowing and leaf drop.", fahrenheit: "32°F to 36°F", stages: [24, 2, 1, 1, 1] },
-    { name: "Papaya", min: 7, max: 10, humidity: "85% to 90%", note: "Tropical fruit. Susceptible to chilling injury if kept at standard vegetable temperatures below 7°C.", fahrenheit: "45°F to 50°F", stages: [27, 9, 8, 8, 8] },
-    { name: "Pepper (Bell/Chili)", min: 7, max: 10, humidity: "90% to 95%", note: "Shrivelling occurs quickly if humidity drops. Do not store with ethylene producers.", fahrenheit: "45°F to 50°F", stages: [26, 9, 8, 8, 8] },
-    { name: "Green Bean", min: 5, max: 7.5, humidity: "90% to 95%", note: "Sensitive to chilling injury below 4°C, which causes rusty brown spots. Highly perishable.", fahrenheit: "41°F to 45°F", stages: [25, 7, 6, 6, 6] },
+    { name: "Tomato (mature green)", min: "12.5 to 15°C", humidity: "90 to 95%", note: "Chilling sensitive. Colder storage causes flavor loss and pitting." },
+    { name: "Onion (dry, cured)", min: "0°C", humidity: "60 to 80%", note: "Keep dry and well ventilated to limit sprouting and rot." },
+    { name: "Cabbage", min: "0°C", humidity: "95 to 100%", note: "Cold and humid storage prevents wilting." },
+    { name: "Papaya*", min: "10 to 15°C", humidity: "85 to 90%", note: "Chilling sensitive. Handle gently to avoid bruising." },
+    { name: "Pepper*", min: "7 to 12°C", humidity: "90 to 95%", note: "Chilling sensitive. Best range depends on pepper type." },
+    { name: "Green bean", min: "4 to 7°C", humidity: "about 95%", note: "Short storage life, about 7 to 10 days." },
 ];
 
 const platforms = [
@@ -57,19 +57,11 @@ const protectionChecks = [
     { title: "Arrival quality check", step: 1 },
 ];
 
-const measures = [
-    { title: "Crate-based handling", icon: Package },
-    { title: "Solar pre-cooling", icon: Clock3 },
-    { title: "Cold rooms", icon: Warehouse },
-    { title: "Coordinated logistics", icon: Truck },
-    { title: "Digital scheduling", icon: CalendarClock },
-];
-
-const outcomes = [
-    { title: "Better freshness", icon: Leaf },
-    { title: "Consistent specifications", icon: ClipboardCheck },
-    { title: "Less physical damage", icon: ShieldCheck },
-    { title: "Fewer buyer rejections", icon: HandCoins },
+const freshnessSteps = [
+    { title: "Solar pre-cooling", detail: "Field heat is removed soon after harvest, powered by renewable energy.", icon: Sun },
+    { title: "Cold rooms and storage", detail: "Crates are held at the right temperature for each crop.", icon: House },
+    { title: "Coordinated logistics", detail: "Transport is timed and traceable from stage to stage.", icon: Truck },
+    { title: "Digital scheduling", detail: "Loss is reported across stages, so problems are found and fixed.", icon: ClipboardCheck },
 ];
 
 function isoSceneSVG() {
@@ -187,107 +179,54 @@ function DigitalIntegration() {
 }
 
 function FreshnessTab() {
-    const [selectedCrop, setSelectedCrop] = useState(0);
-    const [stage, setStage] = useState(3);
-    const [auto, setAuto] = useState(false);
-    const crop = crops[selectedCrop];
-    const stageNames = ["Farm", "Aggregation", "Cold transit", "Warehouse", "Delivery"];
-    const temperatures = crop.stages;
-    const yPositions = temperatures.map((temperature) => 200 - temperature * (170 / 30));
-    const chartHeight = Math.ceil(Math.max(...yPositions) + 20);
-    const bandHeight = Math.max((crop.max - crop.min) * (170 / 30) + 12, 12);
-    const bandY = 200 - crop.max * (170 / 30) - 6;
-    const xPositions = [70, 200, 330, 460, 590];
-    const loss = Math.round(46 - (23 * stage) / 4);
-    const reaching = 100 - loss;
-    const idealFahrenheit = crop.fahrenheit ?? `${Math.round((crop.min * 9) / 5 + 32)}°F to ${Math.round((crop.max * 9) / 5 + 32)}°F`;
-    const rangeLabel = `${crop.min} to ${crop.max} °C`;
-    const solidPoints = xPositions.slice(0, stage + 1).map((x, index) => `${x},${yPositions[index]}`).join(" ");
-    const dottedPoints = xPositions.slice(stage).map((x, index) => `${x},${yPositions[index + stage]}`).join(" ");
-
-    useEffect(() => {
-        if (!auto) return undefined;
-        const timer = window.setTimeout(() => {
-            if (stage >= stageNames.length - 1) {
-                setSelectedCrop((current) => (current + 1) % crops.length);
-                setStage(0);
-            } else {
-                setStage((current) => current + 1);
-            }
-        }, 2400);
-        return () => window.clearTimeout(timer);
-    }, [auto, stage, stageNames.length]);
-
-    const chooseStage = (index) => {
-        setAuto(false);
-        setStage(index);
-    };
-    const chooseCrop = (event) => {
-        setSelectedCrop(Number(event.target.value));
-        setAuto(false);
-    };
-
     return (
-        <article className="w-full overflow-hidden rounded-[22px] border border-slate-200 border-t-4 border-t-[#3DB268] bg-white shadow-sm dark:border-slate-800 dark:border-t-[#3DB268] dark:bg-slate-900">
-            <div className="grid gap-5 p-5 sm:p-7 xl:grid-cols-[minmax(220px,0.9fr)_minmax(370px,1.6fr)_auto] xl:items-center">
-                <div>
-                    <div className="flex items-end gap-3">
-                        <p className="text-5xl font-semibold leading-none tracking-tight text-[#267A47] dark:text-[#75D59A]">{temperatures[stage]}°C</p>
-                        <p className="pb-1 text-sm font-semibold text-[#267A47] dark:text-[#75D59A]">{stageNames[stage]}</p>
-                    </div>
-                    <div className="mt-4 flex items-center gap-2">
-                        <label className="sr-only" htmlFor="cold-chain-crop">Crop</label>
-                        <select id="cold-chain-crop" value={selectedCrop} onChange={chooseCrop} className="min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-medium text-[#267A47] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] dark:border-slate-700 dark:bg-slate-800 dark:text-[#8de0ae]">
-                            {crops.map((item, index) => <option key={item.name} value={index}>{item.name}</option>)}
-                        </select>
-                        <button type="button" aria-pressed={auto} aria-label={`Automatic crop playback ${auto ? "on" : "off"}`} onClick={() => {
-                            if (auto) {
-                                setAuto(false);
-                            } else if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-                                setStage(0);
-                                setAuto(true);
-                            }
-                        }} className={`rounded-full border px-3 py-2 text-xs font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${auto ? "border-[#27965a] bg-[#27965a] text-white" : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300"}`}>Auto</button>
-                    </div>
-                </div>
-                <div className="flex flex-wrap items-center justify-center gap-5 sm:flex-nowrap sm:gap-7">
-                    <div className="flex items-center gap-3" role="img" aria-label={`Farm-to-consumer losses: ${loss} percent, target 23 percent`}>
-                        <span aria-hidden="true" className="text-red-500"><ArrowDown size={20} /></span>
-                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-red-500 transition-[height] duration-500" style={{ height: `${loss}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[23%] border-t-2 border-dashed border-slate-500/70" /></div>
-                        <div className="w-[132px] rounded-xl bg-red-50 px-3 py-2 dark:bg-red-950/30"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Farm-to-consumer losses</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-red-600 dark:text-red-400">{loss}%</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">46% → 23%</span></div>
-                    </div>
-                    <div className="flex items-center gap-3" role="img" aria-label={`Reaching consumers: ${reaching} kilograms per 100 kilograms, target 77 kilograms`}>
-                        <div className="w-[132px] rounded-xl bg-[#3DB268]/10 px-3 py-2 text-right dark:bg-[#27965a]/20"><span className="block text-[11px] font-medium leading-4 text-slate-600 dark:text-slate-300">Reaching consumers per 100 kg</span><span className="mt-1 block text-2xl font-semibold leading-tight tabular-nums text-[#267A47] dark:text-[#75D59A]">{reaching} kg</span><span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">54 kg → 77 kg</span></div>
-                        <div className="relative h-[86px] w-5 shrink-0 overflow-visible rounded-full bg-slate-200 dark:bg-slate-700"><span className="absolute inset-x-0 bottom-0 block rounded-full bg-[#3DB268] transition-[height] duration-500" style={{ height: `${reaching}%` }} /><span aria-hidden="true" className="absolute inset-x-[-4px] bottom-[77%] border-t-2 border-dashed border-slate-500/70" /></div>
-                        <span aria-hidden="true" className="text-[#267A47] dark:text-[#75D59A]"><ArrowUp size={20} /></span>
-                    </div>
-                </div>
-                <div className="xl:justify-self-end">
-                    <span className={`inline-flex rounded-full px-4 py-1.5 text-xs font-semibold text-white ${temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "bg-[#27965a]" : "bg-red-600"}`}>{temperatures[stage] >= crop.min && temperatures[stage] <= crop.max ? "In safe range" : "Above safe range"}</span>
-                </div>
+        <div className="space-y-6 text-slate-800 dark:text-slate-100">
+            <div className="grid gap-4 sm:grid-cols-2">
+                <article className="rounded-2xl bg-gradient-to-br from-[#27965a] to-[#208454] p-5 text-white sm:p-6">
+                    <p className="text-xs font-medium text-white/85">Farm-to-consumer losses</p>
+                    <p className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">46% <span className="text-white/60">→</span> 23%</p>
+                    <p className="mt-1 text-xs text-white/85">Project target: losses cut by half</p>
+                </article>
+                <article className="rounded-2xl bg-gradient-to-br from-[#27965a] to-[#208454] p-5 text-white sm:p-6">
+                    <p className="text-xs font-medium text-white/85">Reaching consumers, per 100 kg harvested</p>
+                    <p className="mt-1 text-3xl font-semibold tracking-tight sm:text-4xl">54 kg <span className="text-white/60">→</span> 77 kg</p>
+                    <p className="mt-1 text-xs text-white/85">Project target based on an illustrative case</p>
+                </article>
             </div>
-            <div className="px-4 sm:px-7">
-                <svg viewBox={`0 0 700 ${chartHeight}`} role="img" aria-label={`Temperature journey for ${crop.name}. Ideal range ${rangeLabel}. Current stage ${stageNames[stage]}.`} className="block h-auto w-full overflow-visible">
-                    <text x="355" y="30" textAnchor="middle" fill="#dc2626" fontSize="12">Without a cold chain, produce spoils in the heat</text>
-                    <line x1="120" y1="40" x2="590" y2="40" stroke="#d64545" strokeWidth="2" strokeDasharray="6 6" />
-                    <rect x="40" y={bandY} width="580" height={bandHeight} rx="11" fill="#267A47" fillOpacity=".16" />
-                    <text x="626" y={bandY + bandHeight / 2 + 4} fontSize="11.5" fill="#267A47">{rangeLabel}</text>
-                    {stage < stageNames.length - 1 && <polyline points={dottedPoints} fill="none" stroke="#267A47" strokeWidth="4" strokeDasharray="2 8" strokeLinecap="round" opacity=".5" />}
-                    {stage > 0 && <polyline points={solidPoints} fill="none" stroke="#267A47" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />}
-                    {stage === 0 && <circle cx={xPositions[0]} cy={yPositions[0]} r="4" fill="#267A47" />}
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="15" fill="#267A47" fillOpacity=".25" />
-                    <circle cx={xPositions[stage]} cy={yPositions[stage]} r="8" fill="#267A47" stroke="#fff" strokeWidth="3" />
-                </svg>
-                <div className="grid grid-cols-5 gap-1 pb-4">
-                    {stageNames.map((name, index) => <button key={name} type="button" aria-pressed={stage === index} onClick={() => chooseStage(index)} className={`min-w-0 rounded-md px-1 py-2 text-[10px] leading-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] sm:text-xs ${stage === index ? "font-semibold text-[#267A47] dark:text-[#75D59A]" : "text-slate-500 dark:text-slate-400"}`}>{name}</button>)}
-                </div>
-            </div>
-            <div className="mx-5 mb-4 rounded-xl bg-[#3DB268]/10 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-[#27965a]/20 dark:text-slate-200 sm:mx-7 sm:px-5">
-                <p><strong>{crop.name}</strong> · Ideal {crop.min}°C to {crop.max}°C ({idealFahrenheit}) · RH {crop.humidity}.</p>
-                <p>{crop.note}</p>
-            </div>
-            <p className="px-5 pb-5 text-[11px] leading-5 text-slate-500 dark:text-slate-400 sm:px-7">Ideal ranges follow the BEDEBO crop portfolio. Stage temperatures and loss figures are illustrative; the 46% to 23% and 54 kg to 77 kg figures are project targets.</p>
-        </article>
+
+            <section aria-labelledby="freshness-steps-title">
+                <h3 id="freshness-steps-title" className="text-lg font-semibold">How the cold chain protects freshness</h3>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Cooling starts soon after harvest and never breaks until delivery.</p>
+                <ol className="relative mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-4">
+                    {freshnessSteps.map((step, index) => {
+                        const Icon = step.icon;
+                        return <li key={step.title} className="relative min-h-36 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                            {index < freshnessSteps.length - 1 && <span aria-hidden="true" className="absolute -right-3 top-7 z-10 hidden h-px w-3 bg-[#27965a]/60 xl:block" />}
+                            <span aria-hidden="true" className="absolute right-3 top-1 text-3xl font-semibold text-[#27965a]/[0.08]">0{index + 1}</span>
+                            <span className="mb-3 grid size-9 place-items-center rounded-xl bg-[#27965a]/10 text-[#27965a] dark:bg-[#27965a]/20 dark:text-[#8de0ae]"><Icon size={18} /></span>
+                            <h4 className="text-sm font-semibold">{step.title}</h4>
+                            <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">{step.detail}</p>
+                        </li>;
+                    })}
+                </ol>
+            </section>
+
+            <section aria-labelledby="crop-storage-title">
+                <h3 id="crop-storage-title" className="text-lg font-semibold">Recommended storage by crop</h3>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Each crop has its own best temperature and humidity.</p>
+                <ul className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                    {crops.map((crop) => <li key={crop.name} className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+                        <h4 className="text-sm font-semibold">{crop.name}</h4>
+                        <dl className="mt-3 grid grid-cols-2 gap-3 text-xs">
+                            <div><dt className="text-slate-500 dark:text-slate-400">Temperature</dt><dd className="mt-0.5 font-semibold text-[#267A47] dark:text-[#75D59A]">{crop.min}</dd></div>
+                            <div><dt className="text-slate-500 dark:text-slate-400">Humidity</dt><dd className="mt-0.5 font-semibold text-[#267A47] dark:text-[#75D59A]">{crop.humidity}</dd></div>
+                        </dl>
+                        <p className="mt-3 border-t border-slate-100 pt-2 text-xs leading-5 text-slate-500 dark:border-slate-800 dark:text-slate-400">{crop.note}</p>
+                    </li>)}
+                </ul>
+                <p className="mt-3 text-[11px] leading-5 text-slate-500 dark:text-slate-400">Ranges are general guidance from the University of California, Davis Postharvest Technology Center and extension publications. *Varies by cultivar and ripeness; confirm with BEDEBO’s agronomists before publishing.</p>
+            </section>
+        </div>
     );
 }
 
@@ -540,7 +479,7 @@ export default function CoreValues() {
                         return <button key={item.label} ref={(node) => { tabRefs.current[index] = node; }} id={`core-tab-${index}`} type="button" role="tab" aria-label={item.label} aria-selected={activeTab === index} aria-controls={`core-panel-${index}`} tabIndex={activeTab === index ? 0 : -1} onClick={() => selectTab(index)} className={`relative z-10 flex min-w-max flex-1 items-center justify-center gap-2 rounded-[14px] px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#27965a] ${activeTab === index ? "text-white" : "text-slate-600 dark:text-slate-300"}`}><Icon size={18} aria-hidden="true" /><span className="hidden sm:inline">{item.label}</span></button>;
                     })}
                 </div>
-                <div id={`core-panel-${activeTab}`} role="tabpanel" aria-labelledby={`core-tab-${activeTab}`} tabIndex={0} className="min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#27965a]">
+                <div id={`core-panel-${activeTab}`} role="tabpanel" aria-labelledby={`core-tab-${activeTab}`} tabIndex={0} className={`min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#27965a] ${activeTab === 2 ? "rounded-2xl bg-[#f4faf6] p-3 sm:p-5 dark:bg-slate-950/40" : ""}`}>
                     <IntroCard item={tabItems[activeTab]} />
                     {activeTab === 0 && <Traceability />}
                     {activeTab === 1 && <DigitalIntegration />}

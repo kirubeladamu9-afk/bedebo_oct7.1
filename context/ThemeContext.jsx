@@ -8,7 +8,7 @@ export function ThemeContextProvider({ children }) {
 
     useEffect(() => {
         const storedTheme = localStorage.getItem("theme");
-        setTheme(storedTheme === "light" ? "light" : "dark");
+        setTheme(storedTheme === "dark" ? "dark" : "light");
     }, []);
 
     return (

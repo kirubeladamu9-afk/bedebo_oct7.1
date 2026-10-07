@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body>
-                <script dangerouslySetInnerHTML={{ __html: `(() => { const theme = localStorage.getItem("theme"); document.documentElement.classList.toggle("dark", theme !== "light"); })();` }} />
+                <script dangerouslySetInnerHTML={{ __html: `(() => { const theme = localStorage.getItem("theme"); document.documentElement.classList.toggle("dark", theme === "dark"); })();` }} />
                 <ThemeContextProvider>
                     <LenisScroll />
                     {children}

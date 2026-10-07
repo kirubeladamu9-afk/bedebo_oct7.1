@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 const socialIconMap = { LinkedIn: Linkedin, X: Twitter, Facebook, WhatsApp: MessageCircle, Email: Mail };
 
-function ShareLinks({ post, onCopy, copied, compact = false, vertical = false }) {
+function ShareLinks({ post, onCopy, copied, compact = false }) {
     const [shareUrl, setShareUrl] = useState("");
     useEffect(() => setShareUrl(window.location.href), [post.slug]);
     const url = encodeURIComponent(shareUrl);
@@ -22,10 +22,10 @@ function ShareLinks({ post, onCopy, copied, compact = false, vertical = false })
     const controlClass = "inline-flex size-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:border-[#3DB268] hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:border-slate-700 dark:text-slate-200 dark:hover:text-[#75D59A]";
 
     return (
-        <div className={`flex ${vertical ? "flex-col" : compact ? "flex-nowrap gap-2 overflow-x-auto" : "flex-wrap gap-2"}`}>
+        <div className={`flex ${compact ? "flex-nowrap gap-2 overflow-x-auto" : "flex-wrap gap-2"}`}>
             <button type="button" onClick={onCopy} className={controlClass} aria-label={copied ? "Article link copied" : "Copy article link"} title={copied ? "Copied" : "Copy link"}>
                 <Copy size={16} aria-hidden="true" />
-                {!vertical && <span className="sr-only">{compact ? "Copy article link" : copied ? "Copied" : "Copy link"}</span>}
+                <span className="sr-only">{compact ? "Copy article link" : copied ? "Copied" : "Copy link"}</span>
             </button>
             {links.map(({ label, icon: Icon, href }) => (
                 <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Share on ${label}`} title={`Share on ${label}`} className={controlClass}>
@@ -185,7 +185,6 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
                         <section className="rounded-2xl bg-[#267A47] p-5 text-white shadow-[0_14px_32px_rgba(61,178,104,0.18)]"><h2 className="text-lg font-semibold">Grow with us</h2><p className="mt-2 text-sm leading-6 text-white/80">Connect with a community working toward stronger agricultural value chains.</p><Link href="/#get-involved" className="mt-4 inline-flex items-center gap-2 rounded-sm text-sm font-semibold underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">Get Involved <ArrowUpRight size={15} /></Link></section>
                     </aside>
                 </div>
-                <nav aria-label="Floating article share bar" className="fixed left-4 top-1/2 z-30 hidden -translate-y-1/2 flex-col gap-2 rounded-2xl border border-slate-200 bg-white/90 p-2 shadow-lg backdrop-blur xl:flex dark:border-slate-700 dark:bg-slate-900/90"><ShareLinks post={post} onCopy={handleCopy} copied={copied} vertical /></nav>
                 <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 px-3 py-2 backdrop-blur xl:hidden dark:border-slate-800 dark:bg-slate-950/95"><ShareLinks post={post} onCopy={handleCopy} copied={copied} compact /></div>
                 <nav aria-label="Article navigation" className="mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2">{[{ article: previousPost, label: "Previous article", icon: ArrowLeft }, { article: nextPost, label: "Next article", icon: ArrowRight }].map(({ article, label, icon: Icon }) => <Link key={label} href={`/blog/${article.slug}`} className="group flex min-h-28 items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition hover:-translate-y-1 hover:border-[#3DB268] hover:shadow-[0_12px_28px_rgba(61,178,104,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] motion-reduce:transform-none motion-reduce:transition-none dark:border-slate-800 dark:bg-slate-900">{label === "Previous article" && <Image src={article.coverImage} alt="" width={88} height={72} className="h-[72px] w-[88px] shrink-0 rounded-lg object-cover" />}<span className="min-w-0 flex-1"><span className="block text-xs font-medium text-slate-500 dark:text-slate-400">{label}</span><span className="mt-1 line-clamp-2 block font-semibold group-hover:text-[#267A47] dark:group-hover:text-[#75D59A]">{article.title}</span></span>{label === "Next article" && <Image src={article.coverImage} alt="" width={88} height={72} className="h-[72px] w-[88px] shrink-0 rounded-lg object-cover" />}<Icon size={17} className="shrink-0 text-[#267A47] dark:text-[#75D59A]" /></Link>)}</nav>
                 <section aria-labelledby="related-heading" className="mx-auto mt-20 max-w-7xl"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-sm font-semibold uppercase tracking-wide text-[#267A47] dark:text-[#75D59A]">Keep exploring</p><h2 id="related-heading" className="mt-2 text-3xl font-semibold">Related articles</h2></div><Link href="/#blog" className="rounded-sm text-sm font-semibold text-[#267A47] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:text-[#75D59A]">All articles</Link></div><div className="mt-7 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{relatedPosts.map((article) => <BlogCard key={article.slug} article={article} />)}</div></section>

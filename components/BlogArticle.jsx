@@ -153,11 +153,6 @@ export default function BlogArticle({ post, allPosts, previousPost, nextPost, re
             <div aria-hidden="true" className="fixed inset-x-0 top-0 z-[60] h-1 bg-slate-200/70 dark:bg-slate-800"><div ref={progressBarRef} className="h-full origin-left bg-[#3DB268]" style={{ transform: "scaleX(0)" }} /></div>
             <span aria-hidden="true" className="pointer-events-none absolute right-0 top-20 -z-10 size-[30rem] rounded-full bg-[#3DB268]/[0.07] blur-3xl" />
             <div className={`mx-auto max-w-7xl transition-[opacity,transform] duration-700 ease-out motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none ${isVisible ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}>
-                <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                    <Link href="/" className="rounded-sm hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:hover:text-[#75D59A]">Home</Link><span aria-hidden="true">/</span>
-                    <Link href="/#blog" className="rounded-sm hover:text-[#267A47] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:hover:text-[#75D59A]">Blog</Link><span aria-hidden="true">/</span>
-                    <span className="max-w-[min(60vw,32rem)] truncate text-slate-700 dark:text-slate-200" aria-current="page">{post.title}</span>
-                </nav>
                 <Link href="/#blog" className="mt-6 inline-flex items-center gap-2 rounded-sm text-sm font-medium text-[#267A47] hover:text-[#1E663A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#3DB268] dark:text-[#75D59A]"><ArrowLeft size={16} />Back to all articles</Link>
                 <header className="mx-auto mt-10 max-w-4xl text-center">
                     <span className="inline-flex rounded-full border border-[#3DB268]/20 bg-[#3DB268]/10 px-4 py-1.5 text-sm font-semibold text-[#267A47] dark:text-[#75D59A]">{post.category}</span>
